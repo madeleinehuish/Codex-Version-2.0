@@ -4,7 +4,13 @@
   "description": "",
   "scripts": {
     "knex": "knex",
-    "start": "babel-node server.js"
+    "prestart": "babel-node tools/startMessage.js",
+    "start": "npm-run-all --parallel open:src lint:watch",
+    "open:src": "babel-node server.js",
+    "lint": "node_modules/.bin/esw webpack.config.* src tools",
+    "lint:watch": "npm run lint -- --watch",
+    "test": "mocha --reporter progress tools/testSetup.js \"src/**/*.test.js\"",
+    "test:watch": "npm run test -- --watch"
   },
   "keywords": [],
   "author": "Madeleine Huish <madeleinehuish@gmail.com>",
