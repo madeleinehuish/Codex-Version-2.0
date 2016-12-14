@@ -1,0 +1,59 @@
+Yoga Studio idea
+
+	-Teacher sign in
+		-schedule/calendar
+		-student sign/in
+
+
+	-Studio Owner sign in
+		-data from attendance and payments
+
+
+	-Student sign in
+			-schedule/calendar
+			-student portal
+				-account details
+				-subscription/payment
+				-online signup for classes
+
+
+
+things of interest
+coding
+
+yoga
+online teaching app, put in video url
+teachers sign in
+	check views
+student sign in
+
+private lesson website
+tutors, private lessons, yoga/fitness, music lessons, chess, dance, you name it
+networking site for introducing private instructors to students
+instructor profiles, calendar for local area
+signup online, subscription payments, user profile to match needs with instructors,
+access to videos/websites/blogs of instructors?
+different signins for instructors and students
+google maps?
+students could rate instructors
+meetup?
+comment structure important for grading instructors
+inspiration: privatelessons.com music
+             takelessons.com  crappy site for all sorts of teachers
+						 fiverr.com
+						 facebook/craigslist/stackoverflow
+
+social networking type site, user/teacher upload, user ranked,
+
+
+
+
+
+astronomy
+teaching app
+
+
+reading
+
+
+volunteer-work
