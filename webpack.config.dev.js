@@ -3,12 +3,14 @@ import path from 'path';
 
 export default {
   debug: true,
-  devtool: 'inline-source-map',
+  // devtool: 'inline-source-map',
+  devtool: 'cheap-module-eval-source-map',
   noInfo: false,
   entry: [
     'eventsource-polyfill', // necessary for hot reloading with IE
     'webpack-hot-middleware/client?reload=true', //note that it reloads the page if hot module reloading fails.
-    path.resolve(__dirname, 'src/index')
+    // path.resolve(__dirname, 'src/index')
+    './src/index'
   ],
   target: 'web',
   output: {
@@ -17,7 +19,8 @@ export default {
     filename: 'bundle.js'
   },
   devServer: {
-    contentBase: path.resolve(__dirname, 'src')
+    // contentBase: path.resolve(__dirname, './src')
+    contentBase: './src'
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
