@@ -1,4 +1,4 @@
-//this component is a template used on every page
+// this component is a template used on every page
 import React, { PropTypes } from 'react';
 import Header from './common/Header';
 

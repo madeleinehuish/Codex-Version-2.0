@@ -1,7 +1,7 @@
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 import { Link, IndexLink } from 'react-router';
 
-const Header = ({loading}) => {
+const Header = ({ loading }) => {
   return (
     <nav>
       <IndexLink to="/" activeClassName="active">Home</IndexLink>

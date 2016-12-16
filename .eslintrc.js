@@ -66,6 +66,13 @@ module.exports = {
     "react/require-extension": 1,
     "react/self-closing-comp": 1,
     "react/sort-comp": 1,
-    "react/wrap-multilines": 1
+    "react/wrap-multilines": 1,
+    'max-len': 'off',
+    'sort-imports': 'off',
+    'no-tabs': 'off',
+    'indent': 'off',
+    'prefer-template': 'off',
+    'react/prop-types': 'off',
+    'func-style': 'off'
   }
 }
