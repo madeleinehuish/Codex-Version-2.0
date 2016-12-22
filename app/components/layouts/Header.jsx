@@ -24,8 +24,8 @@ const Header = React.createClass({
              {/* {this.props.loggedIn ? <li key={this.props.currentUser.id}><Link to={'/user'}>{this.props.currentUser.firstName}</Link></li> */}
               {/* : <li id="login-icon"><a href="#openModal">Sign In</a></li>} */}
             <li id="products"><a href="/api-oauth/github">GitHub</a></li>
-            {/* <li><Link to="/guides">Guides</Link></li>
-            <li><Link to="/cart"><img src="images/cart.png" /></Link></li> */}
+            <li><Link to="/main">Main</Link></li>
+
           </ul>
         </nav>
       </div>

@@ -180,6 +180,10 @@ var _Home = require('./Home');
 
 var _Home2 = _interopRequireDefault(_Home);
 
+var _Main = require('./Main');
+
+var _Main2 = _interopRequireDefault(_Main);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -332,6 +336,9 @@ var App = _react2.default.createClass({
               return _react2.default.createElement(_Home2.default, _extends({}, _this3.state, {
                 onSubmitGitHubLogIn: _this3.onSubmitGitHubLogIn
               }));
+            } }),
+          _react2.default.createElement(_reactRouter.Match, { pattern: '/main', exactly: true, render: function render() {
+              return _react2.default.createElement(_Main2.default, _this3.state);
             } })
         )
       )
@@ -391,6 +398,44 @@ var Home = _react2.default.createClass({
 exports.default = Home;
 });
 
+require.register("components/Main.jsx", function(exports, require, module) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _reactRouter = require('react-router');
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Main = _react2.default.createClass({
+  displayName: 'Main',
+  render: function render() {
+    return _react2.default.createElement(
+      'section',
+      { id: 'home' },
+      _react2.default.createElement(
+        'div',
+        { id: 'hero' },
+        _react2.default.createElement(
+          'h2',
+          { className: 'mainTitle' },
+          'Main'
+        ),
+        _react2.default.createElement('div', { className: 'twelve columns' })
+      )
+    );
+  }
+});
+
+exports.default = Main;
+});
+
 require.register("components/layouts/Header.jsx", function(exports, require, module) {
 'use strict';
 
@@ -447,6 +492,15 @@ var Header = _react2.default.createClass({
                 'a',
                 { href: '/api-oauth/github' },
                 'GitHub'
+              )
+            ),
+            _react2.default.createElement(
+              'li',
+              null,
+              _react2.default.createElement(
+                _reactRouter.Link,
+                { to: '/main' },
+                'Main'
               )
             )
           )

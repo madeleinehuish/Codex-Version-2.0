@@ -5,6 +5,7 @@ import expect, { createSpy, spyOn, isSpy } from 'expect';
 
 import Header from './layouts/Header';
 import Home from './Home';
+import Main from './Main';
 
 const App = React.createClass({
 
@@ -172,6 +173,12 @@ const App = React.createClass({
             <Home
               { ...this.state }
               onSubmitGitHubLogIn={this.onSubmitGitHubLogIn}
+            />
+          }/>
+          <Match pattern="/main" exactly render={
+            () =>
+            <Main
+              { ...this.state }
             />
           }/>
 				</main>
