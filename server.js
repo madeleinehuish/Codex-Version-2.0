@@ -7,11 +7,15 @@ if (process.env.NODE_ENV !== 'production') {
 // var cors = require('cors')
 
 const express = require('express');
+const passport = require('passport');
 const app = express();
 
 // app.use(cors());
 
 app.disable('x-powered-by');
+
+app.use(passport.initialize());
+app.use(express.static('public'));
 
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
@@ -47,6 +51,7 @@ app.use(express.static(path.join('public')));
 //   res.sendStatus(406);
 // });
 
+const oauth = require('./routes/api-oauth');
 // const products = require('./routes/products')
 // const users = require('./routes/api-users');
 // const token = require('./routes/api-token');
@@ -54,6 +59,7 @@ app.use(express.static(path.join('public')));
 // const orders = require('./routes/api-orders');
 
 //
+app.use('/api-oauth', oauth);
 // app.use(products);
 // app.use(users);
 // app.use(token);
