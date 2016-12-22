@@ -194,63 +194,17 @@ var App = _react2.default.createClass({
     return {
       value: '',
       inputValue: '',
-      signupFirstName: '',
-      signupLastName: '',
       searchVisible: false,
       formComplete: false,
-      signupEmail: '',
-      signupPassword: '',
-      cartItems: [],
-      cartItemQty: false,
-      products: [],
-      defaultProducts: [],
       searchArray: [],
       sortType: '',
       loggedIn: false,
       currentUser: {},
-      previousOrders: {},
       userInformation: [],
       email: '',
       firstName: '',
-      lastName: '',
-      address1: '',
-      address2: '',
-      city: '',
-      state: '',
-      zip: ''
+      lastName: ''
     };
-  },
-  logIn: function logIn(user) {
-    var _this = this;
-
-    var email = this.state.signupEmail;
-    var password = this.state.signupPassword;
-
-    if (!email) {
-      alert('Email must not be blank');
-    }
-    if (!password) {
-      alert('Password must not be blank');
-    }
-
-    _axios2.default.post('/api-token', { email: email, password: password }).then(function (res) {
-      sessionStorage.setItem('userId', res.data.id);
-      _this.setState({ loggedIn: true, currentUser: res.data });
-    }).then(function () {
-      _axios2.default.get('/api-orders/' + _this.state.currentUser.id).then(function (res) {
-        var sortedOrders = res.data.sortedOrderItems;
-
-        _this.setState({ previousOrders: sortedOrders });
-      }).catch(function (error) {
-        console.log(error);
-      });
-    }).then(function () {
-      _axios2.default.get('api-orders/').then(function (res) {}).catch(function (error) {
-        console.log(error);
-      });
-    }).catch(function (error) {
-      console.log(error);
-    });
   },
   logOut: function logOut() {
     this.setState({
@@ -269,41 +223,6 @@ var App = _react2.default.createClass({
 
     this.setState({ formComplete: !incompleteForm });
   },
-  onSubmit: function onSubmit(event) {
-    var _this2 = this;
-
-    var firstName = this.state.signupFirstName;
-    var lastName = this.state.signupLastName;
-    var email = this.state.signupEmail;
-    var password = this.state.signupPassword;
-
-    if (!firstName) {
-      alert('First name must not be blank');
-    }
-    if (!lastName) {
-      alert('Last name must not be blank');
-    }
-    if (!email) {
-      alert('Email must not be blank.');
-    }
-    if (email.indexOf('@') < 0) {
-      alert('Email must be valid.');
-    }
-    if (!password || password.length < 8) {
-      alert('Password must be valid.');
-    }
-
-    _axios2.default.post('/api-users', { firstName: firstName, lastName: lastName, email: email, password: password }).then(function (response) {
-      _axios2.default.post('/api-token', { email: email, password: password }).then(function (res) {
-        sessionStorage.setItem('userId', res.data.id);
-        _this2.setState({ loggedIn: true, currentUser: res.data });
-      }).catch(function (error) {
-        console.log(error);
-      });
-    }).catch(function (error) {
-      console.log(error);
-    });
-  },
   onSubmitGitHubLogIn: function onSubmitGitHubLogIn() {
     _axios2.default.get('/api-oauth/github').then(function (response) {
       console.log(response.data);
@@ -316,31 +235,32 @@ var App = _react2.default.createClass({
     });
   },
   render: function render() {
-    var _this3 = this;
+    var _this = this;
 
-    return (
-      // <div>Hello World</div>
+    return _react2.default.createElement(
+      _reactRouter.BrowserRouter,
+      null,
       _react2.default.createElement(
-        _reactRouter.BrowserRouter,
+        'main',
         null,
-        _react2.default.createElement(
-          'main',
-          null,
-          _react2.default.createElement(_Header2.default, _extends({}, this.state, {
-            logIn: this.logIn,
-            logOut: this.logOut,
-            onSubmit: this.onSubmit,
-            onFormChange: this.onFormChange
-          })),
-          _react2.default.createElement(_reactRouter.Match, { pattern: '/', exactly: true, render: function render() {
-              return _react2.default.createElement(_Home2.default, _extends({}, _this3.state, {
-                onSubmitGitHubLogIn: _this3.onSubmitGitHubLogIn
-              }));
-            } }),
-          _react2.default.createElement(_reactRouter.Match, { pattern: '/main', exactly: true, render: function render() {
-              return _react2.default.createElement(_Main2.default, _this3.state);
-            } })
-        )
+        _react2.default.createElement(_reactRouter.Match, { pattern: '/', exactly: true, render: function render() {
+            return _react2.default.createElement(_Home2.default, _extends({}, _this.state, {
+              onSubmitGitHubLogIn: _this.onSubmitGitHubLogIn
+            }));
+          } }),
+        _react2.default.createElement(_reactRouter.Match, { pattern: '/main', exactly: true, render: function render() {
+            return _react2.default.createElement(
+              'div',
+              null,
+              _react2.default.createElement(_Header2.default, _extends({}, _this.state, {
+                logIn: _this.logIn,
+                logOut: _this.logOut,
+                onSubmit: _this.onSubmit,
+                onFormChange: _this.onFormChange
+              })),
+              _react2.default.createElement(_Main2.default, _this.state)
+            );
+          } })
       )
     );
   }
@@ -377,18 +297,14 @@ var Home = _react2.default.createClass({
         'div',
         { id: 'hero' },
         _react2.default.createElement(
-          'h2',
-          { className: 'mainTitle' },
+          'h1',
+          { id: 'titleWord' },
           'Codex'
         ),
         _react2.default.createElement(
-          'div',
-          { className: 'twelve columns' },
-          _react2.default.createElement(
-            'button',
-            { className: 'mainTitle', onClick: this.onClickSubmit },
-            'SIGN IN'
-          )
+          'a',
+          { className: 'mainTitle', href: '/api-oauth/github' },
+          'Sign in with GitHub'
         )
       )
     );
@@ -451,7 +367,7 @@ var Main = _react2.default.createClass({
         { id: 'hero' },
         _react2.default.createElement(
           'h2',
-          { className: 'mainTitle' },
+          { id: 'titleWord' },
           'Main'
         ),
         _react2.default.createElement('div', { className: 'twelve columns' })

@@ -101,8 +101,15 @@ nav.six.columns > ul > li#login-icon {
   /*background: url(images/dutchlibrary.jpg) no-repeat bottom center scroll;*/
 }
 
+#titleWord {
+  color: #59656f;
+}
+
 .mainTitle {
   color: #59656f;
+  border: 1px solid;
+  padding: 7px;
+  border-radius: 2%;
 }
 
 /*---------- HERO ----------*/

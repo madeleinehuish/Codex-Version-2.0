@@ -25,7 +25,7 @@ const Main = React.createClass({
     return (
       <section id="home">
         <div id="hero">
-          <h2 className="mainTitle">Main</h2>
+          <h2 id="titleWord">Main</h2>
           <div className="twelve columns">
           {/* <AceEditor
             mode="java"

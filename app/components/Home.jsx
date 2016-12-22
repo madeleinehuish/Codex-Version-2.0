@@ -11,10 +11,10 @@ const Home = React.createClass({
     return (
       <section id="home">
         <div id="hero">
-          <h2 className="mainTitle">Codex</h2>
-          <div className="twelve columns">
-            <button className="mainTitle" onClick={this.onClickSubmit}>SIGN IN</button>
-          </div>
+          <h1 id="titleWord">Codex</h1>
+          {/* <div className="twelve columns"> */}
+            <a className="mainTitle" href="/api-oauth/github">Sign in with GitHub</a>
+          {/* </div> */}
         </div>
       </section>
     );

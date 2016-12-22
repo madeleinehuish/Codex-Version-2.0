@@ -13,72 +13,17 @@ const App = React.createClass({
   return {
     value: '',
     inputValue: '',
-    signupFirstName: '',
-    signupLastName: '',
     searchVisible: false,
     formComplete: false,
-    signupEmail: '',
-    signupPassword: '',
-    cartItems: [],
-    cartItemQty: false,
-    products: [],
-    defaultProducts: [],
     searchArray: [],
     sortType: '',
     loggedIn: false,
     currentUser: {},
-    previousOrders: {},
     userInformation: [],
     email: '',
     firstName: '',
-    lastName: '',
-    address1: '',
-    address2: '',
-    city: '',
-    state: '',
-    zip: ''
+    lastName: ''
     }
-  },
-
-    logIn(user) {
-    const email = this.state.signupEmail;
-    const password = this.state.signupPassword;
-
-    if (!email) {
-      alert('Email must not be blank');
-    }
-    if (!password) {
-      alert('Password must not be blank');
-    }
-
-    axios.post('/api-token', { email, password })
-      .then((res) => {
-        sessionStorage.setItem('userId', res.data.id);
-        this.setState({ loggedIn : true, currentUser: res.data });
-      })
-      .then(() => {
-        axios.get(`/api-orders/${this.state.currentUser.id}`)
-          .then((res) => {
-            const sortedOrders = res.data.sortedOrderItems;
-
-            this.setState({ previousOrders: sortedOrders });
-          })
-          .catch((error) => {
-            console.log(error);
-          })
-      })
-      .then(() => {
-        axios.get('api-orders/')
-          .then(res => {
-          })
-          .catch((error) => {
-            console.log(error);
-          })
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-
   },
 
   logOut() {
@@ -104,44 +49,6 @@ const App = React.createClass({
 
   },
 
-  onSubmit(event) {
-    const firstName = this.state.signupFirstName;
-    const lastName = this.state.signupLastName;
-    const email = this.state.signupEmail;
-    const password = this.state.signupPassword;
-
-    if (!firstName) {
-      alert('First name must not be blank');
-    }
-    if (!lastName) {
-      alert('Last name must not be blank');
-    }
-    if (!email) {
-      alert('Email must not be blank.');
-    }
-    if (email.indexOf('@') < 0) {
-      alert('Email must be valid.');
-    }
-    if (!password || password.length < 8) {
-      alert('Password must be valid.');
-    }
-
-    axios.post('/api-users', { firstName, lastName, email, password })
-      .then((response) => {
-        axios.post('/api-token', { email, password })
-          .then((res) => {
-            sessionStorage.setItem('userId', res.data.id);
-            this.setState({ loggedIn : true, currentUser: res.data });
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  },
-
   onSubmitGitHubLogIn() {
     axios.get('/api-oauth/github')
       .then((response) => {
@@ -158,16 +65,8 @@ const App = React.createClass({
 
 	render() {
     return (
-			// <div>Hello World</div>
 			<BrowserRouter>
 				<main>
-				  <Header
-            { ...this.state }
-            logIn={this.logIn}
-            logOut={this.logOut}
-            onSubmit={this.onSubmit}
-            onFormChange={this.onFormChange}
-          />
           <Match pattern="/" exactly render={
             () =>
             <Home
@@ -177,9 +76,18 @@ const App = React.createClass({
           }/>
           <Match pattern="/main" exactly render={
             () =>
-            <Main
-              { ...this.state }
-            />
+            <div>
+              <Header
+                { ...this.state }
+                logIn={this.logIn}
+                logOut={this.logOut}
+                onSubmit={this.onSubmit}
+                onFormChange={this.onFormChange}
+              />
+              <Main
+                { ...this.state }
+              />
+            </div>
           }/>
 				</main>
 			</BrowserRouter>

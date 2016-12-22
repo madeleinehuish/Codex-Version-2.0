@@ -14,6 +14,7 @@ const strategy = new OAuth2Strategy({
   authorizationURL: `https://github.com/login/oauth/authorize`,
   // scope: ['r_basicprofile', 'r_emailaddress'],
   scope: 'user:email',
+  // redirect_url: 'http://localhost:8000/main',
   tokenURL: 'https://github.com/login/oauth/access_token',
   clientID: process.env.GITHUB_CLIENT_ID,
   clientSecret: process.env.GITHUB_CLIENT_SECRET,
@@ -55,6 +56,7 @@ const strategy = new OAuth2Strategy({
   })
   .then((user) => {
     if (user) {
+
       return user;
     }
 
