@@ -405,16 +405,43 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _axios = require('axios');
+
+var _axios2 = _interopRequireDefault(_axios);
+
 var _reactRouter = require('react-router');
 
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactDom = require('react-dom');
+
+var _brace = require('brace');
+
+var _brace2 = _interopRequireDefault(_brace);
+
+var _reactAce = require('react-ace');
+
+var _reactAce2 = _interopRequireDefault(_reactAce);
+
+require('brace/mode/javascript');
+
+require('brace/theme/github');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Main = _react2.default.createClass({
   displayName: 'Main',
+  componentDidMount: function componentDidMount() {
+    _axios2.default.get('/api-snippets/1').then(function (res) {
+      console.log(res.data);
+      console.log(res.data.snippetsData[0].codeSnippet);
+      // this.setState({ products: res.data, defaultProducts: res.data, sortArray: res.data });
+    }).catch(function (error) {
+      console.log(error);
+    });
+  },
   render: function render() {
     return _react2.default.createElement(
       'section',

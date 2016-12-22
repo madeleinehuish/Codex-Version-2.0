@@ -11,26 +11,46 @@ const request = require('request-promise')
 const router = express.Router();
 
 const strategy = new OAuth2Strategy({
-  authorizationURL: 'https://github.com/login/oauth/authorize',
-  scope: ['r_basicprofile', 'r_emailaddress'],
+  authorizationURL: `https://github.com/login/oauth/authorize`,
+  // scope: ['r_basicprofile', 'r_emailaddress'],
+  scope: 'user:email',
   tokenURL: 'https://github.com/login/oauth/access_token',
   clientID: process.env.GITHUB_CLIENT_ID,
   clientSecret: process.env.GITHUB_CLIENT_SECRET,
-  callbackURL: 'http://localhost:8000/oauth/github/callback'
+  callbackURL: 'http://localhost:8000/api-oauth/github/callback'
 }, (accessToken, refreshToken, profile, done) => {
-  let githubProfile = null;
+  let ghprofile = null;
+  console.log(accessToken);
 
-  request({
-    url: 'https://api.linkedin.com/v1/people/~:(id,first-name,last-name,email-address)?format=json',
+  const profiledata = request({
+    url: `https://api.github.com/user?access_token=${accessToken}`,
     headers: {
-      Authorization: `Bearer ${accessToken}`
+      'User-Agent': 'Maddie Server'
     }
-  })
-  .then((githubProfile) => {
-    githubProfile = JSON.parse(githubProfile)
+  });
+
+  const email = request({
+    url: `https://api.github.com/user/emails?access_token=${accessToken}`,
+    headers: {
+      'User-Agent': 'Maddie Server'
+    }
+  });
+
+  Promise.all([profiledata, email])
+  .then(([ghprofile, emails]) => {
+
+    ghprofile = JSON.parse(ghprofile);
+    emails = JSON.parse(emails);
+    // console.log(ghprofile);
+    const nameSplit = ghprofile.name.split(' ');
+    const firstName = nameSplit[0];
+    const lastName = nameSplit[1];
+    console.log(firstName);
+    console.log(lastName);
+    console.log(emails[0].email);
 
     return knex('users')
-      .where('github_Id', githubProfile.id)
+      .where('github_id', ghprofile.id)
       .first();
   })
   .then((user) => {
@@ -39,15 +59,16 @@ const strategy = new OAuth2Strategy({
     }
 
     return knex('users')
-      .insert(decamelizeKeys({
-        firstName: githubProfile.firstName,
-        lastName: githubProfile.lastName,
-        email: githubProfile.emailAddress,
-        github_Id: githubProfile.id,
+      .insert(({
+        first_name: firstName,
+        last_name: lastName,
+        email: emails[0].email,
+        github_id: ghprofile.id,
         github_token: accessToken,
       }), '*');
     })
     .then((user) => {
+      console.log(user);
       done(null, camelizeKeys(user));
     })
     .catch((err) => {

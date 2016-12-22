@@ -52,6 +52,7 @@ app.use(express.static(path.join('public')));
 // });
 
 const oauth = require('./routes/api-oauth');
+const snippets = require('./routes/api-snippets')
 // const products = require('./routes/products')
 // const users = require('./routes/api-users');
 // const token = require('./routes/api-token');
@@ -60,7 +61,7 @@ const oauth = require('./routes/api-oauth');
 
 //
 app.use('/api-oauth', oauth);
-// app.use(products);
+app.use(snippets);
 // app.use(users);
 // app.use(token);
 // app.use(products);

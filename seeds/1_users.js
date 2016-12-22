@@ -10,13 +10,15 @@ exports.seed = function(knex) {
         first_name: 'Code',
         last_name: 'Girl',
         email: 'test@email.com',
-        github_id: 'test'
+        github_id: 'test',
+        github_token: 'test'
       }, {
         id: 2,
         first_name: 'Scooby',
         last_name: 'Doo',
-        email: 'scoobydoo@gmail.com',
-        github_id: 'test2'
+        email: 'scoobydoo@gmail.com'
+        github_id: 'test2',
+        github_token: 'test2'
       }]);
     })
     .then(() => {
