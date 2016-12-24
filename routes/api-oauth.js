@@ -21,6 +21,7 @@ const strategy = new OAuth2Strategy({
   callbackURL: 'http://localhost:8000/api-oauth/github/callback'
 }, (accessToken, refreshToken, profile, done) => {
   let ghprofile = null;
+  let emails = null;
   console.log(accessToken);
 
   const profiledata = request({
@@ -38,28 +39,33 @@ const strategy = new OAuth2Strategy({
   });
 
   Promise.all([profiledata, email])
-  .then(([ghprofile, emails]) => {
+  .then(([githubprofile, githubemails]) => {
 
-    ghprofile = JSON.parse(ghprofile);
-    emails = JSON.parse(emails);
+    ghprofile = JSON.parse(githubprofile);
+    emails = JSON.parse(githubemails);
     // console.log(ghprofile);
+
+
+    return knex('users')
+            .where('github_id', ghprofile.id)
+            .first()
+
+
+
+
+  })
+  .then((user) => {
     const nameSplit = ghprofile.name.split(' ');
     const firstName = nameSplit[0];
     const lastName = nameSplit[1];
     console.log(firstName);
     console.log(lastName);
     console.log(emails[0].email);
-
-    return knex('users')
-      .where('github_id', ghprofile.id)
-      .first();
-  })
-  .then((user) => {
+    console.log(ghprofile);
+    // console.log(emails[0].email);
     if (user) {
-
       return user;
     }
-
     return knex('users')
       .insert(({
         first_name: firstName,

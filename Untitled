@@ -101,3 +101,41 @@ module.exports = router;
 
 
 document.getElementById('example')
+
+
+
+
+
+Promise.all([profiledata, email])
+.then(([ghprofile, emails]) => {
+
+  ghprofile = JSON.parse(ghprofile);
+  emails = JSON.parse(emails);
+  // console.log(ghprofile);
+  const nameSplit = ghprofile.name.split(' ');
+  const firstName = nameSplit[0];
+  const lastName = nameSplit[1];
+  console.log(firstName);
+  console.log(lastName);
+  console.log(emails[0].email);
+
+  return knex('users')
+    .where('github_id', ghprofile.id)
+    .first();
+})
+.then((user) => {
+  // console.log(firstName);
+  console.log(user)
+  if (user) {
+    return user;
+  }
+  console.log('no user, adding');
+  return knex('users')
+    .insert(({
+      first_name: firstName,
+      last_name: lastName,
+      email: emails[0].email,
+      github_id: ghprofile.id,
+      github_token: accessToken,
+    }), '*');
+  })
