@@ -14,7 +14,6 @@ const strategy = new OAuth2Strategy({
   authorizationURL: `https://github.com/login/oauth/authorize`,
   // scope: ['r_basicprofile', 'r_emailaddress'],
   scope: 'user:email',
-  // redirect_url: 'http://localhost:8000/main',
   tokenURL: 'https://github.com/login/oauth/access_token',
   clientID: process.env.GITHUB_CLIENT_ID,
   clientSecret: process.env.GITHUB_CLIENT_SECRET,
@@ -50,15 +49,10 @@ const strategy = new OAuth2Strategy({
     console.log(lastName);
     console.log(emails[0].email);
 
-    return knex('users')
-      .where('github_id', ghprofile.id)
-      .first();
-  })
-  .then((user) => {
-    if (user) {
+    // return knex('users')
+    //   .where('github_id', ghprofile.id)
+    //   .first();
 
-      return user;
-    }
 
     return knex('users')
       .insert(({
@@ -68,6 +62,7 @@ const strategy = new OAuth2Strategy({
         github_id: ghprofile.id,
         github_token: accessToken,
       }), '*');
+      console.log('getting through knex flow');
     })
     .then((user) => {
       console.log(user);
@@ -99,7 +94,10 @@ router.get('/github/callback', passport.authenticate('oauth2', {
   });
 
   // Successful authentication, redirect home.
-  res.redirect('/main');
+  res.redirect('/');
 });
 
 module.exports = router;
+
+
+document.getElementById('example')

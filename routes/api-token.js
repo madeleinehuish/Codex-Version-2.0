@@ -26,15 +26,15 @@ router.get('/api-token', (req, res) => {
 });
 
 router.post('/api-token', (req, res, next) => {
-  const { email, password } = req.body;
-
-  if (!email || !email.trim()) {
-    return next(boom.create(400, 'Email must not be blank'));
-  }
-
-  if (!password || password.length < 8) {
-    return next(boom.create(400, 'Password must not be blank'));
-  }
+  // const { email, password } = req.body;
+  //
+  // if (!email || !email.trim()) {
+  //   return next(boom.create(400, 'Email must not be blank'));
+  // }
+  //
+  // if (!password || password.length < 8) {
+  //   return next(boom.create(400, 'Password must not be blank'));
+  // }
 
   let user;
 

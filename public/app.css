@@ -56,7 +56,7 @@ header > div.twelve.columns, nav.six.columns {
   margin-left: 50px;
 }
 
-a {
+a, #userNav {
   color: #fff;
 }
 
@@ -103,6 +103,8 @@ nav.six.columns > ul > li#login-icon {
 
 #titleWord {
   color: #59656f;
+  margin-top: 15px;
+  margin-bottom: -1px;
 }
 
 .mainTitle {
@@ -129,6 +131,10 @@ nav.six.columns > ul > li#login-icon {
 #hero > h1 {
   font-family: 'Rye';
   font-size: 8em;
+}
+
+#trythis {
+  border: 1px solid;
 }
 
 /*# sourceMappingURL=app.css.map*/

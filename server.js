@@ -53,19 +53,13 @@ app.use(express.static(path.join('public')));
 
 const oauth = require('./routes/api-oauth');
 const snippets = require('./routes/api-snippets')
-// const products = require('./routes/products')
-// const users = require('./routes/api-users');
-// const token = require('./routes/api-token');
-// const products = require('./routes/api-products');
-// const orders = require('./routes/api-orders');
+const users = require('./routes/api-users');
+const token = require('./routes/api-token');
 
-//
 app.use('/api-oauth', oauth);
 app.use(snippets);
-// app.use(users);
-// app.use(token);
-// app.use(products);
-// app.use(orders);
+app.use(users);
+app.use(token);
 
 app.use((_req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));

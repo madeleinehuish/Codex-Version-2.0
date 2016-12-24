@@ -4,6 +4,7 @@ import { BrowserRouter, Match, Miss } from 'react-router';
 import expect, { createSpy, spyOn, isSpy } from 'expect';
 
 import Header from './layouts/Header';
+import Editor from './Editor';
 import Home from './Home';
 import Main from './Main';
 
@@ -22,8 +23,60 @@ const App = React.createClass({
     userInformation: [],
     email: '',
     firstName: '',
-    lastName: ''
+    lastName: '',
+    testCode: `function fibonacci(indexNumber) {
+if (indexNumber === 0 || indexNumber === 1) {
+return 1;
+} else {
+return (fibonacci(indexNumber-1) + fibonacci(indexNumber-2));
+}
+}
+
+fibonacci();`,
+    newTestCodeValue: ``
     }
+  },
+
+  componentDidMount() {
+    axios.get('/api-token')
+      .then(res => {
+        console.log(res.data);
+        axios.get('/api-users')
+          .then(res => {
+            console.log(res.data);
+            this.setState({ loggedIn : true, currentUser: res.data });
+            // this.setState({ email: res.data.email })
+            console.log(this.state.currentUser);
+            // if (res.data) {
+            //   this.setState({ loggedIn: true });
+            //   console.log('loggedIn === true');
+            //   // console.log(this.state.currentUser)
+            // }
+            // this.setState({ products: res.data, defaultProducts: res.data, sortArray: res.data });
+          })
+          .catch((error) => {
+            console.log(error);
+
+
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    });
+  },
+
+  logIn(user) {
+
+    axios.post('/api-token')
+      .then((res) => {
+        sessionStorage.setItem('userId', res.data.id);
+        this.setState({ loggedIn : true, currentUser: res.data });
+        console.log(this.state.currentUser);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
   },
 
   logOut() {
@@ -63,6 +116,11 @@ const App = React.createClass({
       });
   },
 
+  changeEditor(newValue) {
+    this.setState({ newTestCodeValue: newValue });
+    console.log(this.state.newTestCodeValue);
+  },
+
 	render() {
     return (
 			<BrowserRouter>
@@ -73,6 +131,22 @@ const App = React.createClass({
               { ...this.state }
               onSubmitGitHubLogIn={this.onSubmitGitHubLogIn}
             />
+          }/>
+          <Match pattern="/editor" exactly render={
+            () =>
+            <div>
+              <Header
+                { ...this.state }
+                logIn={this.logIn}
+                logOut={this.logOut}
+                onSubmit={this.onSubmit}
+                onFormChange={this.onFormChange}
+              />
+              <Editor
+                { ...this.state }
+                changeEditor={this.changeEditor}
+              />
+            </div>
           }/>
           <Match pattern="/main" exactly render={
             () =>

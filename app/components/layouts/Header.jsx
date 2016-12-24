@@ -1,7 +1,11 @@
 import { Link } from 'react-router';
 import React from 'react';
+import axios from 'axios';
 
 const Header = React.createClass({
+
+
+
   logOut(){
     this.props.logOut();
   },
@@ -21,10 +25,10 @@ const Header = React.createClass({
         </div>
         <nav className="six columns">
           <ul>
-             {/* {this.props.loggedIn ? <li key={this.props.currentUser.id}><Link to={'/user'}>{this.props.currentUser.firstName}</Link></li> */}
-              {/* : <li id="login-icon"><a href="#openModal">Sign In</a></li>} */}
-            <li id="products"><a href="/api-oauth/github">GitHub</a></li>
+            <li key={this.props.currentUser.id} id="userNav">{this.props.currentUser.firstName}</li>
             <li><Link to="/main">Main</Link></li>
+            <li><Link to="/editor">Editor</Link></li>
+
 
           </ul>
         </nav>

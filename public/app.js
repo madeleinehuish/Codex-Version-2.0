@@ -176,6 +176,10 @@ var _Header = require('./layouts/Header');
 
 var _Header2 = _interopRequireDefault(_Header);
 
+var _Editor = require('./Editor');
+
+var _Editor2 = _interopRequireDefault(_Editor);
+
 var _Home = require('./Home');
 
 var _Home2 = _interopRequireDefault(_Home);
@@ -203,8 +207,44 @@ var App = _react2.default.createClass({
       userInformation: [],
       email: '',
       firstName: '',
-      lastName: ''
+      lastName: '',
+      testCode: 'function fibonacci(indexNumber) {\nif (indexNumber === 0 || indexNumber === 1) {\nreturn 1;\n} else {\nreturn (fibonacci(indexNumber-1) + fibonacci(indexNumber-2));\n}\n}\n\nfibonacci();',
+      newTestCodeValue: ''
     };
+  },
+  componentDidMount: function componentDidMount() {
+    var _this = this;
+
+    _axios2.default.get('/api-token').then(function (res) {
+      console.log(res.data);
+      _axios2.default.get('/api-users').then(function (res) {
+        console.log(res.data);
+        _this.setState({ loggedIn: true, currentUser: res.data });
+        // this.setState({ email: res.data.email })
+        console.log(_this.state.currentUser);
+        // if (res.data) {
+        //   this.setState({ loggedIn: true });
+        //   console.log('loggedIn === true');
+        //   // console.log(this.state.currentUser)
+        // }
+        // this.setState({ products: res.data, defaultProducts: res.data, sortArray: res.data });
+      }).catch(function (error) {
+        console.log(error);
+      }).catch(function (error) {
+        console.log(error);
+      });
+    });
+  },
+  logIn: function logIn(user) {
+    var _this2 = this;
+
+    _axios2.default.post('/api-token').then(function (res) {
+      sessionStorage.setItem('userId', res.data.id);
+      _this2.setState({ loggedIn: true, currentUser: res.data });
+      console.log(_this2.state.currentUser);
+    }).catch(function (error) {
+      console.log(error);
+    });
   },
   logOut: function logOut() {
     this.setState({
@@ -234,8 +274,12 @@ var App = _react2.default.createClass({
       }
     });
   },
+  changeEditor: function changeEditor(newValue) {
+    this.setState({ newTestCodeValue: newValue });
+    console.log(this.state.newTestCodeValue);
+  },
   render: function render() {
-    var _this = this;
+    var _this3 = this;
 
     return _react2.default.createElement(
       _reactRouter.BrowserRouter,
@@ -244,21 +288,36 @@ var App = _react2.default.createClass({
         'main',
         null,
         _react2.default.createElement(_reactRouter.Match, { pattern: '/', exactly: true, render: function render() {
-            return _react2.default.createElement(_Home2.default, _extends({}, _this.state, {
-              onSubmitGitHubLogIn: _this.onSubmitGitHubLogIn
+            return _react2.default.createElement(_Home2.default, _extends({}, _this3.state, {
+              onSubmitGitHubLogIn: _this3.onSubmitGitHubLogIn
             }));
+          } }),
+        _react2.default.createElement(_reactRouter.Match, { pattern: '/editor', exactly: true, render: function render() {
+            return _react2.default.createElement(
+              'div',
+              null,
+              _react2.default.createElement(_Header2.default, _extends({}, _this3.state, {
+                logIn: _this3.logIn,
+                logOut: _this3.logOut,
+                onSubmit: _this3.onSubmit,
+                onFormChange: _this3.onFormChange
+              })),
+              _react2.default.createElement(_Editor2.default, _extends({}, _this3.state, {
+                changeEditor: _this3.changeEditor
+              }))
+            );
           } }),
         _react2.default.createElement(_reactRouter.Match, { pattern: '/main', exactly: true, render: function render() {
             return _react2.default.createElement(
               'div',
               null,
-              _react2.default.createElement(_Header2.default, _extends({}, _this.state, {
-                logIn: _this.logIn,
-                logOut: _this.logOut,
-                onSubmit: _this.onSubmit,
-                onFormChange: _this.onFormChange
+              _react2.default.createElement(_Header2.default, _extends({}, _this3.state, {
+                logIn: _this3.logIn,
+                logOut: _this3.logOut,
+                onSubmit: _this3.onSubmit,
+                onFormChange: _this3.onFormChange
               })),
-              _react2.default.createElement(_Main2.default, _this.state)
+              _react2.default.createElement(_Main2.default, _this3.state)
             );
           } })
       )
@@ -267,6 +326,95 @@ var App = _react2.default.createClass({
 });
 
 exports.default = App;
+});
+
+require.register("components/Editor.jsx", function(exports, require, module) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _axios = require('axios');
+
+var _axios2 = _interopRequireDefault(_axios);
+
+var _reactRouter = require('react-router');
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = require('react-dom');
+
+var _brace = require('brace');
+
+var _brace2 = _interopRequireDefault(_brace);
+
+var _reactAce = require('react-ace');
+
+var _reactAce2 = _interopRequireDefault(_reactAce);
+
+require('brace/mode/javascript');
+
+require('brace/theme/github');
+
+require('brace/theme/monokai');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Editor = _react2.default.createClass({
+  displayName: 'Editor',
+
+
+  // componentDidMount() {
+  //   axios.get('/api-snippets/1')
+  //     .then(res => {
+  //       console.log(res.data);
+  //       console.log(res.data.snippetsData[0].codeSnippet);
+  //       // this.setState({ products: res.data, defaultProducts: res.data, sortArray: res.data });
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // },
+
+
+  onChange: function onChange(newValue) {
+    console.log('change', newValue);
+    // this.props.changeEditor(newValue);
+  },
+  render: function render() {
+    return _react2.default.createElement(
+      'section',
+      null,
+      _react2.default.createElement(
+        'div',
+        { className: 'offset-by-one four columns' },
+        _react2.default.createElement(
+          'h4',
+          { id: 'titleWord' },
+          'Code Editor Test'
+        ),
+        _react2.default.createElement(
+          'div',
+          { id: 'trythis' },
+          _react2.default.createElement(_reactAce2.default, {
+            mode: 'javascript',
+            theme: 'monokai'
+            // theme="github"
+            , onChange: this.onChange,
+            name: 'trythis',
+            value: this.props.testCode,
+            editorProps: { $blockScrolling: true }
+          })
+        )
+      )
+    );
+  }
+});
+
+exports.default = Editor;
 });
 
 require.register("components/Home.jsx", function(exports, require, module) {
@@ -333,18 +481,6 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactDom = require('react-dom');
 
-var _brace = require('brace');
-
-var _brace2 = _interopRequireDefault(_brace);
-
-var _reactAce = require('react-ace');
-
-var _reactAce2 = _interopRequireDefault(_reactAce);
-
-require('brace/mode/javascript');
-
-require('brace/theme/github');
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Main = _react2.default.createClass({
@@ -361,16 +497,16 @@ var Main = _react2.default.createClass({
   render: function render() {
     return _react2.default.createElement(
       'section',
-      { id: 'home' },
+      null,
       _react2.default.createElement(
         'div',
-        { id: 'hero' },
+        { className: 'offset-by-one eight columns' },
         _react2.default.createElement(
-          'h2',
+          'h4',
           { id: 'titleWord' },
-          'Main'
-        ),
-        _react2.default.createElement('div', { className: 'twelve columns' })
+          this.props.currentUser.firstName,
+          '\'s Code Library'
+        )
       )
     );
   }
@@ -391,6 +527,10 @@ var _reactRouter = require('react-router');
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
+
+var _axios = require('axios');
+
+var _axios2 = _interopRequireDefault(_axios);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -430,12 +570,8 @@ var Header = _react2.default.createClass({
             null,
             _react2.default.createElement(
               'li',
-              { id: 'products' },
-              _react2.default.createElement(
-                'a',
-                { href: '/api-oauth/github' },
-                'GitHub'
-              )
+              { key: this.props.currentUser.id, id: 'userNav' },
+              this.props.currentUser.firstName
             ),
             _react2.default.createElement(
               'li',
@@ -444,6 +580,15 @@ var Header = _react2.default.createClass({
                 _reactRouter.Link,
                 { to: '/main' },
                 'Main'
+              )
+            ),
+            _react2.default.createElement(
+              'li',
+              null,
+              _react2.default.createElement(
+                _reactRouter.Link,
+                { to: '/editor' },
+                'Editor'
               )
             )
           )
@@ -456,7 +601,11 @@ var Header = _react2.default.createClass({
 exports.default = Header;
 });
 
-require.register("index.jsx", function(exports, require, module) {
+require.register("components/main.jsx", function(exports, require, module) {
+"use strict";
+});
+
+;require.register("index.jsx", function(exports, require, module) {
 'use strict';
 
 var _App = require('./components/App');
