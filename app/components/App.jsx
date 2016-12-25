@@ -16,14 +16,15 @@ const App = React.createClass({
     inputValue: '',
     searchVisible: false,
     formComplete: false,
-    searchArray: [],
-    sortType: '',
+    snippets: {},
+    snippettest: [],
+    // searchArray: [],
+    // sortType: '',
     loggedIn: false,
     currentUser: {},
-    userInformation: [],
-    email: '',
-    firstName: '',
-    lastName: '',
+    // email: '',
+    // firstName: '',
+    // lastName: '',
     testCode: `function fibonacci(indexNumber) {
 if (indexNumber === 0 || indexNumber === 1) {
 return 1;
@@ -45,14 +46,22 @@ fibonacci();`,
           .then(res => {
             console.log(res.data);
             this.setState({ loggedIn : true, currentUser: res.data });
-            // this.setState({ email: res.data.email })
             console.log(this.state.currentUser);
-            // if (res.data) {
-            //   this.setState({ loggedIn: true });
-            //   console.log('loggedIn === true');
-            //   // console.log(this.state.currentUser)
-            // }
-            // this.setState({ products: res.data, defaultProducts: res.data, sortArray: res.data });
+            axios.get(`/api-snippets/${res.data.id}`)
+              .then(res => {
+                console.log(res.data);
+                this.setState({ snippets: res.data });
+                this.setState({ snippettest: this.state.snippets.snippetsData[0].title})
+                console.log(this.state.snippets.snippetsData[0].title);
+                // this.setState({ snippets: res.data, defaultProducts: res.data, sortArray: res.data });
+              })
+              .then(() => {
+
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+
           })
           .catch((error) => {
             console.log(error);
@@ -65,19 +74,49 @@ fibonacci();`,
     });
   },
 
-  logIn(user) {
+// console.log(res.data);
+// axios.get('/api-users')
+//   .then(res => {
+//
+//
+//   })
+//   .catch((error) => {
+//     console.log(error);
+// }),
 
-    axios.post('/api-token')
-      .then((res) => {
-        sessionStorage.setItem('userId', res.data.id);
-        this.setState({ loggedIn : true, currentUser: res.data });
-        console.log(this.state.currentUser);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
 
-  },
+//
+// console.log(res.data);
+// this.setState({ loggedIn : true, currentUser: res.data });
+// console.log(this.state.currentUser);
+// axios.get(`/api-snippets/${res.data.id}`)
+//   .then(res => {
+//     console.log(res.data);
+//     this.setState({ snippets: res.data });
+//     console.log(this.state.snippets.snippetsData[0].title);
+//     // this.setState({ snippets: res.data, defaultProducts: res.data, sortArray: res.data });
+//   })
+//   .then(() => {
+//
+//   })
+//   .catch((error) => {
+//     console.log(error);
+//   });
+
+
+  // logIn(user) {
+  //
+  //   axios.post('/api-token')
+  //     .then((res) => {
+  //       sessionStorage.setItem('userId', res.data.id);
+  //       this.setState({ loggedIn : true, currentUser: res.data });
+  //       console.log(this.state.currentUser);
+  //     })
+  //     .catch(function (error) {
+  //       console.log(error);
+  //     });
+  //
+  // },
 
   logOut() {
     this.setState({
@@ -102,19 +141,19 @@ fibonacci();`,
 
   },
 
-  onSubmitGitHubLogIn() {
-    axios.get('/api-oauth/github')
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((res) => {
-        if(res instanceof Error) {
-          console.log(res.message);
-        } else {
-          console.log(res.data);
-        }
-      });
-  },
+  // onSubmitGitHubLogIn() {
+  //   axios.get('/api-oauth/github')
+  //     .then((response) => {
+  //       console.log(response.data);
+  //     })
+  //     .catch((res) => {
+  //       if(res instanceof Error) {
+  //         console.log(res.message);
+  //       } else {
+  //         console.log(res.data);
+  //       }
+  //     });
+  // },
 
   changeEditor(newValue) {
     this.setState({ newTestCodeValue: newValue });
@@ -122,6 +161,7 @@ fibonacci();`,
   },
 
 	render() {
+    // console.log(this.state.snippets.snippetsData[0].title);
     return (
 			<BrowserRouter>
 				<main>

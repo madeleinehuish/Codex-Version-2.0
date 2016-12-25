@@ -30,26 +30,31 @@ router.get('/api-snippets/:id', (req, res, next) => {
   }
 
   let snippets;
-  console.log('got through up to knex');
 
   knex('snippets')
-    .where('user_id', req.params.id)
+    // .whereRaw('user_id = ?', [req.params.id])
+    .where('user_id', userId)
     .then((row) => {
+      console.log(userId);
+      console.log(typeof(userId));
+      console.log(row);
+      console.log('first knex');
       if (!row) {
         throw boom.create(404, 'Not Found');
       }
       snippets = camelizeKeys(row);
       return snippets;
-      console.log('first knex');
+
     })
     .then((snippets) => {
+      console.log('second knex');
       return knex('snippets')
       .orderBy('title')
-      console.log(snippets);
+
     })
     .then((rows) => {
       const snippetsData = camelizeKeys(rows);
-      console.log(snippetsData);
+      console.log('third knex');
       res.send({ snippetsData });
     })
     .catch((err) => {

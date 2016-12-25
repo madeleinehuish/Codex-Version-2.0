@@ -200,14 +200,15 @@ var App = _react2.default.createClass({
       inputValue: '',
       searchVisible: false,
       formComplete: false,
-      searchArray: [],
-      sortType: '',
+      snippets: {},
+      snippettest: [],
+      // searchArray: [],
+      // sortType: '',
       loggedIn: false,
       currentUser: {},
-      userInformation: [],
-      email: '',
-      firstName: '',
-      lastName: '',
+      // email: '',
+      // firstName: '',
+      // lastName: '',
       testCode: 'function fibonacci(indexNumber) {\nif (indexNumber === 0 || indexNumber === 1) {\nreturn 1;\n} else {\nreturn (fibonacci(indexNumber-1) + fibonacci(indexNumber-2));\n}\n}\n\nfibonacci();',
       newTestCodeValue: ''
     };
@@ -220,14 +221,16 @@ var App = _react2.default.createClass({
       _axios2.default.get('/api-users').then(function (res) {
         console.log(res.data);
         _this.setState({ loggedIn: true, currentUser: res.data });
-        // this.setState({ email: res.data.email })
         console.log(_this.state.currentUser);
-        // if (res.data) {
-        //   this.setState({ loggedIn: true });
-        //   console.log('loggedIn === true');
-        //   // console.log(this.state.currentUser)
-        // }
-        // this.setState({ products: res.data, defaultProducts: res.data, sortArray: res.data });
+        _axios2.default.get('/api-snippets/' + res.data.id).then(function (res) {
+          console.log(res.data);
+          _this.setState({ snippets: res.data });
+          _this.setState({ snippettest: _this.state.snippets.snippetsData[0].title });
+          console.log(_this.state.snippets.snippetsData[0].title);
+          // this.setState({ snippets: res.data, defaultProducts: res.data, sortArray: res.data });
+        }).then(function () {}).catch(function (error) {
+          console.log(error);
+        });
       }).catch(function (error) {
         console.log(error);
       }).catch(function (error) {
@@ -235,17 +238,52 @@ var App = _react2.default.createClass({
       });
     });
   },
-  logIn: function logIn(user) {
-    var _this2 = this;
 
-    _axios2.default.post('/api-token').then(function (res) {
-      sessionStorage.setItem('userId', res.data.id);
-      _this2.setState({ loggedIn: true, currentUser: res.data });
-      console.log(_this2.state.currentUser);
-    }).catch(function (error) {
-      console.log(error);
-    });
-  },
+
+  // console.log(res.data);
+  // axios.get('/api-users')
+  //   .then(res => {
+  //
+  //
+  //   })
+  //   .catch((error) => {
+  //     console.log(error);
+  // }),
+
+
+  //
+  // console.log(res.data);
+  // this.setState({ loggedIn : true, currentUser: res.data });
+  // console.log(this.state.currentUser);
+  // axios.get(`/api-snippets/${res.data.id}`)
+  //   .then(res => {
+  //     console.log(res.data);
+  //     this.setState({ snippets: res.data });
+  //     console.log(this.state.snippets.snippetsData[0].title);
+  //     // this.setState({ snippets: res.data, defaultProducts: res.data, sortArray: res.data });
+  //   })
+  //   .then(() => {
+  //
+  //   })
+  //   .catch((error) => {
+  //     console.log(error);
+  //   });
+
+
+  // logIn(user) {
+  //
+  //   axios.post('/api-token')
+  //     .then((res) => {
+  //       sessionStorage.setItem('userId', res.data.id);
+  //       this.setState({ loggedIn : true, currentUser: res.data });
+  //       console.log(this.state.currentUser);
+  //     })
+  //     .catch(function (error) {
+  //       console.log(error);
+  //     });
+  //
+  // },
+
   logOut: function logOut() {
     this.setState({
       loggedIn: false,
@@ -263,24 +301,30 @@ var App = _react2.default.createClass({
 
     this.setState({ formComplete: !incompleteForm });
   },
-  onSubmitGitHubLogIn: function onSubmitGitHubLogIn() {
-    _axios2.default.get('/api-oauth/github').then(function (response) {
-      console.log(response.data);
-    }).catch(function (res) {
-      if (res instanceof Error) {
-        console.log(res.message);
-      } else {
-        console.log(res.data);
-      }
-    });
-  },
+
+
+  // onSubmitGitHubLogIn() {
+  //   axios.get('/api-oauth/github')
+  //     .then((response) => {
+  //       console.log(response.data);
+  //     })
+  //     .catch((res) => {
+  //       if(res instanceof Error) {
+  //         console.log(res.message);
+  //       } else {
+  //         console.log(res.data);
+  //       }
+  //     });
+  // },
+
   changeEditor: function changeEditor(newValue) {
     this.setState({ newTestCodeValue: newValue });
     console.log(this.state.newTestCodeValue);
   },
   render: function render() {
-    var _this3 = this;
+    var _this2 = this;
 
+    // console.log(this.state.snippets.snippetsData[0].title);
     return _react2.default.createElement(
       _reactRouter.BrowserRouter,
       null,
@@ -288,22 +332,22 @@ var App = _react2.default.createClass({
         'main',
         null,
         _react2.default.createElement(_reactRouter.Match, { pattern: '/', exactly: true, render: function render() {
-            return _react2.default.createElement(_Home2.default, _extends({}, _this3.state, {
-              onSubmitGitHubLogIn: _this3.onSubmitGitHubLogIn
+            return _react2.default.createElement(_Home2.default, _extends({}, _this2.state, {
+              onSubmitGitHubLogIn: _this2.onSubmitGitHubLogIn
             }));
           } }),
         _react2.default.createElement(_reactRouter.Match, { pattern: '/editor', exactly: true, render: function render() {
             return _react2.default.createElement(
               'div',
               null,
-              _react2.default.createElement(_Header2.default, _extends({}, _this3.state, {
-                logIn: _this3.logIn,
-                logOut: _this3.logOut,
-                onSubmit: _this3.onSubmit,
-                onFormChange: _this3.onFormChange
+              _react2.default.createElement(_Header2.default, _extends({}, _this2.state, {
+                logIn: _this2.logIn,
+                logOut: _this2.logOut,
+                onSubmit: _this2.onSubmit,
+                onFormChange: _this2.onFormChange
               })),
-              _react2.default.createElement(_Editor2.default, _extends({}, _this3.state, {
-                changeEditor: _this3.changeEditor
+              _react2.default.createElement(_Editor2.default, _extends({}, _this2.state, {
+                changeEditor: _this2.changeEditor
               }))
             );
           } }),
@@ -311,13 +355,13 @@ var App = _react2.default.createClass({
             return _react2.default.createElement(
               'div',
               null,
-              _react2.default.createElement(_Header2.default, _extends({}, _this3.state, {
-                logIn: _this3.logIn,
-                logOut: _this3.logOut,
-                onSubmit: _this3.onSubmit,
-                onFormChange: _this3.onFormChange
+              _react2.default.createElement(_Header2.default, _extends({}, _this2.state, {
+                logIn: _this2.logIn,
+                logOut: _this2.logOut,
+                onSubmit: _this2.onSubmit,
+                onFormChange: _this2.onFormChange
               })),
-              _react2.default.createElement(_Main2.default, _this3.state)
+              _react2.default.createElement(_Main2.default, _this2.state)
             );
           } })
       )
@@ -481,20 +525,32 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactDom = require('react-dom');
 
+var _Snippetslist = require('./Snippetslist');
+
+var _Snippetslist2 = _interopRequireDefault(_Snippetslist);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Main = _react2.default.createClass({
   displayName: 'Main',
-  componentDidMount: function componentDidMount() {
-    _axios2.default.get('/api-snippets/1').then(function (res) {
-      console.log(res.data);
-      console.log(res.data.snippetsData[0].codeSnippet);
-      // this.setState({ products: res.data, defaultProducts: res.data, sortArray: res.data });
-    }).catch(function (error) {
-      console.log(error);
-    });
-  },
+
+
+  // componentDidMount() {
+  //   axios.get(`/api-snippets/${this.props.currentUser.id}`)
+  //     .then(res => {
+  //       console.log(res.data);
+  //       console.log(res.data.snippetsData[0].codeSnippet);
+  //       this.setState({ snippets: res.data });
+  //       console.log(this.state.snippets);
+  //       // this.setState({ snippets: res.data, defaultProducts: res.data, sortArray: res.data });
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // },
+
   render: function render() {
+    console.log(Array.isArray(this.props.snippets.snippetsData));
     return _react2.default.createElement(
       'section',
       null,
@@ -506,13 +562,93 @@ var Main = _react2.default.createClass({
           { id: 'titleWord' },
           this.props.currentUser.firstName,
           '\'s Code Library'
-        )
+        ),
+        'main',
+        _react2.default.createElement(_Snippetslist2.default, this.state),
+        _react2.default.createElement('p', null)
       )
     );
   }
 });
 
 exports.default = Main;
+});
+
+require.register("components/Snippets.jsx", function(exports, require, module) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _reactRouter = require('react-router');
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Snippets = _react2.default.createClass({
+  displayName: 'Snippets',
+  render: function render() {
+    return _react2.default.createElement(
+      'section',
+      null,
+      _react2.default.createElement(
+        'div',
+        { className: 'four columns' },
+        _react2.default.createElement(
+          'div',
+          null,
+          'snippet'
+        )
+      )
+    );
+  }
+});
+
+exports.default = Snippets;
+});
+
+require.register("components/Snippetslist.jsx", function(exports, require, module) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _Snippets = require('./Snippets');
+
+var _Snippets2 = _interopRequireDefault(_Snippets);
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Snippetslist = _react2.default.createClass({
+  displayName: 'Snippetslist',
+  handleClick: function handleClick() {
+    this.props.displaySearch();
+  },
+  handleSortType: function handleSortType(event) {
+    var sortValue = event.target.name;
+
+    this.props.handleSort(sortValue);
+  },
+  render: function render() {
+
+    return _react2.default.createElement(
+      'div',
+      null,
+      'snippetslist'
+    );
+  }
+});
+
+exports.default = Snippetslist;
 });
 
 require.register("components/layouts/Header.jsx", function(exports, require, module) {
@@ -601,11 +737,7 @@ var Header = _react2.default.createClass({
 exports.default = Header;
 });
 
-require.register("components/main.jsx", function(exports, require, module) {
-"use strict";
-});
-
-;require.register("index.jsx", function(exports, require, module) {
+require.register("index.jsx", function(exports, require, module) {
 'use strict';
 
 var _App = require('./components/App');
