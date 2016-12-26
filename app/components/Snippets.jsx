@@ -6,14 +6,11 @@ const Snippets = React.createClass({
 
   render() {
     return (
-      <section>
-        <div className="four columns">
-
-          <div >snippets
-            {/* {this.props.snippets[0]} */}
+        // <div className="four columns">
+          <div >
+            {this.props.snippetTitle}
           </div>
-        </div>
-      </section>
+        // </div>
     );
   }
 });

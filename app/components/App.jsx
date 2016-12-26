@@ -17,6 +17,7 @@ const App = React.createClass({
     searchVisible: false,
     formComplete: false,
     snippets: {},
+    snippetTitles: [],
     // snippettest: [],
     // searchArray: [],
     // sortType: '',
@@ -66,7 +67,9 @@ fibonacci();`,
             const snippetMap = this.state.snippets.map((snippet, index) => {
               return this.state.snippets[index].title;
             })
+            this.setState({ snippetTitles: snippetMap });
             console.log(snippetMap);
+            console.log(this.state.snippetTitles)
           })
           .catch((error) => {
             console.log(error);
@@ -80,6 +83,7 @@ fibonacci();`,
       console.log(error);
     });
 },
+
 
   logOut() {
     this.setState({

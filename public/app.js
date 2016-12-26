@@ -201,6 +201,7 @@ var App = _react2.default.createClass({
       searchVisible: false,
       formComplete: false,
       snippets: {},
+      snippetTitles: [],
       // snippettest: [],
       // searchArray: [],
       // sortType: '',
@@ -237,7 +238,9 @@ var App = _react2.default.createClass({
           var snippetMap = _this.state.snippets.map(function (snippet, index) {
             return _this.state.snippets[index].title;
           });
+          _this.setState({ snippetTitles: snippetMap });
           console.log(snippetMap);
+          console.log(_this.state.snippetTitles);
         }).catch(function (error) {
           console.log(error);
         });
@@ -501,34 +504,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var Main = _react2.default.createClass({
   displayName: 'Main',
-
-  //
-  // getInitialState(){
-  // return {
-  //   snippets: {},
-  //   }
-  // },
-  //
-  // componentDidMount() {
-  //   console.log(this.props.loggedIn);
-  //   console.log(this.props.currentUser)
-  //   axios.get(`/api-snippets/${this.props.currentUser.id}`)
-  //     .then(res => {
-  //       console.log(res.data);
-  //       // this.setState({ snippets: res.data.snippetsData });
-  //       // this.setState({ snippettest: this.state.snippets.snippetsData[0].title})
-  //       // console.log(this.state.snippets[0].title);
-  //       // this.setState({ snippets: res.data, defaultProducts: res.data, sortArray: res.data });
-  //     })
-  //     .then(() => {
-  //
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // },
-
   render: function render() {
+    console.log(this.props.snippetTitles);
 
     return _react2.default.createElement(
       'section',
@@ -542,9 +519,9 @@ var Main = _react2.default.createClass({
           this.props.currentUser.firstName,
           '\'s Code Library'
         ),
-        'main',
         _react2.default.createElement(_Snippetslist2.default, {
-          snippets: this.props.snippets
+          snippets: this.props.snippets,
+          snippetTitles: this.props.snippetTitles
         }),
         _react2.default.createElement('p', null)
       )
@@ -573,18 +550,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var Snippets = _react2.default.createClass({
   displayName: 'Snippets',
   render: function render() {
-    return _react2.default.createElement(
-      'section',
-      null,
+    return (
+      // <div className="four columns">
       _react2.default.createElement(
         'div',
-        { className: 'four columns' },
-        _react2.default.createElement(
-          'div',
-          null,
-          'snippets'
-        )
+        null,
+        this.props.snippetTitle
       )
+      // </div>
+
     );
   }
 });
@@ -620,19 +594,19 @@ var Snippetslist = _react2.default.createClass({
     this.props.handleSort(sortValue);
   },
   render: function render() {
-    console.log(this.props.snippets);
-    // const snippetmap = this.props.snippets.map((snippet, index) => {
-    //   return <Snippets
-    //     key={index}
-    //     snippet={this.state.snippets[index].title}
-    //     value={this.state.snippets[index].title}
-    //   />
-    // });
+    console.log(this.props.snippetTitles);
+    var snippetmap = this.props.snippetTitles.map(function (snippetTitle, index) {
+      return _react2.default.createElement(_Snippets2.default, {
+        key: index,
+        snippetTitle: snippetTitle
+        // value={this.state.snippets[index].title}
+      });
+    });
 
     return _react2.default.createElement(
       'div',
       null,
-      'snippetslist'
+      snippetmap
     );
   }
 });
