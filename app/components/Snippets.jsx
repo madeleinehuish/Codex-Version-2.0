@@ -9,9 +9,8 @@ const Snippets = React.createClass({
       <section>
         <div className="four columns">
 
-          <div >snippet
-            {/* <p id="product-name">{this.props.snippet}</p> */}
-
+          <div >snippets
+            {/* {this.props.snippets[0]} */}
           </div>
         </div>
       </section>

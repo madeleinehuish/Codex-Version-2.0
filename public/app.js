@@ -201,7 +201,7 @@ var App = _react2.default.createClass({
       searchVisible: false,
       formComplete: false,
       snippets: {},
-      snippettest: [],
+      // snippettest: [],
       // searchArray: [],
       // sortType: '',
       loggedIn: false,
@@ -217,73 +217,37 @@ var App = _react2.default.createClass({
     var _this = this;
 
     _axios2.default.get('/api-token').then(function (res) {
-      console.log(res.data);
+      console.log(res.data); //getting through
+      _this.setState({ loggedIn: true });
+      console.log(_this.state.loggedIn); //working
+    }).then(function () {
       _axios2.default.get('/api-users').then(function (res) {
-        console.log(res.data);
-        _this.setState({ loggedIn: true, currentUser: res.data });
-        console.log(_this.state.currentUser);
-        _axios2.default.get('/api-snippets/' + res.data.id).then(function (res) {
-          console.log(res.data);
-          _this.setState({ snippets: res.data });
-          _this.setState({ snippettest: _this.state.snippets.snippetsData[0].title });
-          console.log(_this.state.snippets.snippetsData[0].title);
-          // this.setState({ snippets: res.data, defaultProducts: res.data, sortArray: res.data });
-        }).then(function () {}).catch(function (error) {
+        console.log(res.data); //getting through
+        _this.setState({ currentUser: res.data });
+        console.log(_this.state.currentUser); //working
+        return res;
+      }).then(function (res) {
+        console.log(res.data.id);
+        var id = res.data.id;
+        _axios2.default.get('/api-snippets/' + id).then(function (res) {
+          console.log(res.data.snippetsData);
+          var snippetData = res.data.snippetsData;
+          _this.setState({ snippets: snippetData });
+          console.log(_this.state.snippets);
+          var snippetMap = _this.state.snippets.map(function (snippet, index) {
+            return _this.state.snippets[index].title;
+          });
+          console.log(snippetMap);
+        }).catch(function (error) {
           console.log(error);
         });
       }).catch(function (error) {
         console.log(error);
-      }).catch(function (error) {
-        console.log(error);
       });
+    }).catch(function (error) {
+      console.log(error);
     });
   },
-
-
-  // console.log(res.data);
-  // axios.get('/api-users')
-  //   .then(res => {
-  //
-  //
-  //   })
-  //   .catch((error) => {
-  //     console.log(error);
-  // }),
-
-
-  //
-  // console.log(res.data);
-  // this.setState({ loggedIn : true, currentUser: res.data });
-  // console.log(this.state.currentUser);
-  // axios.get(`/api-snippets/${res.data.id}`)
-  //   .then(res => {
-  //     console.log(res.data);
-  //     this.setState({ snippets: res.data });
-  //     console.log(this.state.snippets.snippetsData[0].title);
-  //     // this.setState({ snippets: res.data, defaultProducts: res.data, sortArray: res.data });
-  //   })
-  //   .then(() => {
-  //
-  //   })
-  //   .catch((error) => {
-  //     console.log(error);
-  //   });
-
-
-  // logIn(user) {
-  //
-  //   axios.post('/api-token')
-  //     .then((res) => {
-  //       sessionStorage.setItem('userId', res.data.id);
-  //       this.setState({ loggedIn : true, currentUser: res.data });
-  //       console.log(this.state.currentUser);
-  //     })
-  //     .catch(function (error) {
-  //       console.log(error);
-  //     });
-  //
-  // },
-
   logOut: function logOut() {
     this.setState({
       loggedIn: false,
@@ -361,7 +325,11 @@ var App = _react2.default.createClass({
                 onSubmit: _this2.onSubmit,
                 onFormChange: _this2.onFormChange
               })),
-              _react2.default.createElement(_Main2.default, _this2.state)
+              _react2.default.createElement(_Main2.default, _extends({}, _this2.state, {
+                loggedIn: _this2.state.loggedIn,
+                currentUser: _this2.state.currentUser,
+                snippets: _this2.state.snippets
+              }))
             );
           } })
       )
@@ -534,15 +502,26 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var Main = _react2.default.createClass({
   displayName: 'Main',
 
-
+  //
+  // getInitialState(){
+  // return {
+  //   snippets: {},
+  //   }
+  // },
+  //
   // componentDidMount() {
+  //   console.log(this.props.loggedIn);
+  //   console.log(this.props.currentUser)
   //   axios.get(`/api-snippets/${this.props.currentUser.id}`)
   //     .then(res => {
   //       console.log(res.data);
-  //       console.log(res.data.snippetsData[0].codeSnippet);
-  //       this.setState({ snippets: res.data });
-  //       console.log(this.state.snippets);
+  //       // this.setState({ snippets: res.data.snippetsData });
+  //       // this.setState({ snippettest: this.state.snippets.snippetsData[0].title})
+  //       // console.log(this.state.snippets[0].title);
   //       // this.setState({ snippets: res.data, defaultProducts: res.data, sortArray: res.data });
+  //     })
+  //     .then(() => {
+  //
   //     })
   //     .catch((error) => {
   //       console.log(error);
@@ -550,7 +529,7 @@ var Main = _react2.default.createClass({
   // },
 
   render: function render() {
-    console.log(Array.isArray(this.props.snippets.snippetsData));
+
     return _react2.default.createElement(
       'section',
       null,
@@ -564,7 +543,9 @@ var Main = _react2.default.createClass({
           '\'s Code Library'
         ),
         'main',
-        _react2.default.createElement(_Snippetslist2.default, this.state),
+        _react2.default.createElement(_Snippetslist2.default, {
+          snippets: this.props.snippets
+        }),
         _react2.default.createElement('p', null)
       )
     );
@@ -601,7 +582,7 @@ var Snippets = _react2.default.createClass({
         _react2.default.createElement(
           'div',
           null,
-          'snippet'
+          'snippets'
         )
       )
     );
@@ -639,6 +620,14 @@ var Snippetslist = _react2.default.createClass({
     this.props.handleSort(sortValue);
   },
   render: function render() {
+    console.log(this.props.snippets);
+    // const snippetmap = this.props.snippets.map((snippet, index) => {
+    //   return <Snippets
+    //     key={index}
+    //     snippet={this.state.snippets[index].title}
+    //     value={this.state.snippets[index].title}
+    //   />
+    // });
 
     return _react2.default.createElement(
       'div',

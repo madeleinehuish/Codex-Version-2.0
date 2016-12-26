@@ -178,3 +178,58 @@ Promise.all([profiledata, email])
       });
     });
   },
+
+
+
+
+  axios.get(`/api-snippets/${3}`)
+    .then(res => {
+      console.log(res.data.snippetsData);
+      this.setState({ snippets: res.data.snippetsData });
+      // this.setState({ snippettest: this.state.snippets.snippetsData[0].title})
+      // console.log(this.state.snippets[0].title);
+      // this.setState({ snippets: res.data, defaultProducts: res.data, sortArray: res.data });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+
+    componentDidMount() {
+
+      axios.get('/api-token')
+      .then(res => {
+        console.log(res.data);  //getting through
+        this.setState({ loggedIn : true });
+        console.log(this.state.loggedIn); //working
+      })
+      .then(() => {
+        axios.get('/api-users')
+        .then(res => {
+          console.log(res.data); //getting through
+          this.setState({ currentUser: res.data });
+          console.log(this.state.currentUser); //working
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      })
+      .then(() => {
+        console.log(res);
+        axios.get(`/api-snippets/${res.data.id}`)
+          .then(res => {
+            console.log(res.data.snippetsData);
+            this.setState({ snippets: res.data.snippetsData });
+            // this.setState({ snippettest: this.state.snippets.snippetsData[0].title})
+            console.log(this.state.snippets[0].title);
+            // this.setState({ snippets: res.data, defaultProducts: res.data, sortArray: res.data });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    },

@@ -13,21 +13,22 @@ const Snippetslist = React.createClass({
   },
 
   render() {
-    // console.log(this.props.snippets.snippetsData);
-    // const snippetsmap = this.props.snippets.snippetsData.map((snip, index) => {
+    console.log(this.props.snippets);
+    // const snippetmap = this.props.snippets.map((snippet, index) => {
     //   return <Snippets
     //     key={index}
-    //     snip={this.props.snippets.snippetsData[index].title}
-    //     // value={this.props.value}
+    //     snippet={this.state.snippets[index].title}
+    //     value={this.state.snippets[index].title}
     //   />
     // });
 
     return (
       <div>
+          {/* { snippetsmap } */}
           snippetslist
-          {/* <Snippets /> */}
-
-          {/* { snippets } */}
+          {/* <Snippets
+            snippets={this.props.snippets}
+          /> */}
       </div>
     );
   }

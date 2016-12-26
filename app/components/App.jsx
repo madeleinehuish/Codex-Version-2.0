@@ -17,7 +17,7 @@ const App = React.createClass({
     searchVisible: false,
     formComplete: false,
     snippets: {},
-    snippettest: [],
+    // snippettest: [],
     // searchArray: [],
     // sortType: '',
     loggedIn: false,
@@ -39,84 +39,47 @@ fibonacci();`,
   },
 
   componentDidMount() {
+
     axios.get('/api-token')
+    .then(res => {
+      console.log(res.data);  //getting through
+      this.setState({ loggedIn : true });
+      console.log(this.state.loggedIn); //working
+    })
+    .then(() => {
+      axios.get('/api-users')
       .then(res => {
-        console.log(res.data);
-        axios.get('/api-users')
+        console.log(res.data); //getting through
+        this.setState({ currentUser: res.data });
+        console.log(this.state.currentUser); //working
+        return res;
+      })
+      .then((res) => {
+        console.log(res.data.id);
+        let id = res.data.id;
+        axios.get(`/api-snippets/${id}`)
           .then(res => {
-            console.log(res.data);
-            this.setState({ loggedIn : true, currentUser: res.data });
-            console.log(this.state.currentUser);
-            axios.get(`/api-snippets/${res.data.id}`)
-              .then(res => {
-                console.log(res.data);
-                this.setState({ snippets: res.data });
-                this.setState({ snippettest: this.state.snippets.snippetsData[0].title})
-                console.log(this.state.snippets.snippetsData[0].title);
-                // this.setState({ snippets: res.data, defaultProducts: res.data, sortArray: res.data });
-              })
-              .then(() => {
-
-              })
-              .catch((error) => {
-                console.log(error);
-              });
-
+            console.log(res.data.snippetsData);
+            let snippetData = res.data.snippetsData
+            this.setState({ snippets: snippetData });
+            console.log(this.state.snippets);
+            const snippetMap = this.state.snippets.map((snippet, index) => {
+              return this.state.snippets[index].title;
+            })
+            console.log(snippetMap);
           })
           .catch((error) => {
             console.log(error);
-
-
+          });
       })
       .catch((error) => {
         console.log(error);
       });
+    })
+    .catch((error) => {
+      console.log(error);
     });
-  },
-
-// console.log(res.data);
-// axios.get('/api-users')
-//   .then(res => {
-//
-//
-//   })
-//   .catch((error) => {
-//     console.log(error);
-// }),
-
-
-//
-// console.log(res.data);
-// this.setState({ loggedIn : true, currentUser: res.data });
-// console.log(this.state.currentUser);
-// axios.get(`/api-snippets/${res.data.id}`)
-//   .then(res => {
-//     console.log(res.data);
-//     this.setState({ snippets: res.data });
-//     console.log(this.state.snippets.snippetsData[0].title);
-//     // this.setState({ snippets: res.data, defaultProducts: res.data, sortArray: res.data });
-//   })
-//   .then(() => {
-//
-//   })
-//   .catch((error) => {
-//     console.log(error);
-//   });
-
-
-  // logIn(user) {
-  //
-  //   axios.post('/api-token')
-  //     .then((res) => {
-  //       sessionStorage.setItem('userId', res.data.id);
-  //       this.setState({ loggedIn : true, currentUser: res.data });
-  //       console.log(this.state.currentUser);
-  //     })
-  //     .catch(function (error) {
-  //       console.log(error);
-  //     });
-  //
-  // },
+},
 
   logOut() {
     this.setState({
@@ -200,6 +163,9 @@ fibonacci();`,
               />
               <Main
                 { ...this.state }
+                loggedIn={this.state.loggedIn}
+                currentUser={this.state.currentUser}
+                snippets={this.state.snippets}
               />
             </div>
           }/>
