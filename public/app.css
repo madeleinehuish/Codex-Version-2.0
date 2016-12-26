@@ -56,7 +56,11 @@ header > div.twelve.columns, nav.six.columns {
   margin-left: 50px;
 }
 
-a, #userNav {
+.snippetTitles {
+  color: #59656f;
+}
+
+.userNav {
   color: #fff;
 }
 

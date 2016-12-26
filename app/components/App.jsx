@@ -18,6 +18,7 @@ const App = React.createClass({
     formComplete: false,
     snippets: {},
     snippetTitles: [],
+    currentIndex: 0,
     // snippettest: [],
     // searchArray: [],
     // sortType: '',
@@ -39,37 +40,44 @@ fibonacci();`,
     }
   },
 
+changeCurrentIndex(newIndex) {
+  console.log(newIndex);
+  this.setState({ currentIndex: newIndex }, ()=> {
+    console.log(this.state.currentIndex);
+  });
+},
+
   componentDidMount() {
 
     axios.get('/api-token')
     .then(res => {
-      console.log(res.data);  //getting through
+      // console.log(res.data);  //getting through
       this.setState({ loggedIn : true });
-      console.log(this.state.loggedIn); //working
+      // console.log(this.state.loggedIn); //working
     })
     .then(() => {
       axios.get('/api-users')
       .then(res => {
-        console.log(res.data); //getting through
+        // console.log(res.data); //getting through
         this.setState({ currentUser: res.data });
-        console.log(this.state.currentUser); //working
+        // console.log(this.state.currentUser); //working
         return res;
       })
       .then((res) => {
-        console.log(res.data.id);
+        // console.log(res.data.id);
         let id = res.data.id;
         axios.get(`/api-snippets/${id}`)
           .then(res => {
-            console.log(res.data.snippetsData);
+            // console.log(res.data.snippetsData);
             let snippetData = res.data.snippetsData
             this.setState({ snippets: snippetData });
-            console.log(this.state.snippets);
+            // console.log(this.state.snippets);
             const snippetMap = this.state.snippets.map((snippet, index) => {
               return this.state.snippets[index].title;
             })
             this.setState({ snippetTitles: snippetMap });
-            console.log(snippetMap);
-            console.log(this.state.snippetTitles)
+            // console.log(snippetMap);
+            // console.log(this.state.snippetTitles)
           })
           .catch((error) => {
             console.log(error);
@@ -152,6 +160,8 @@ fibonacci();`,
               <Editor
                 { ...this.state }
                 changeEditor={this.changeEditor}
+                currentIndex={this.state.currentIndex}
+                snippets={this.state.snippets}
               />
             </div>
           }/>
@@ -170,6 +180,8 @@ fibonacci();`,
                 loggedIn={this.state.loggedIn}
                 currentUser={this.state.currentUser}
                 snippets={this.state.snippets}
+                currentIndex={this.state.currentIndex}
+                changeCurrentIndex={this.changeCurrentIndex}
               />
             </div>
           }/>

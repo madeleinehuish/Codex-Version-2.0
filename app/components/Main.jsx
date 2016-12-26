@@ -8,7 +8,7 @@ import Snippetslist from './Snippetslist';
 const Main = React.createClass({
 
   render() {
-    console.log(this.props.snippetTitles);
+    // console.log(this.props.snippetTitles);
 
     return (
       <section >
@@ -21,6 +21,8 @@ const Main = React.createClass({
           <Snippetslist
             snippets={this.props.snippets}
             snippetTitles={this.props.snippetTitles}
+            currentIndex={this.props.currentIndex}
+            changeCurrentIndex={this.props.changeCurrentIndex}
           />
           <p></p>
           </div>

@@ -30,6 +30,13 @@ const Editor = React.createClass({
   },
 
   render() {
+    const newIndex = 1;
+    // const newIndex = this.props.currentIndex;
+    const current = this.props.snippets[newIndex];
+    // console.log(current.codeSnippet);
+    console.log(this.props.snippets[1].codeSnippet);
+
+
     return (
       <section >
 
@@ -42,7 +49,7 @@ const Editor = React.createClass({
             // theme="github"
             onChange={this.onChange}
             name="trythis"
-            value={this.props.testCode}
+            value={this.props.snippets[this.props.currentIndex].codeSnippet}
             editorProps={{$blockScrolling: true}}
           />
           </div>

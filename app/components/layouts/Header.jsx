@@ -19,15 +19,15 @@ const Header = React.createClass({
     <header>
       <div className="twelve columns">
         <div className="six columns" id="logo">
-          <h5 id="logoWord">
-          <Link to="/">Codex</Link>
+          <h5 id="logoWord" className="userNav">
+          <Link to="/" className="userNav">Codex</Link>
           </h5>
         </div>
         <nav className="six columns">
           <ul>
-            <li key={this.props.currentUser.id} id="userNav">{this.props.currentUser.firstName}</li>
-            <li><Link to="/main">Main</Link></li>
-            <li><Link to="/editor">Editor</Link></li>
+            <li key={this.props.currentUser.id} className="userNav">{this.props.currentUser.firstName}</li>
+            <li className="userNav"><Link to="/main">Main</Link></li>
+            <li className="userNav"><Link to="/editor">Editor</Link></li>
 
 
           </ul>

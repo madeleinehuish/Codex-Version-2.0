@@ -202,6 +202,7 @@ var App = _react2.default.createClass({
       formComplete: false,
       snippets: {},
       snippetTitles: [],
+      currentIndex: 0,
       // snippettest: [],
       // searchArray: [],
       // sortType: '',
@@ -214,33 +215,41 @@ var App = _react2.default.createClass({
       newTestCodeValue: ''
     };
   },
-  componentDidMount: function componentDidMount() {
+  changeCurrentIndex: function changeCurrentIndex(newIndex) {
     var _this = this;
 
+    console.log(newIndex);
+    this.setState({ currentIndex: newIndex }, function () {
+      console.log(_this.state.currentIndex);
+    });
+  },
+  componentDidMount: function componentDidMount() {
+    var _this2 = this;
+
     _axios2.default.get('/api-token').then(function (res) {
-      console.log(res.data); //getting through
-      _this.setState({ loggedIn: true });
-      console.log(_this.state.loggedIn); //working
+      // console.log(res.data);  //getting through
+      _this2.setState({ loggedIn: true });
+      // console.log(this.state.loggedIn); //working
     }).then(function () {
       _axios2.default.get('/api-users').then(function (res) {
-        console.log(res.data); //getting through
-        _this.setState({ currentUser: res.data });
-        console.log(_this.state.currentUser); //working
+        // console.log(res.data); //getting through
+        _this2.setState({ currentUser: res.data });
+        // console.log(this.state.currentUser); //working
         return res;
       }).then(function (res) {
-        console.log(res.data.id);
+        // console.log(res.data.id);
         var id = res.data.id;
         _axios2.default.get('/api-snippets/' + id).then(function (res) {
-          console.log(res.data.snippetsData);
+          // console.log(res.data.snippetsData);
           var snippetData = res.data.snippetsData;
-          _this.setState({ snippets: snippetData });
-          console.log(_this.state.snippets);
-          var snippetMap = _this.state.snippets.map(function (snippet, index) {
-            return _this.state.snippets[index].title;
+          _this2.setState({ snippets: snippetData });
+          // console.log(this.state.snippets);
+          var snippetMap = _this2.state.snippets.map(function (snippet, index) {
+            return _this2.state.snippets[index].title;
           });
-          _this.setState({ snippetTitles: snippetMap });
-          console.log(snippetMap);
-          console.log(_this.state.snippetTitles);
+          _this2.setState({ snippetTitles: snippetMap });
+          // console.log(snippetMap);
+          // console.log(this.state.snippetTitles)
         }).catch(function (error) {
           console.log(error);
         });
@@ -289,7 +298,7 @@ var App = _react2.default.createClass({
     console.log(this.state.newTestCodeValue);
   },
   render: function render() {
-    var _this2 = this;
+    var _this3 = this;
 
     // console.log(this.state.snippets.snippetsData[0].title);
     return _react2.default.createElement(
@@ -299,22 +308,24 @@ var App = _react2.default.createClass({
         'main',
         null,
         _react2.default.createElement(_reactRouter.Match, { pattern: '/', exactly: true, render: function render() {
-            return _react2.default.createElement(_Home2.default, _extends({}, _this2.state, {
-              onSubmitGitHubLogIn: _this2.onSubmitGitHubLogIn
+            return _react2.default.createElement(_Home2.default, _extends({}, _this3.state, {
+              onSubmitGitHubLogIn: _this3.onSubmitGitHubLogIn
             }));
           } }),
         _react2.default.createElement(_reactRouter.Match, { pattern: '/editor', exactly: true, render: function render() {
             return _react2.default.createElement(
               'div',
               null,
-              _react2.default.createElement(_Header2.default, _extends({}, _this2.state, {
-                logIn: _this2.logIn,
-                logOut: _this2.logOut,
-                onSubmit: _this2.onSubmit,
-                onFormChange: _this2.onFormChange
+              _react2.default.createElement(_Header2.default, _extends({}, _this3.state, {
+                logIn: _this3.logIn,
+                logOut: _this3.logOut,
+                onSubmit: _this3.onSubmit,
+                onFormChange: _this3.onFormChange
               })),
-              _react2.default.createElement(_Editor2.default, _extends({}, _this2.state, {
-                changeEditor: _this2.changeEditor
+              _react2.default.createElement(_Editor2.default, _extends({}, _this3.state, {
+                changeEditor: _this3.changeEditor,
+                currentIndex: _this3.state.currentIndex,
+                snippets: _this3.state.snippets
               }))
             );
           } }),
@@ -322,16 +333,18 @@ var App = _react2.default.createClass({
             return _react2.default.createElement(
               'div',
               null,
-              _react2.default.createElement(_Header2.default, _extends({}, _this2.state, {
-                logIn: _this2.logIn,
-                logOut: _this2.logOut,
-                onSubmit: _this2.onSubmit,
-                onFormChange: _this2.onFormChange
+              _react2.default.createElement(_Header2.default, _extends({}, _this3.state, {
+                logIn: _this3.logIn,
+                logOut: _this3.logOut,
+                onSubmit: _this3.onSubmit,
+                onFormChange: _this3.onFormChange
               })),
-              _react2.default.createElement(_Main2.default, _extends({}, _this2.state, {
-                loggedIn: _this2.state.loggedIn,
-                currentUser: _this2.state.currentUser,
-                snippets: _this2.state.snippets
+              _react2.default.createElement(_Main2.default, _extends({}, _this3.state, {
+                loggedIn: _this3.state.loggedIn,
+                currentUser: _this3.state.currentUser,
+                snippets: _this3.state.snippets,
+                currentIndex: _this3.state.currentIndex,
+                changeCurrentIndex: _this3.changeCurrentIndex
               }))
             );
           } })
@@ -400,6 +413,12 @@ var Editor = _react2.default.createClass({
     // this.props.changeEditor(newValue);
   },
   render: function render() {
+    var newIndex = 1;
+    // const newIndex = this.props.currentIndex;
+    var current = this.props.snippets[newIndex];
+    // console.log(current.codeSnippet);
+    console.log(this.props.snippets[1].codeSnippet);
+
     return _react2.default.createElement(
       'section',
       null,
@@ -420,7 +439,7 @@ var Editor = _react2.default.createClass({
             // theme="github"
             , onChange: this.onChange,
             name: 'trythis',
-            value: this.props.testCode,
+            value: this.props.snippets[this.props.currentIndex].codeSnippet,
             editorProps: { $blockScrolling: true }
           })
         )
@@ -505,7 +524,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var Main = _react2.default.createClass({
   displayName: 'Main',
   render: function render() {
-    console.log(this.props.snippetTitles);
 
     return _react2.default.createElement(
       'section',
@@ -521,7 +539,9 @@ var Main = _react2.default.createClass({
         ),
         _react2.default.createElement(_Snippetslist2.default, {
           snippets: this.props.snippets,
-          snippetTitles: this.props.snippetTitles
+          snippetTitles: this.props.snippetTitles,
+          currentIndex: this.props.currentIndex,
+          changeCurrentIndex: this.props.changeCurrentIndex
         }),
         _react2.default.createElement('p', null)
       )
@@ -549,13 +569,22 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var Snippets = _react2.default.createClass({
   displayName: 'Snippets',
+  changeCurrentKey: function changeCurrentKey(event) {
+    var newIndex = event.target.name;
+    console.log(newIndex);
+    this.props.changeCurrentIndex(newIndex);
+  },
   render: function render() {
     return (
       // <div className="four columns">
       _react2.default.createElement(
-        'div',
+        'li',
         null,
-        this.props.snippetTitle
+        _react2.default.createElement(
+          _reactRouter.Link,
+          { to: '/editor', onClick: this.changeCurrentKey, value: this.props.value, name: this.props.value, className: 'snippetTitles' },
+          this.props.snippetTitle
+        )
       )
       // </div>
 
@@ -594,11 +623,16 @@ var Snippetslist = _react2.default.createClass({
     this.props.handleSort(sortValue);
   },
   render: function render() {
-    console.log(this.props.snippetTitles);
+    var _this = this;
+
+    // console.log(this.props.snippetTitles);
     var snippetmap = this.props.snippetTitles.map(function (snippetTitle, index) {
       return _react2.default.createElement(_Snippets2.default, {
         key: index,
-        snippetTitle: snippetTitle
+        value: index,
+        snippetTitle: snippetTitle,
+        currentIndex: _this.props.currentIndex,
+        changeCurrentIndex: _this.props.changeCurrentIndex
         // value={this.state.snippets[index].title}
       });
     });
@@ -606,7 +640,12 @@ var Snippetslist = _react2.default.createClass({
     return _react2.default.createElement(
       'div',
       null,
-      snippetmap
+      _react2.default.createElement('p', null),
+      _react2.default.createElement(
+        'ul',
+        null,
+        snippetmap
+      )
     );
   }
 });
@@ -653,10 +692,10 @@ var Header = _react2.default.createClass({
           { className: 'six columns', id: 'logo' },
           _react2.default.createElement(
             'h5',
-            { id: 'logoWord' },
+            { id: 'logoWord', className: 'userNav' },
             _react2.default.createElement(
               _reactRouter.Link,
-              { to: '/' },
+              { to: '/', className: 'userNav' },
               'Codex'
             )
           )
@@ -669,12 +708,12 @@ var Header = _react2.default.createClass({
             null,
             _react2.default.createElement(
               'li',
-              { key: this.props.currentUser.id, id: 'userNav' },
+              { key: this.props.currentUser.id, className: 'userNav' },
               this.props.currentUser.firstName
             ),
             _react2.default.createElement(
               'li',
-              null,
+              { className: 'userNav' },
               _react2.default.createElement(
                 _reactRouter.Link,
                 { to: '/main' },
@@ -683,7 +722,7 @@ var Header = _react2.default.createClass({
             ),
             _react2.default.createElement(
               'li',
-              null,
+              { className: 'userNav' },
               _react2.default.createElement(
                 _reactRouter.Link,
                 { to: '/editor' },
