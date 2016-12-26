@@ -2,6 +2,7 @@ import axios from 'axios';
 import React from 'react';
 import { BrowserRouter, Match, Miss } from 'react-router';
 import expect, { createSpy, spyOn, isSpy } from 'expect';
+import update from 'immutability-helper';
 
 import Header from './layouts/Header';
 import Editor from './Editor';
@@ -24,6 +25,7 @@ const App = React.createClass({
     // sortType: '',
     loggedIn: false,
     currentUser: {},
+    title: '',
     // email: '',
     // firstName: '',
     // lastName: '',
@@ -102,18 +104,14 @@ changeCurrentIndex(newIndex) {
   },
 
   onFormChange(event) {
-    this.setState({ [event.target.name] : event.target.value })
-    if (this.state.loggedIn) {
-      this.setState( { email: this.state.currentUser.email })
-
-    };
-
-    const incompleteForm = (this.state.firstName === '' || this.state.lastName === '' ||
-      this.state.address1 === '' || this.state.city === '' || this.state.zip === '' || this.state.email === '')
-        ;
-
-    this.setState({ formComplete: !incompleteForm });
-
+    console.log(event.target.value)
+    // console.log(this.state.title);
+    console.log(this.state.snippets[this.state.currentIndex].title);
+    // const snippet = this.state.snippets[this.state.currentIndex];
+    // this.setState({ snippets[this.state.currentIndex].title : event.target.value });
+    // this.setState( snippets[this.state.currentIndex].title : event.target.value );
+    this.setState({ snippets: update(this.state.snippets, {[this.state.currentIndex]: {title: {$set: event.target.value}}})})
+    // return Object.assign({}, snippets, { title: event.target.value });
   },
 
   // onSubmitGitHubLogIn() {
@@ -162,6 +160,7 @@ changeCurrentIndex(newIndex) {
                 changeEditor={this.changeEditor}
                 currentIndex={this.state.currentIndex}
                 snippets={this.state.snippets}
+                onFormChange={this.onFormChange}
               />
             </div>
           }/>

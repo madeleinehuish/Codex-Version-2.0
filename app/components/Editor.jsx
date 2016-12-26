@@ -29,31 +29,52 @@ const Editor = React.createClass({
     // this.props.changeEditor(newValue);
   },
 
+  formUpdate () {
+    this.props.onFormChange()
+  },
+
   render() {
     const newIndex = 1;
     // const newIndex = this.props.currentIndex;
     const current = this.props.snippets[newIndex];
     // console.log(current.codeSnippet);
     console.log(this.props.snippets[1].codeSnippet);
-
+    // const title = this.props.snippets[this.props.currentIndex].title;
 
     return (
       <section >
-
-          <div className="offset-by-one four columns">
-          <h4 id="titleWord">Code Editor Test</h4>
-          <div id="trythis">
-          <AceEditor
-            mode="javascript"
-            theme="monokai"
-            // theme="github"
-            onChange={this.onChange}
-            name="trythis"
-            value={this.props.snippets[this.props.currentIndex].codeSnippet}
-            editorProps={{$blockScrolling: true}}
-          />
+        <div className="container">
+          <div className="row">
+            <div className="four columns">
+            <h4 className="titleWord">{this.props.snippets[this.props.currentIndex].title}</h4>
+            <div id="trythis">
+            <AceEditor
+              mode="javascript"
+              theme="monokai"
+              // theme="github"
+              onChange={this.onChange}
+              name="trythis"
+              value={this.props.snippets[this.props.currentIndex].codeSnippet}
+              editorProps={{$blockScrolling: true}}
+            />
+            </div>
+            </div>
+            <div className="offset-by-four four columns titleWord2">
+            <form>
+              <div>Title:
+              <input  id="title" name="title" type="text" onChange={this.props.onFormChange} value={this.props.snippets[this.props.currentIndex].title} className="validate" />
+                {/* Title: {this.props.snippets[this.props.currentIndex].title} */}
+              </div>
+            </form>
+              <div>
+                Keywords: {this.props.snippets[this.props.currentIndex].keywords}
+              </div>
+              <div>
+                Notes: {this.props.snippets[this.props.currentIndex].notes}
+              </div>
+            </div>
           </div>
-          </div>
+        </div>
       </section>
     );
   }

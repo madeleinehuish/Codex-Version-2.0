@@ -172,6 +172,10 @@ var _expect = require('expect');
 
 var _expect2 = _interopRequireDefault(_expect);
 
+var _immutabilityHelper = require('immutability-helper');
+
+var _immutabilityHelper2 = _interopRequireDefault(_immutabilityHelper);
+
 var _Header = require('./layouts/Header');
 
 var _Header2 = _interopRequireDefault(_Header);
@@ -208,6 +212,7 @@ var App = _react2.default.createClass({
       // sortType: '',
       loggedIn: false,
       currentUser: {},
+      title: '',
       // email: '',
       // firstName: '',
       // lastName: '',
@@ -268,14 +273,14 @@ var App = _react2.default.createClass({
     });
   },
   onFormChange: function onFormChange(event) {
-    this.setState(_defineProperty({}, event.target.name, event.target.value));
-    if (this.state.loggedIn) {
-      this.setState({ email: this.state.currentUser.email });
-    };
-
-    var incompleteForm = this.state.firstName === '' || this.state.lastName === '' || this.state.address1 === '' || this.state.city === '' || this.state.zip === '' || this.state.email === '';
-
-    this.setState({ formComplete: !incompleteForm });
+    console.log(event.target.value);
+    // console.log(this.state.title);
+    console.log(this.state.snippets[this.state.currentIndex].title);
+    // const snippet = this.state.snippets[this.state.currentIndex];
+    // this.setState({ snippets[this.state.currentIndex].title : event.target.value });
+    // this.setState( snippets[this.state.currentIndex].title : event.target.value );
+    this.setState({ snippets: (0, _immutabilityHelper2.default)(this.state.snippets, _defineProperty({}, this.state.currentIndex, { title: { $set: event.target.value } })) });
+    // return Object.assign({}, snippets, { title: event.target.value });
   },
 
 
@@ -325,7 +330,8 @@ var App = _react2.default.createClass({
               _react2.default.createElement(_Editor2.default, _extends({}, _this3.state, {
                 changeEditor: _this3.changeEditor,
                 currentIndex: _this3.state.currentIndex,
-                snippets: _this3.state.snippets
+                snippets: _this3.state.snippets,
+                onFormChange: _this3.onFormChange
               }))
             );
           } }),
@@ -412,36 +418,74 @@ var Editor = _react2.default.createClass({
     console.log('change', newValue);
     // this.props.changeEditor(newValue);
   },
+  formUpdate: function formUpdate() {
+    this.props.onFormChange();
+  },
   render: function render() {
     var newIndex = 1;
     // const newIndex = this.props.currentIndex;
     var current = this.props.snippets[newIndex];
     // console.log(current.codeSnippet);
     console.log(this.props.snippets[1].codeSnippet);
+    // const title = this.props.snippets[this.props.currentIndex].title;
 
     return _react2.default.createElement(
       'section',
       null,
       _react2.default.createElement(
         'div',
-        { className: 'offset-by-one four columns' },
-        _react2.default.createElement(
-          'h4',
-          { id: 'titleWord' },
-          'Code Editor Test'
-        ),
+        { className: 'container' },
         _react2.default.createElement(
           'div',
-          { id: 'trythis' },
-          _react2.default.createElement(_reactAce2.default, {
-            mode: 'javascript',
-            theme: 'monokai'
-            // theme="github"
-            , onChange: this.onChange,
-            name: 'trythis',
-            value: this.props.snippets[this.props.currentIndex].codeSnippet,
-            editorProps: { $blockScrolling: true }
-          })
+          { className: 'row' },
+          _react2.default.createElement(
+            'div',
+            { className: 'four columns' },
+            _react2.default.createElement(
+              'h4',
+              { className: 'titleWord' },
+              this.props.snippets[this.props.currentIndex].title
+            ),
+            _react2.default.createElement(
+              'div',
+              { id: 'trythis' },
+              _react2.default.createElement(_reactAce2.default, {
+                mode: 'javascript',
+                theme: 'monokai'
+                // theme="github"
+                , onChange: this.onChange,
+                name: 'trythis',
+                value: this.props.snippets[this.props.currentIndex].codeSnippet,
+                editorProps: { $blockScrolling: true }
+              })
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'offset-by-four four columns titleWord2' },
+            _react2.default.createElement(
+              'form',
+              null,
+              _react2.default.createElement(
+                'div',
+                null,
+                'Title:',
+                _react2.default.createElement('input', { id: 'title', name: 'title', type: 'text', onChange: this.props.onFormChange, value: this.props.snippets[this.props.currentIndex].title, className: 'validate' })
+              )
+            ),
+            _react2.default.createElement(
+              'div',
+              null,
+              'Keywords: ',
+              this.props.snippets[this.props.currentIndex].keywords
+            ),
+            _react2.default.createElement(
+              'div',
+              null,
+              'Notes: ',
+              this.props.snippets[this.props.currentIndex].notes
+            )
+          )
         )
       )
     );
@@ -480,7 +524,7 @@ var Home = _react2.default.createClass({
         { id: 'hero' },
         _react2.default.createElement(
           'h1',
-          { id: 'titleWord' },
+          { className: 'titleWord' },
           'Codex'
         ),
         _react2.default.createElement(

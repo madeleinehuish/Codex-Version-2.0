@@ -233,3 +233,5 @@ Promise.all([profiledata, email])
       });
 
     },
+
+    return Object.assign({}, snippets, { title: event.target.value });

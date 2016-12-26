@@ -105,10 +105,15 @@ nav.six.columns > ul > li#login-icon {
   /*background: url(images/dutchlibrary.jpg) no-repeat bottom center scroll;*/
 }
 
-#titleWord {
+.titleWord {
   color: #59656f;
   margin-top: 15px;
   margin-bottom: -1px;
+}
+
+.titleWord2 {
+  color: #59656f;
+  margin-top: 100px;
 }
 
 .mainTitle {
