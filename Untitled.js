@@ -234,4 +234,13 @@ Promise.all([profiledata, email])
 
     },
 
-    return Object.assign({}, snippets, { title: event.target.value });
+    onFormChange(event) {
+      console.log(event.target.value)
+      // console.log(this.state.title);
+      console.log(this.state.snippets[this.state.currentIndex].title);
+      // const snippet = this.state.snippets[this.state.currentIndex];
+      // this.setState({ snippets[this.state.currentIndex].title : event.target.value });
+      // this.setState( snippets[this.state.currentIndex].title : event.target.value );
+      this.setState({ snippets: update(this.state.snippets, {[this.state.currentIndex]: {title: {$set: event.target.value}}})})
+      // return Object.assign({}, snippets, { title: event.target.value });
+    },

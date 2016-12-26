@@ -26,6 +26,12 @@ const Editor = React.createClass({
 
   onChange(newValue) {
     console.log('change',newValue);
+
+    this.props.onEditorChange(newValue);
+    // const editor = ace.edit("codeSnippet");
+    // const code = editor.getValue();
+    // console.log(code);
+    // this.props.onFormChange(event);
     // this.props.changeEditor(newValue);
   },
 
@@ -45,34 +51,42 @@ const Editor = React.createClass({
       <section >
         <div className="container">
           <div className="row">
+          <form>
             <div className="four columns">
             <h4 className="titleWord">{this.props.snippets[this.props.currentIndex].title}</h4>
-            <div id="trythis">
+            <div id="codeSnippet">
             <AceEditor
               mode="javascript"
               theme="monokai"
+              // id="aceEditor"
               // theme="github"
               onChange={this.onChange}
-              name="trythis"
+              name="codeSnippet"
               value={this.props.snippets[this.props.currentIndex].codeSnippet}
               editorProps={{$blockScrolling: true}}
             />
             </div>
             </div>
             <div className="offset-by-four four columns titleWord2">
-            <form>
+
               <div>Title:
-              <input  id="title" name="title" type="text" onChange={this.props.onFormChange} value={this.props.snippets[this.props.currentIndex].title} className="validate" />
-                {/* Title: {this.props.snippets[this.props.currentIndex].title} */}
+              <br/>
+                <input  id="title" name="title" type="text" onChange={this.props.onFormChange} value={this.props.snippets[this.props.currentIndex].title} className="validate" />
               </div>
-            </form>
-              <div>
-                Keywords: {this.props.snippets[this.props.currentIndex].keywords}
+              <br/>
+
+              <div>Keywords:
+              <br/>
+                <input id="keywords" name="keywords" type="text" onChange={this.props.onFormChange} value={this.props.snippets[this.props.currentIndex].keywords} className="validate" />
               </div>
-              <div>
-                Notes: {this.props.snippets[this.props.currentIndex].notes}
+              <br/>
+              <div>Notes:
+              <br/>
+                <input id="notes" name="notes" type="text" onChange={this.props.onFormChange} value={this.props.snippets[this.props.currentIndex].notes} className="validate" />
               </div>
+
             </div>
+            </form>
           </div>
         </div>
       </section>

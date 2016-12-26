@@ -103,6 +103,10 @@ changeCurrentIndex(newIndex) {
     });
   },
 
+  onEditorChange(newValue) {
+    this.setState({ snippets: update(this.state.snippets, {[this.state.currentIndex]: { codeSnippet: {$set: newValue}}})})
+  },
+
   onFormChange(event) {
     console.log(event.target.value)
     // console.log(this.state.title);
@@ -110,7 +114,7 @@ changeCurrentIndex(newIndex) {
     // const snippet = this.state.snippets[this.state.currentIndex];
     // this.setState({ snippets[this.state.currentIndex].title : event.target.value });
     // this.setState( snippets[this.state.currentIndex].title : event.target.value );
-    this.setState({ snippets: update(this.state.snippets, {[this.state.currentIndex]: {title: {$set: event.target.value}}})})
+    this.setState({ snippets: update(this.state.snippets, {[this.state.currentIndex]: {[event.target.name]: {$set: event.target.value}}})})
     // return Object.assign({}, snippets, { title: event.target.value });
   },
 
@@ -161,6 +165,7 @@ changeCurrentIndex(newIndex) {
                 currentIndex={this.state.currentIndex}
                 snippets={this.state.snippets}
                 onFormChange={this.onFormChange}
+                onEditorChange={this.onEditorChange}
               />
             </div>
           }/>

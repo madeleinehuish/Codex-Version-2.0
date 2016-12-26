@@ -272,6 +272,9 @@ var App = _react2.default.createClass({
       previousOrders: {}
     });
   },
+  onEditorChange: function onEditorChange(newValue) {
+    this.setState({ snippets: (0, _immutabilityHelper2.default)(this.state.snippets, _defineProperty({}, this.state.currentIndex, { codeSnippet: { $set: newValue } })) });
+  },
   onFormChange: function onFormChange(event) {
     console.log(event.target.value);
     // console.log(this.state.title);
@@ -279,7 +282,7 @@ var App = _react2.default.createClass({
     // const snippet = this.state.snippets[this.state.currentIndex];
     // this.setState({ snippets[this.state.currentIndex].title : event.target.value });
     // this.setState( snippets[this.state.currentIndex].title : event.target.value );
-    this.setState({ snippets: (0, _immutabilityHelper2.default)(this.state.snippets, _defineProperty({}, this.state.currentIndex, { title: { $set: event.target.value } })) });
+    this.setState({ snippets: (0, _immutabilityHelper2.default)(this.state.snippets, _defineProperty({}, this.state.currentIndex, _defineProperty({}, event.target.name, { $set: event.target.value }))) });
     // return Object.assign({}, snippets, { title: event.target.value });
   },
 
@@ -331,7 +334,8 @@ var App = _react2.default.createClass({
                 changeEditor: _this3.changeEditor,
                 currentIndex: _this3.state.currentIndex,
                 snippets: _this3.state.snippets,
-                onFormChange: _this3.onFormChange
+                onFormChange: _this3.onFormChange,
+                onEditorChange: _this3.onEditorChange
               }))
             );
           } }),
@@ -416,6 +420,12 @@ var Editor = _react2.default.createClass({
 
   onChange: function onChange(newValue) {
     console.log('change', newValue);
+
+    this.props.onEditorChange(newValue);
+    // const editor = ace.edit("codeSnippet");
+    // const code = editor.getValue();
+    // console.log(code);
+    // this.props.onFormChange(event);
     // this.props.changeEditor(newValue);
   },
   formUpdate: function formUpdate() {
@@ -439,51 +449,57 @@ var Editor = _react2.default.createClass({
           'div',
           { className: 'row' },
           _react2.default.createElement(
-            'div',
-            { className: 'four columns' },
-            _react2.default.createElement(
-              'h4',
-              { className: 'titleWord' },
-              this.props.snippets[this.props.currentIndex].title
-            ),
+            'form',
+            null,
             _react2.default.createElement(
               'div',
-              { id: 'trythis' },
-              _react2.default.createElement(_reactAce2.default, {
-                mode: 'javascript',
-                theme: 'monokai'
-                // theme="github"
-                , onChange: this.onChange,
-                name: 'trythis',
-                value: this.props.snippets[this.props.currentIndex].codeSnippet,
-                editorProps: { $blockScrolling: true }
-              })
-            )
-          ),
-          _react2.default.createElement(
-            'div',
-            { className: 'offset-by-four four columns titleWord2' },
-            _react2.default.createElement(
-              'form',
-              null,
+              { className: 'four columns' },
+              _react2.default.createElement(
+                'h4',
+                { className: 'titleWord' },
+                this.props.snippets[this.props.currentIndex].title
+              ),
               _react2.default.createElement(
                 'div',
-                null,
-                'Title:',
-                _react2.default.createElement('input', { id: 'title', name: 'title', type: 'text', onChange: this.props.onFormChange, value: this.props.snippets[this.props.currentIndex].title, className: 'validate' })
+                { id: 'codeSnippet' },
+                _react2.default.createElement(_reactAce2.default, {
+                  mode: 'javascript',
+                  theme: 'monokai'
+                  // id="aceEditor"
+                  // theme="github"
+                  , onChange: this.onChange,
+                  name: 'codeSnippet',
+                  value: this.props.snippets[this.props.currentIndex].codeSnippet,
+                  editorProps: { $blockScrolling: true }
+                })
               )
             ),
             _react2.default.createElement(
               'div',
-              null,
-              'Keywords: ',
-              this.props.snippets[this.props.currentIndex].keywords
-            ),
-            _react2.default.createElement(
-              'div',
-              null,
-              'Notes: ',
-              this.props.snippets[this.props.currentIndex].notes
+              { className: 'offset-by-four four columns titleWord2' },
+              _react2.default.createElement(
+                'div',
+                null,
+                'Title:',
+                _react2.default.createElement('br', null),
+                _react2.default.createElement('input', { id: 'title', name: 'title', type: 'text', onChange: this.props.onFormChange, value: this.props.snippets[this.props.currentIndex].title, className: 'validate' })
+              ),
+              _react2.default.createElement('br', null),
+              _react2.default.createElement(
+                'div',
+                null,
+                'Keywords:',
+                _react2.default.createElement('br', null),
+                _react2.default.createElement('input', { id: 'keywords', name: 'keywords', type: 'text', onChange: this.props.onFormChange, value: this.props.snippets[this.props.currentIndex].keywords, className: 'validate' })
+              ),
+              _react2.default.createElement('br', null),
+              _react2.default.createElement(
+                'div',
+                null,
+                'Notes:',
+                _react2.default.createElement('br', null),
+                _react2.default.createElement('input', { id: 'notes', name: 'notes', type: 'text', onChange: this.props.onFormChange, value: this.props.snippets[this.props.currentIndex].notes, className: 'validate' })
+              )
             )
           )
         )
