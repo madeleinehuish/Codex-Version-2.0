@@ -116,6 +116,10 @@ nav.six.columns > ul > li#login-icon {
   margin-top: 100px;
 }
 
+#addSnippetButton {
+  margin-top: 100px;
+}
+
 .mainTitle {
   color: #59656f;
   border: 1px solid;

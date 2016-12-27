@@ -35,9 +35,9 @@ const Editor = React.createClass({
     // this.props.changeEditor(newValue);
   },
 
-  formUpdate () {
-    this.props.onFormChange()
-  },
+  // formUpdate () {
+  //   this.props.onFormChange()
+  // },
 
   render() {
     const newIndex = 1;
@@ -74,7 +74,11 @@ const Editor = React.createClass({
                 <input  id="title" name="title" type="text" onChange={this.props.onFormChange} value={this.props.snippets[this.props.currentIndex].title} className="validate" />
               </div>
               <br/>
-
+              <div>Language:
+              <br/>
+                <input id="language" name="language" type="text" onChange={this.props.onFormChange} value={this.props.snippets[this.props.currentIndex].language} className="validate" />
+              </div>
+              <br/>
               <div>Keywords:
               <br/>
                 <input id="keywords" name="keywords" type="text" onChange={this.props.onFormChange} value={this.props.snippets[this.props.currentIndex].keywords} className="validate" />
@@ -85,6 +89,7 @@ const Editor = React.createClass({
                 <input id="notes" name="notes" type="text" onChange={this.props.onFormChange} value={this.props.snippets[this.props.currentIndex].notes} className="validate" />
               </div>
               <br/>
+
               <Link to="/main"><button onClick={this.props.patchSnippets}>Save Changes</button></Link>
 
             </div>

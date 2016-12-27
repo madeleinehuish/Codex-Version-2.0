@@ -149,6 +149,146 @@ var __makeRelativeRequire = function(require, mappings, pref) {
     return require(name);
   }
 };
+require.register("components/Addsnippet.jsx", function(exports, require, module) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _axios = require('axios');
+
+var _axios2 = _interopRequireDefault(_axios);
+
+var _reactRouter = require('react-router');
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = require('react-dom');
+
+var _brace = require('brace');
+
+var _brace2 = _interopRequireDefault(_brace);
+
+var _reactAce = require('react-ace');
+
+var _reactAce2 = _interopRequireDefault(_reactAce);
+
+require('brace/mode/javascript');
+
+require('brace/theme/github');
+
+require('brace/theme/monokai');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Addsnippet = _react2.default.createClass({
+  displayName: 'Addsnippet',
+  onChange: function onChange(newValue) {
+    console.log('change', newValue);
+
+    this.props.onEditorChangeAddSnippet(newValue);
+  },
+  render: function render() {
+    var newIndex = 1;
+    // const newIndex = this.props.currentIndex;
+    var current = this.props.snippets[newIndex];
+    // console.log(current.codeSnippet);
+    console.log(this.props.snippets[1].codeSnippet);
+    // const title = this.props.snippets[this.props.currentIndex].title;
+
+    return _react2.default.createElement(
+      'section',
+      null,
+      _react2.default.createElement(
+        'div',
+        { className: 'container' },
+        _react2.default.createElement(
+          'div',
+          { className: 'row' },
+          _react2.default.createElement(
+            'form',
+            null,
+            _react2.default.createElement(
+              'div',
+              { className: 'four columns' },
+              _react2.default.createElement(
+                'h4',
+                { className: 'titleWord' },
+                'Add New Snippet'
+              ),
+              _react2.default.createElement(
+                'div',
+                { id: 'codeSnippet' },
+                _react2.default.createElement(_reactAce2.default, {
+                  mode: 'javascript',
+                  theme: 'monokai'
+                  // id="aceEditor"
+                  // theme="github"
+                  , onChange: this.onChange,
+                  name: 'codeSnippet',
+                  value: this.props.addSnippet.codeSnippet,
+                  editorProps: { $blockScrolling: true }
+                })
+              )
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'offset-by-four four columns titleWord2' },
+              _react2.default.createElement(
+                'div',
+                null,
+                'Title:',
+                _react2.default.createElement('br', null),
+                _react2.default.createElement('input', { id: 'title', name: 'title', type: 'text', onChange: this.props.onFormChangeAddSnippet, value: this.props.addSnippet.title, className: 'validate' })
+              ),
+              _react2.default.createElement('br', null),
+              _react2.default.createElement(
+                'div',
+                null,
+                'Language:',
+                _react2.default.createElement('br', null),
+                _react2.default.createElement('input', { id: 'language', name: 'language', type: 'text', onChange: this.props.onFormChangeAddSnippet, value: this.props.addSnippet.language, className: 'validate' })
+              ),
+              _react2.default.createElement('br', null),
+              _react2.default.createElement(
+                'div',
+                null,
+                'Keywords:',
+                _react2.default.createElement('br', null),
+                _react2.default.createElement('input', { id: 'keywords', name: 'keywords', type: 'text', onChange: this.props.onFormChangeAddSnippet, value: this.props.addSnippet.keywords, className: 'validate' })
+              ),
+              _react2.default.createElement('br', null),
+              _react2.default.createElement(
+                'div',
+                null,
+                'Notes:',
+                _react2.default.createElement('br', null),
+                _react2.default.createElement('input', { id: 'notes', name: 'notes', type: 'text', onChange: this.props.onFormChangeAddSnippet, value: this.props.addSnippet.notes, className: 'validate' })
+              ),
+              _react2.default.createElement('br', null),
+              _react2.default.createElement(
+                _reactRouter.Link,
+                { to: '/main' },
+                _react2.default.createElement(
+                  'button',
+                  { onClick: this.props.addNewSnippet },
+                  'Save Snippet'
+                )
+              )
+            )
+          )
+        )
+      )
+    );
+  }
+});
+
+exports.default = Addsnippet;
+});
+
 require.register("components/App.jsx", function(exports, require, module) {
 'use strict';
 
@@ -194,6 +334,10 @@ var _Main = require('./Main');
 
 var _Main2 = _interopRequireDefault(_Main);
 
+var _Addsnippet = require('./Addsnippet');
+
+var _Addsnippet2 = _interopRequireDefault(_Addsnippet);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -204,6 +348,20 @@ var App = _react2.default.createClass({
     return {
       value: '',
       inputValue: '',
+      addSnippet: {
+        title: '',
+        codeSnippet: '',
+        language: '',
+        keywords: '',
+        notes: ''
+      },
+      defaultSnippet: {
+        title: '',
+        codeSnippet: '',
+        language: '',
+        keywords: '',
+        notes: ''
+      },
       searchVisible: false,
       formComplete: false,
       snippets: {},
@@ -221,6 +379,20 @@ var App = _react2.default.createClass({
       testCode: 'function fibonacci(indexNumber) {\nif (indexNumber === 0 || indexNumber === 1) {\nreturn 1;\n} else {\nreturn (fibonacci(indexNumber-1) + fibonacci(indexNumber-2));\n}\n}\n\nfibonacci();',
       newTestCodeValue: ''
     };
+  },
+  addNewSnippetButton: function addNewSnippetButton() {
+    var newIndex = this.state.snippetTitles.length;
+    console.log(newIndex);
+    // this.setState(
+    //   { snippets: update(this.state.snippets, { title : {$push: ''}})},
+    //   { snippets: update(this.state.snippets, { codeSnippet : {$push: ''}})},
+    //   { snippets: update(this.state.snippets, { language : {$push: ''}})},
+    //   { snippets: update(this.state.snippets, { keywords : {$push: ''}})},
+    //   { snippets: update(this.state.snippets, { notes : {$push: ''}})},
+    //
+    //   const state1 = ['x'];
+    //     { snippets: = update(this.state.snippets, {$push: ['y']});
+    // );
   },
   changeCurrentIndex: function changeCurrentIndex(newIndex) {
     var _this = this;
@@ -281,6 +453,9 @@ var App = _react2.default.createClass({
   onEditorChange: function onEditorChange(newValue) {
     this.setState({ snippets: (0, _immutabilityHelper2.default)(this.state.snippets, _defineProperty({}, this.state.currentIndex, { codeSnippet: { $set: newValue } })) });
   },
+  onEditorChangeAddSnippet: function onEditorChangeAddSnippet(newValue) {
+    this.setState({ addSnippet: (0, _immutabilityHelper2.default)(this.state.addSnippet, { codeSnippet: { $set: newValue } }) });
+  },
   onFormChange: function onFormChange(event) {
     console.log(event.target.value);
     // console.log(this.state.title);
@@ -290,6 +465,13 @@ var App = _react2.default.createClass({
     // this.setState( snippets[this.state.currentIndex].title : event.target.value );
     this.setState({ snippets: (0, _immutabilityHelper2.default)(this.state.snippets, _defineProperty({}, this.state.currentIndex, _defineProperty({}, event.target.name, { $set: event.target.value }))) });
     // return Object.assign({}, snippets, { title: event.target.value });
+  },
+  onFormChangeAddSnippet: function onFormChangeAddSnippet(event) {
+    console.log(event.target.value);
+    // console.log(this.state.title);
+    console.log(this.state.addSnippet.title);
+
+    this.setState({ addSnippet: (0, _immutabilityHelper2.default)(this.state.addSnippet, _defineProperty({}, event.target.name, { $set: event.target.value })) });
   },
 
 
@@ -348,6 +530,26 @@ var App = _react2.default.createClass({
               onSubmitGitHubLogIn: _this3.onSubmitGitHubLogIn
             }));
           } }),
+        _react2.default.createElement(_reactRouter.Match, { pattern: '/addsnippet', exactly: true, render: function render() {
+            return _react2.default.createElement(
+              'div',
+              null,
+              _react2.default.createElement(_Header2.default, _extends({}, _this3.state, {
+                logIn: _this3.logIn,
+                logOut: _this3.logOut,
+                onSubmit: _this3.onSubmit,
+                onFormChange: _this3.onFormChange
+              })),
+              _react2.default.createElement(_Addsnippet2.default, _extends({}, _this3.state, {
+                changeEditor: _this3.changeEditor,
+                currentIndex: _this3.state.currentIndex,
+                snippets: _this3.state.snippets,
+                onFormChangeAddSnippet: _this3.onFormChangeAddSnippet,
+                onEditorChangeAddSnippet: _this3.onEditorChangeAddSnippet,
+                patchSnippets: _this3.patchSnippets
+              }))
+            );
+          } }),
         _react2.default.createElement(_reactRouter.Match, { pattern: '/editor', exactly: true, render: function render() {
             return _react2.default.createElement(
               'div',
@@ -383,7 +585,8 @@ var App = _react2.default.createClass({
                 currentUser: _this3.state.currentUser,
                 snippets: _this3.state.snippets,
                 currentIndex: _this3.state.currentIndex,
-                changeCurrentIndex: _this3.changeCurrentIndex
+                changeCurrentIndex: _this3.changeCurrentIndex,
+                addNewSnippetButton: _this3.addNewSnippetButton
               }))
             );
           } })
@@ -457,9 +660,12 @@ var Editor = _react2.default.createClass({
     // this.props.onFormChange(event);
     // this.props.changeEditor(newValue);
   },
-  formUpdate: function formUpdate() {
-    this.props.onFormChange();
-  },
+
+
+  // formUpdate () {
+  //   this.props.onFormChange()
+  // },
+
   render: function render() {
     var newIndex = 1;
     // const newIndex = this.props.currentIndex;
@@ -512,6 +718,14 @@ var Editor = _react2.default.createClass({
                 'Title:',
                 _react2.default.createElement('br', null),
                 _react2.default.createElement('input', { id: 'title', name: 'title', type: 'text', onChange: this.props.onFormChange, value: this.props.snippets[this.props.currentIndex].title, className: 'validate' })
+              ),
+              _react2.default.createElement('br', null),
+              _react2.default.createElement(
+                'div',
+                null,
+                'Language:',
+                _react2.default.createElement('br', null),
+                _react2.default.createElement('input', { id: 'language', name: 'language', type: 'text', onChange: this.props.onFormChange, value: this.props.snippets[this.props.currentIndex].language, className: 'validate' })
               ),
               _react2.default.createElement('br', null),
               _react2.default.createElement(
@@ -618,31 +832,57 @@ var _Snippetslist = require('./Snippetslist');
 
 var _Snippetslist2 = _interopRequireDefault(_Snippetslist);
 
+var _Addsnippet = require('./Addsnippet');
+
+var _Addsnippet2 = _interopRequireDefault(_Addsnippet);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Main = _react2.default.createClass({
   displayName: 'Main',
   render: function render() {
+    // console.log(this.props.snippetTitles);
 
     return _react2.default.createElement(
       'section',
       null,
       _react2.default.createElement(
         'div',
-        { className: 'offset-by-one eight columns' },
+        { className: 'container' },
         _react2.default.createElement(
-          'h4',
-          { id: 'titleWord' },
-          this.props.currentUser.firstName,
-          '\'s Code Library'
-        ),
-        _react2.default.createElement(_Snippetslist2.default, {
-          snippets: this.props.snippets,
-          snippetTitles: this.props.snippetTitles,
-          currentIndex: this.props.currentIndex,
-          changeCurrentIndex: this.props.changeCurrentIndex
-        }),
-        _react2.default.createElement('p', null)
+          'div',
+          { className: 'row' },
+          _react2.default.createElement(
+            'div',
+            { className: 'eight columns' },
+            _react2.default.createElement(
+              'h4',
+              { className: 'titleWord' },
+              this.props.currentUser.firstName,
+              '\'s Code Library'
+            ),
+            _react2.default.createElement(_Snippetslist2.default, {
+              snippets: this.props.snippets,
+              snippetTitles: this.props.snippetTitles,
+              currentIndex: this.props.currentIndex,
+              changeCurrentIndex: this.props.changeCurrentIndex
+            }),
+            _react2.default.createElement('p', null)
+          ),
+          _react2.default.createElement(
+            'div',
+            null,
+            _react2.default.createElement(
+              _reactRouter.Link,
+              { to: '/addsnippet' },
+              _react2.default.createElement(
+                'button',
+                { className: 'titleWord', id: 'addSnippetButton', onClick: this.props.addNewSnippetButton },
+                'Add New Snippet'
+              )
+            )
+          )
+        )
       )
     );
   }

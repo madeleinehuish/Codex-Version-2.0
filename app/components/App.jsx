@@ -3,11 +3,12 @@ import React from 'react';
 import { BrowserRouter, Match, Miss } from 'react-router';
 import expect, { createSpy, spyOn, isSpy } from 'expect';
 import update from 'immutability-helper';
-
+import { Link } from 'react-router';
 import Header from './layouts/Header';
 import Editor from './Editor';
 import Home from './Home';
 import Main from './Main';
+import Addsnippet from './Addsnippet';
 
 const App = React.createClass({
 
@@ -15,6 +16,20 @@ const App = React.createClass({
   return {
     value: '',
     inputValue: '',
+    addSnippet: {
+      title: '',
+      codeSnippet: '',
+      language: '',
+      keywords: '',
+      notes: ''
+    },
+    defaultSnippet: {
+      title: '',
+      codeSnippet: '',
+      language: '',
+      keywords: '',
+      notes: ''
+    },
     searchVisible: false,
     formComplete: false,
     snippets: {},
@@ -40,6 +55,21 @@ return (fibonacci(indexNumber-1) + fibonacci(indexNumber-2));
 fibonacci();`,
     newTestCodeValue: ``
     }
+  },
+
+  addNewSnippetButton() {
+    const newIndex = this.state.snippetTitles.length;
+    console.log(newIndex);
+    // this.setState(
+    //   { snippets: update(this.state.snippets, { title : {$push: ''}})},
+    //   { snippets: update(this.state.snippets, { codeSnippet : {$push: ''}})},
+    //   { snippets: update(this.state.snippets, { language : {$push: ''}})},
+    //   { snippets: update(this.state.snippets, { keywords : {$push: ''}})},
+    //   { snippets: update(this.state.snippets, { notes : {$push: ''}})},
+    //
+    //   const state1 = ['x'];
+    //     { snippets: = update(this.state.snippets, {$push: ['y']});
+    // );
   },
 
 changeCurrentIndex(newIndex) {
@@ -111,6 +141,10 @@ changeCurrentIndex(newIndex) {
     this.setState({ snippets: update(this.state.snippets, {[this.state.currentIndex]: { codeSnippet: {$set: newValue}}})})
   },
 
+  onEditorChangeAddSnippet(newValue) {
+    this.setState({ addSnippet: update(this.state.addSnippet, { codeSnippet: {$set: newValue}}) });
+  },
+
   onFormChange(event) {
     console.log(event.target.value)
     // console.log(this.state.title);
@@ -120,6 +154,15 @@ changeCurrentIndex(newIndex) {
     // this.setState( snippets[this.state.currentIndex].title : event.target.value );
     this.setState({ snippets: update(this.state.snippets, {[this.state.currentIndex]: {[event.target.name]: {$set: event.target.value}}})})
     // return Object.assign({}, snippets, { title: event.target.value });
+  },
+
+  onFormChangeAddSnippet(event) {
+    console.log(event.target.value)
+    // console.log(this.state.title);
+    console.log(this.state.addSnippet.title);
+
+    this.setState({ addSnippet: update(this.state.addSnippet, {[event.target.name]: {$set: event.target.value}}) });
+
   },
 
   // onSubmitGitHubLogIn() {
@@ -178,6 +221,27 @@ changeCurrentIndex(newIndex) {
               onSubmitGitHubLogIn={this.onSubmitGitHubLogIn}
             />
           }/>
+          <Match pattern="/addsnippet" exactly render={
+            () =>
+            <div>
+              <Header
+                { ...this.state }
+                logIn={this.logIn}
+                logOut={this.logOut}
+                onSubmit={this.onSubmit}
+                onFormChange={this.onFormChange}
+              />
+              <Addsnippet
+                { ...this.state }
+                changeEditor={this.changeEditor}
+                currentIndex={this.state.currentIndex}
+                snippets={this.state.snippets}
+                onFormChangeAddSnippet={this.onFormChangeAddSnippet}
+                onEditorChangeAddSnippet={this.onEditorChangeAddSnippet}
+                patchSnippets={this.patchSnippets}
+              />
+            </div>
+          }/>
           <Match pattern="/editor" exactly render={
             () =>
             <div>
@@ -216,6 +280,7 @@ changeCurrentIndex(newIndex) {
                 snippets={this.state.snippets}
                 currentIndex={this.state.currentIndex}
                 changeCurrentIndex={this.changeCurrentIndex}
+                addNewSnippetButton={this.addNewSnippetButton}
               />
             </div>
           }/>
