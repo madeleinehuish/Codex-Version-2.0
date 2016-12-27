@@ -55,4 +55,50 @@ router.get('/api-snippets/:id', (req, res, next) => {
     });
 });
 
+router.patch('/api-snippets/:id', (req, res, next) => {
+  const id = Number.parseInt(req.params.id);
+
+  if (Number.isNaN(id)) {
+    return next();
+  }
+  const updateSnippet = {};
+  console.log('got into patch');
+  console.log(req.body);
+
+  knex('snippets')
+    .where('id', id)
+    .first()
+    .then((snippet) => {
+      if (!snippet) {
+        throw boom.create(404, 'Not Found');
+      }
+      const { title, codeSnippet, keywords, notes } = req.body;
+
+      if (title) {
+        updateSnippet.title = title;
+      }
+      if (codeSnippet) {
+        updateSnippet.codeSnippet = codeSnippet;
+      }
+      if (keywords) {
+        updateSnippet.keywords = keywords;
+      }
+      if (notes) {
+        updateSnippet.notes = notes;
+      }
+
+      return knex('snippets')
+        .where('id', id)
+        .update(decamelizeKeys(updateSnippet), '*');
+    })
+    .then((rows) => {
+      const snippet = camelizeKeys(rows[0]);
+
+      res.send(snippet);
+    })
+    .catch((err) => {
+      next(err);
+    });
+});
+
 module.exports = router;

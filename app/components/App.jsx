@@ -75,7 +75,11 @@ changeCurrentIndex(newIndex) {
             this.setState({ snippets: snippetData });
             // console.log(this.state.snippets);
             const snippetMap = this.state.snippets.map((snippet, index) => {
+              // if (index === 0) {
+              //   return
+              // } else {
               return this.state.snippets[index].title;
+            // }
             })
             this.setState({ snippetTitles: snippetMap });
             // console.log(snippetMap);
@@ -132,6 +136,31 @@ changeCurrentIndex(newIndex) {
   //     });
   // },
 
+  patchSnippets() {
+    console.log(this.state.currentIndex);
+    const current = this.state.currentIndex;
+    console.log(typeof current);
+    let id = (parseInt(current) + 1);
+    // let id = current;
+    // id = id.toString();
+    console.log(id);
+    // const id = this.state.currentIndex
+    console.log(typeof(id));
+    // const title = this.state.snippets[id].title;
+    // const codeSnippet = this.state.snippets[id].codeSnippet;
+    // const keywords = this.state.snippets[id].keywords;
+    // const notes = this.state.snippets[id].notes;
+    // console.log(this.state.snippets[id + 1]);
+
+    axios.patch(`/api-snippets/${id}`, this.state.snippets[this.state.currentIndex])
+      .then((res)=> {
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  },
+
   changeEditor(newValue) {
     this.setState({ newTestCodeValue: newValue });
     console.log(this.state.newTestCodeValue);
@@ -166,6 +195,7 @@ changeCurrentIndex(newIndex) {
                 snippets={this.state.snippets}
                 onFormChange={this.onFormChange}
                 onEditorChange={this.onEditorChange}
+                patchSnippets={this.patchSnippets}
               />
             </div>
           }/>

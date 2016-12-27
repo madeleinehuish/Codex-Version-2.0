@@ -158,6 +158,8 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _axios = require('axios');
 
 var _axios2 = _interopRequireDefault(_axios);
@@ -250,7 +252,11 @@ var App = _react2.default.createClass({
           _this2.setState({ snippets: snippetData });
           // console.log(this.state.snippets);
           var snippetMap = _this2.state.snippets.map(function (snippet, index) {
+            // if (index === 0) {
+            //   return
+            // } else {
             return _this2.state.snippets[index].title;
+            // }
           });
           _this2.setState({ snippetTitles: snippetMap });
           // console.log(snippetMap);
@@ -301,6 +307,28 @@ var App = _react2.default.createClass({
   //     });
   // },
 
+  patchSnippets: function patchSnippets() {
+    console.log(this.state.currentIndex);
+    var current = this.state.currentIndex;
+    console.log(typeof current === 'undefined' ? 'undefined' : _typeof(current));
+    var id = parseInt(current) + 1;
+    // let id = current;
+    // id = id.toString();
+    console.log(id);
+    // const id = this.state.currentIndex
+    console.log(typeof id === 'undefined' ? 'undefined' : _typeof(id));
+    // const title = this.state.snippets[id].title;
+    // const codeSnippet = this.state.snippets[id].codeSnippet;
+    // const keywords = this.state.snippets[id].keywords;
+    // const notes = this.state.snippets[id].notes;
+    // console.log(this.state.snippets[id + 1]);
+
+    _axios2.default.patch('/api-snippets/' + id, this.state.snippets[this.state.currentIndex]).then(function (res) {
+      console.log(res.data);
+    }).catch(function (error) {
+      console.log(error);
+    });
+  },
   changeEditor: function changeEditor(newValue) {
     this.setState({ newTestCodeValue: newValue });
     console.log(this.state.newTestCodeValue);
@@ -335,7 +363,8 @@ var App = _react2.default.createClass({
                 currentIndex: _this3.state.currentIndex,
                 snippets: _this3.state.snippets,
                 onFormChange: _this3.onFormChange,
-                onEditorChange: _this3.onEditorChange
+                onEditorChange: _this3.onEditorChange,
+                patchSnippets: _this3.patchSnippets
               }))
             );
           } }),
@@ -499,6 +528,16 @@ var Editor = _react2.default.createClass({
                 'Notes:',
                 _react2.default.createElement('br', null),
                 _react2.default.createElement('input', { id: 'notes', name: 'notes', type: 'text', onChange: this.props.onFormChange, value: this.props.snippets[this.props.currentIndex].notes, className: 'validate' })
+              ),
+              _react2.default.createElement('br', null),
+              _react2.default.createElement(
+                _reactRouter.Link,
+                { to: '/main' },
+                _react2.default.createElement(
+                  'button',
+                  { onClick: this.props.patchSnippets },
+                  'Save Changes'
+                )
               )
             )
           )

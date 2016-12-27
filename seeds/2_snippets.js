@@ -25,7 +25,7 @@ fibonacci();`,
         updated_at: new Date('2016-06-26 14:26:16 UTC')
       }, {
         id: 2,
-        user_id: 3,
+        user_id: 2,
         title: 'Reduce Function',
         code_snippet: `var sum = [0, 1, 2, 3].reduce(function(a, b) {
         return a + b;
@@ -48,6 +48,7 @@ fibonacci();`,
         code_snippet: 'test',
         notes: 'test',
         language: 'test',
+        keywords: 'test',
         created_at: new Date('2016-06-26 14:26:16 UTC'),
         updated_at: new Date('2016-06-26 14:26:16 UTC')
       }]);

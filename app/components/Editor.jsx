@@ -84,8 +84,11 @@ const Editor = React.createClass({
               <br/>
                 <input id="notes" name="notes" type="text" onChange={this.props.onFormChange} value={this.props.snippets[this.props.currentIndex].notes} className="validate" />
               </div>
+              <br/>
+              <Link to="/main"><button onClick={this.props.patchSnippets}>Save Changes</button></Link>
 
             </div>
+
             </form>
           </div>
         </div>
