@@ -192,6 +192,9 @@ var Addsnippet = _react2.default.createClass({
     this.props.onEditorChangeAddSnippet(newValue);
   },
   render: function render() {
+    if (this.props.snippets.length === 0) {
+      return _react2.default.createElement('section', null);
+    }
     var newIndex = 1;
     // const newIndex = this.props.currentIndex;
     var current = this.props.snippets[newIndex];
@@ -274,7 +277,7 @@ var Addsnippet = _react2.default.createClass({
                 { to: '/main' },
                 _react2.default.createElement(
                   'button',
-                  { onClick: this.props.addNewSnippet },
+                  { onClick: this.props.addNewSnippetToStateAndDB },
                   'Save Snippet'
                 )
               )
@@ -353,18 +356,20 @@ var App = _react2.default.createClass({
         codeSnippet: '',
         language: '',
         keywords: '',
-        notes: ''
+        notes: '',
+        userId: null
       },
       defaultSnippet: {
         title: '',
         codeSnippet: '',
         language: '',
         keywords: '',
-        notes: ''
+        notes: '',
+        userId: null
       },
       searchVisible: false,
       formComplete: false,
-      snippets: {},
+      snippets: [],
       snippetTitles: [],
       currentIndex: 0,
       // snippettest: [],
@@ -394,6 +399,16 @@ var App = _react2.default.createClass({
     //     { snippets: = update(this.state.snippets, {$push: ['y']});
     // );
   },
+  addNewSnippetToStateAndDB: function addNewSnippetToStateAndDB() {
+
+    this.setState({ snippets: this.state.snippets.concat(this.state.addSnippet) });
+    _axios2.default.post('/api-snippets', this.state.addSnippet).then(function (res) {
+      console.log(res.data);
+    }).catch(function (error) {
+      console.log(error);
+    });
+    this.setState({ addSnippet: this.state.defaultSnippet });
+  },
   changeCurrentIndex: function changeCurrentIndex(newIndex) {
     var _this = this;
 
@@ -410,35 +425,31 @@ var App = _react2.default.createClass({
       _this2.setState({ loggedIn: true });
       // console.log(this.state.loggedIn); //working
     }).then(function () {
-      _axios2.default.get('/api-users').then(function (res) {
-        // console.log(res.data); //getting through
-        _this2.setState({ currentUser: res.data });
-        // console.log(this.state.currentUser); //working
-        return res;
-      }).then(function (res) {
-        // console.log(res.data.id);
-        var id = res.data.id;
-        _axios2.default.get('/api-snippets/' + id).then(function (res) {
-          // console.log(res.data.snippetsData);
-          var snippetData = res.data.snippetsData;
-          _this2.setState({ snippets: snippetData });
-          // console.log(this.state.snippets);
-          var snippetMap = _this2.state.snippets.map(function (snippet, index) {
-            // if (index === 0) {
-            //   return
-            // } else {
-            return _this2.state.snippets[index].title;
-            // }
-          });
-          _this2.setState({ snippetTitles: snippetMap });
-          // console.log(snippetMap);
-          // console.log(this.state.snippetTitles)
-        }).catch(function (error) {
-          console.log(error);
-        });
-      }).catch(function (error) {
-        console.log(error);
+      return _axios2.default.get('/api-users');
+    }).then(function (res) {
+      // console.log(res.data); //getting through
+      _this2.setState({ currentUser: res.data });
+      // console.log(this.state.currentUser); //working
+      return res;
+    }).then(function (res) {
+      // console.log(res.data.id);
+      var id = res.data.id;
+      return _axios2.default.get('/api-snippets/' + id);
+    }).then(function (res) {
+      // console.log(res.data.snippetsData);
+      var snippetData = res.data.snippetsData;
+      _this2.setState({ snippets: snippetData });
+      // console.log(this.state.snippets);
+      var snippetMap = _this2.state.snippets.map(function (snippet, index) {
+        // if (index === 0) {
+        //   return
+        // } else {
+        return _this2.state.snippets[index].title;
+        // }
       });
+      _this2.setState({ snippetTitles: snippetMap });
+      // console.log(snippetMap);
+      // console.log(this.state.snippetTitles)
     }).catch(function (error) {
       console.log(error);
     });
@@ -455,6 +466,7 @@ var App = _react2.default.createClass({
   },
   onEditorChangeAddSnippet: function onEditorChangeAddSnippet(newValue) {
     this.setState({ addSnippet: (0, _immutabilityHelper2.default)(this.state.addSnippet, { codeSnippet: { $set: newValue } }) });
+    this.setState({ addSnippet: (0, _immutabilityHelper2.default)(this.state.addSnippet, { userId: { $set: this.state.currentUser.id } }) });
   },
   onFormChange: function onFormChange(event) {
     console.log(event.target.value);
@@ -491,9 +503,9 @@ var App = _react2.default.createClass({
 
   patchSnippets: function patchSnippets() {
     console.log(this.state.currentIndex);
-    var current = this.state.currentIndex;
+    var current = this.state.snippets[this.state.currentIndex];
     console.log(typeof current === 'undefined' ? 'undefined' : _typeof(current));
-    var id = parseInt(current) + 1;
+    var id = current.id;
     // let id = current;
     // id = id.toString();
     console.log(id);
@@ -541,6 +553,7 @@ var App = _react2.default.createClass({
                 onFormChange: _this3.onFormChange
               })),
               _react2.default.createElement(_Addsnippet2.default, _extends({}, _this3.state, {
+                addNewSnippetToStateAndDB: _this3.addNewSnippetToStateAndDB,
                 changeEditor: _this3.changeEditor,
                 currentIndex: _this3.state.currentIndex,
                 snippets: _this3.state.snippets,
@@ -667,11 +680,14 @@ var Editor = _react2.default.createClass({
   // },
 
   render: function render() {
+    if (this.props.snippets.length === 0) {
+      return _react2.default.createElement('section', null);
+    }
     var newIndex = 1;
     // const newIndex = this.props.currentIndex;
     var current = this.props.snippets[newIndex];
     // console.log(current.codeSnippet);
-    console.log(this.props.snippets[1].codeSnippet);
+    //console.log(this.props.snippets[1].codeSnippet);
     // const title = this.props.snippets[this.props.currentIndex].title;
 
     return _react2.default.createElement(
@@ -965,11 +981,11 @@ var Snippetslist = _react2.default.createClass({
     var _this = this;
 
     // console.log(this.props.snippetTitles);
-    var snippetmap = this.props.snippetTitles.map(function (snippetTitle, index) {
+    var snippetmap = this.props.snippets.map(function (snippetTitle, index) {
       return _react2.default.createElement(_Snippets2.default, {
         key: index,
         value: index,
-        snippetTitle: snippetTitle,
+        snippetTitle: _this.props.snippets[index].title,
         currentIndex: _this.props.currentIndex,
         changeCurrentIndex: _this.props.changeCurrentIndex
         // value={this.state.snippets[index].title}

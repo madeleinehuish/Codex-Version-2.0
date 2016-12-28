@@ -21,18 +21,20 @@ const App = React.createClass({
       codeSnippet: '',
       language: '',
       keywords: '',
-      notes: ''
+      notes: '',
+      userId: null
     },
     defaultSnippet: {
       title: '',
       codeSnippet: '',
       language: '',
       keywords: '',
-      notes: ''
+      notes: '',
+      userId: null
     },
     searchVisible: false,
     formComplete: false,
-    snippets: {},
+    snippets: [],
     snippetTitles: [],
     currentIndex: 0,
     // snippettest: [],
@@ -72,6 +74,21 @@ fibonacci();`,
     // );
   },
 
+  addNewSnippetToStateAndDB() {
+
+
+    this.setState({ snippets: this.state.snippets.concat( this.state.addSnippet ) });
+    axios.post('/api-snippets', this.state.addSnippet )
+    .then(res => {
+      console.log(res.data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+    this.setState({ addSnippet: this.state.defaultSnippet });
+
+  },
+
 changeCurrentIndex(newIndex) {
   console.log(newIndex);
   this.setState({ currentIndex: newIndex }, ()=> {
@@ -88,40 +105,34 @@ changeCurrentIndex(newIndex) {
       // console.log(this.state.loggedIn); //working
     })
     .then(() => {
-      axios.get('/api-users')
-      .then(res => {
-        // console.log(res.data); //getting through
-        this.setState({ currentUser: res.data });
-        // console.log(this.state.currentUser); //working
-        return res;
+      return axios.get('/api-users')
+    })
+    .then(res => {
+      // console.log(res.data); //getting through
+      this.setState({ currentUser: res.data });
+      // console.log(this.state.currentUser); //working
+      return res;
+    })
+    .then((res) => {
+      // console.log(res.data.id);
+      let id = res.data.id;
+      return axios.get(`/api-snippets/${id}`);
+    })
+    .then(res => {
+      // console.log(res.data.snippetsData);
+      let snippetData = res.data.snippetsData
+      this.setState({ snippets: snippetData });
+      // console.log(this.state.snippets);
+      const snippetMap = this.state.snippets.map((snippet, index) => {
+        // if (index === 0) {
+        //   return
+        // } else {
+        return this.state.snippets[index].title;
+      // }
       })
-      .then((res) => {
-        // console.log(res.data.id);
-        let id = res.data.id;
-        axios.get(`/api-snippets/${id}`)
-          .then(res => {
-            // console.log(res.data.snippetsData);
-            let snippetData = res.data.snippetsData
-            this.setState({ snippets: snippetData });
-            // console.log(this.state.snippets);
-            const snippetMap = this.state.snippets.map((snippet, index) => {
-              // if (index === 0) {
-              //   return
-              // } else {
-              return this.state.snippets[index].title;
-            // }
-            })
-            this.setState({ snippetTitles: snippetMap });
-            // console.log(snippetMap);
-            // console.log(this.state.snippetTitles)
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      this.setState({ snippetTitles: snippetMap });
+      // console.log(snippetMap);
+      // console.log(this.state.snippetTitles)
     })
     .catch((error) => {
       console.log(error);
@@ -143,6 +154,7 @@ changeCurrentIndex(newIndex) {
 
   onEditorChangeAddSnippet(newValue) {
     this.setState({ addSnippet: update(this.state.addSnippet, { codeSnippet: {$set: newValue}}) });
+    this.setState({ addSnippet: update(this.state.addSnippet, { userId: {$set: this.state.currentUser.id }}) });
   },
 
   onFormChange(event) {
@@ -152,7 +164,7 @@ changeCurrentIndex(newIndex) {
     // const snippet = this.state.snippets[this.state.currentIndex];
     // this.setState({ snippets[this.state.currentIndex].title : event.target.value });
     // this.setState( snippets[this.state.currentIndex].title : event.target.value );
-    this.setState({ snippets: update(this.state.snippets, {[this.state.currentIndex]: {[event.target.name]: {$set: event.target.value}}})})
+    this.setState({ snippets: update(this.state.snippets, {[this.state.currentIndex]: {[event.target.name]: {$set: event.target.value}}}) });
     // return Object.assign({}, snippets, { title: event.target.value });
   },
 
@@ -162,6 +174,7 @@ changeCurrentIndex(newIndex) {
     console.log(this.state.addSnippet.title);
 
     this.setState({ addSnippet: update(this.state.addSnippet, {[event.target.name]: {$set: event.target.value}}) });
+
 
   },
 
@@ -181,9 +194,9 @@ changeCurrentIndex(newIndex) {
 
   patchSnippets() {
     console.log(this.state.currentIndex);
-    const current = this.state.currentIndex;
+    const current = this.state.snippets[this.state.currentIndex];
     console.log(typeof current);
-    let id = (parseInt(current) + 1);
+    let id = current.id;
     // let id = current;
     // id = id.toString();
     console.log(id);
@@ -233,6 +246,7 @@ changeCurrentIndex(newIndex) {
               />
               <Addsnippet
                 { ...this.state }
+                addNewSnippetToStateAndDB={this.addNewSnippetToStateAndDB}
                 changeEditor={this.changeEditor}
                 currentIndex={this.state.currentIndex}
                 snippets={this.state.snippets}

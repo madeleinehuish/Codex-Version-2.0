@@ -14,11 +14,11 @@ const Snippetslist = React.createClass({
 
   render() {
     // console.log(this.props.snippetTitles);
-    const snippetmap = this.props.snippetTitles.map((snippetTitle, index) => {
+    const snippetmap = this.props.snippets.map((snippetTitle, index) => {
       return <Snippets
         key={index}
         value={index}
-        snippetTitle={snippetTitle}
+        snippetTitle={this.props.snippets[index].title}
         currentIndex={this.props.currentIndex}
         changeCurrentIndex={this.props.changeCurrentIndex}
         // value={this.state.snippets[index].title}

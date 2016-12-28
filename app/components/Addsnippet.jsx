@@ -21,6 +21,9 @@ const Addsnippet = React.createClass({
 
 
   render() {
+    if (this.props.snippets.length === 0) {
+      return <section></section>;
+    }
     const newIndex = 1;
     // const newIndex = this.props.currentIndex;
     const current = this.props.snippets[newIndex];
@@ -71,7 +74,7 @@ const Addsnippet = React.createClass({
               </div>
               <br/>
 
-              <Link to="/main"><button onClick={this.props.addNewSnippet}>Save Snippet</button></Link>
+              <Link to="/main"><button onClick={this.props.addNewSnippetToStateAndDB}>Save Snippet</button></Link>
 
             </div>
 

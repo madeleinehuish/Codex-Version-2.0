@@ -10,17 +10,17 @@ const { camelizeKeys, decamelizeKeys } = require('humps');
 // eslint-disable-next-line new-cap
 const router = express.Router();
 
-// const authorize = function(req, res, next) {
-//   const token = req.cookies.token;
-//
-//   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-//     if (err) {
-//       return next(boom.create(401, 'Unauthorized'));
-//     }
-//     req.token = decoded;
-//     next();
-//   });
-// };
+const authorize = function(req, res, next) {
+  const token = req.cookies.token;
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) {
+      return next(boom.create(401, 'Unauthorized'));
+    }
+    req.token = decoded;
+    next();
+  });
+};
 
 router.get('/api-snippets/:id', (req, res, next) => {
   const userId = Number.parseInt(req.params.id);
@@ -53,6 +53,61 @@ router.get('/api-snippets/:id', (req, res, next) => {
     .catch((err) => {
       next(err);
     });
+});
+
+// router.get('/api-snippets/:id', authorize, (req, res, next) => {
+//   const userId = Number.parseInt(req.params.id);
+//
+//   if (!Number.isInteger(userId)) {
+//     return next(boom.create(400, 'Order Id must be an integer'));
+//   }
+//
+//   knex('snippets')
+//   // .innerJoin('snippets', 'snippets.user_id', 'users.id')
+//   .where({
+//     'user_id': req.token.userId
+//   })
+//   .first()
+//   .then((row) => {
+//     if (row) {
+//       return res.send(true);
+//     }
+//
+//     res.send(false);
+//   })
+//   .catch((err) => {
+//     next(err);
+//   });
+// });
+
+router.post('/api-snippets', authorize, (req, res, next) => {
+  const userId = Number.parseInt(req.body.userId);
+
+  if (Number.isNaN(userId)) {
+    return next();
+  }
+
+  knex('snippets')
+  .where('user_id', req.token.userId)
+  .first()
+  .then((snippet) => {
+    if (!snippet) {
+      throw boom.create(404, 'Snippet not found');
+    }
+
+    const insertSnippet = { userId: req.token.userId };
+
+    return knex('snippets')
+    .insert(decamelizeKeys(insertSnippet), '*');
+  })
+  .then((rows) => {
+    const snippet = camelizeKeys(rows[0]);
+
+    res.send(snippet);
+  })
+  .catch((err) => {
+    next(err);
+  });
 });
 
 router.patch('/api-snippets/:id', (req, res, next) => {
