@@ -153,4 +153,40 @@ router.patch('/api-snippets/:id', (req, res, next) => {
     });
 });
 
+router.delete('/api-snippets/:id', authorize, (req, res, next) => {
+  console.log('got into delete');
+  const snippetId = Number.parseInt(req.params.id);
+  console.log(snippetId);
+  if (Number.isNaN(snippetId)) {
+    return next();
+  }
+
+  const clause = { id: snippetId };
+
+  let deleteThisSnippet;
+
+  knex('snippets')
+    .where(clause)
+    .first()
+    .then((row) => {
+      if (!row) {
+        throw boom.create(404, 'Snippet to delete not found');
+      }
+
+      deleteThisSnippet = camelizeKeys(row);
+
+      return knex('snippets')
+        .del()
+        .where('id', deleteThisSnippet.id)
+    })
+    .then(() => {
+      delete deleteThisSnippet.id;
+
+      res.send(deleteThisSnippet);
+    })
+    .catch((err) => {
+      next(err);
+    })
+});
+
 module.exports = router;

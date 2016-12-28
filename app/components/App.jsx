@@ -77,7 +77,7 @@ fibonacci();`,
   addNewSnippetToStateAndDB() {
 
 
-    this.setState({ snippets: this.state.snippets.concat( this.state.addSnippet ) });
+    // this.setState({ snippets: this.state.snippets.concat( this.state.addSnippet ) });
     axios.post('/api-snippets', this.state.addSnippet )
     .then(res => {
       console.log(res.data);
@@ -85,7 +85,11 @@ fibonacci();`,
     .catch((error) => {
       console.log(error);
     });
-    this.setState({ addSnippet: this.state.defaultSnippet });
+    this.setState({ addSnippet: this.state.defaultSnippet }, ()=> {
+      this.forceUpdate();
+      console.log('reset!');
+    });
+
 
   },
 
@@ -96,7 +100,12 @@ changeCurrentIndex(newIndex) {
   });
 },
 
-  componentDidMount() {
+changeEditor(newValue) {
+  this.setState({ newTestCodeValue: newValue });
+  console.log(this.state.newTestCodeValue);
+},
+
+componentDidMount() {
 
     axios.get('/api-token')
     .then(res => {
@@ -139,6 +148,19 @@ changeCurrentIndex(newIndex) {
     });
 },
 
+  deleteSnippet() {
+    const current = this.state.snippets[this.state.currentIndex];
+    let id = current.id;
+    console.log(id);
+    // axios.delete(`/api-snippets/${id}`)
+    axios.delete(`/api-snippets/${id}`)
+    .then((res)=> {
+      console.log(res.data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  },
 
   logOut() {
     this.setState({
@@ -217,10 +239,7 @@ changeCurrentIndex(newIndex) {
       });
   },
 
-  changeEditor(newValue) {
-    this.setState({ newTestCodeValue: newValue });
-    console.log(this.state.newTestCodeValue);
-  },
+
 
 	render() {
     // console.log(this.state.snippets.snippetsData[0].title);
@@ -274,6 +293,7 @@ changeCurrentIndex(newIndex) {
                 onFormChange={this.onFormChange}
                 onEditorChange={this.onEditorChange}
                 patchSnippets={this.patchSnippets}
+                deleteSnippet={this.deleteSnippet}
               />
             </div>
           }/>
