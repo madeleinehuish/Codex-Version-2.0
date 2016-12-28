@@ -22,6 +22,7 @@ const authorize = function(req, res, next) {
   });
 };
 
+// this code pulls all snippets
 router.get('/api-snippets/:id', (req, res, next) => {
   const userId = Number.parseInt(req.params.id);
 
@@ -87,27 +88,23 @@ router.post('/api-snippets', authorize, (req, res, next) => {
     return next();
   }
 
+  const { title, codeSnippet, language, keywords, notes } = req.body;
+
+  console.log(title);
+  const insertSnippet = { userId, title, codeSnippet, language, keywords, notes };
+  let snippet;
+
+
   knex('snippets')
-  .where('user_id', req.token.userId)
-  .first()
-  .then((snippet) => {
-    if (!snippet) {
-      throw boom.create(404, 'Snippet not found');
-    }
+    .insert(decamelizeKeys(insertSnippet), '*')
+    .then((rows) => {
+      snippet = camelizeKeys(rows[0]);
 
-    const insertSnippet = { userId: req.token.userId };
-
-    return knex('snippets')
-    .insert(decamelizeKeys(insertSnippet), '*');
-  })
-  .then((rows) => {
-    const snippet = camelizeKeys(rows[0]);
-
-    res.send(snippet);
-  })
-  .catch((err) => {
-    next(err);
-  });
+      res.send(snippet);
+    })
+    .catch((err) => {
+      next(err);
+    });
 });
 
 router.patch('/api-snippets/:id', (req, res, next) => {
