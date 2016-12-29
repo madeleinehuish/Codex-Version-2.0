@@ -93,7 +93,7 @@ const Editor = React.createClass({
               </div>
               <br/>
 
-              <Link to="/main"><button onClick={this.props.patchSnippets}>Save Changes</button></Link>
+              <Link to="/main"><button onClick={this.props.patchSnippets}>Save To Database</button></Link>
               <br/><br/>
               <Link to="/main"><button onClick={this.props.deleteSnippet}>Delete This Snippet</button></Link>
 

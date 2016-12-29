@@ -25,9 +25,9 @@ const Header = React.createClass({
         </div>
         <nav className="six columns">
           <ul>
-            <li key={this.props.currentUser.id} className="userNav">{this.props.currentUser.firstName}</li>
-            <li className="userNav"><Link to="/main">Main</Link></li>
-            <li className="userNav"><Link to="/editor">Editor</Link></li>
+            <Link to='/main'><li key={this.props.currentUser.id} className="userNav">{this.props.currentUser.firstName}</li></Link>
+            {/* <li className="userNav"><Link to="/main">Main</Link></li>
+            <li className="userNav"><Link to="/editor">Editor</Link></li> */}
 
 
           </ul>

@@ -350,6 +350,7 @@ var App = _react2.default.createClass({
   getInitialState: function getInitialState() {
     return {
       value: '',
+      sortValue: '',
       inputValue: '',
       addSnippet: {
         title: '',
@@ -369,6 +370,7 @@ var App = _react2.default.createClass({
       },
       searchVisible: false,
       formComplete: false,
+      renderByLanguage: false,
       snippets: [],
       snippetTitles: [],
       currentIndex: 0,
@@ -504,6 +506,13 @@ var App = _react2.default.createClass({
 
     this.setState({ addSnippet: (0, _immutabilityHelper2.default)(this.state.addSnippet, _defineProperty({}, event.target.name, { $set: event.target.value })) });
   },
+  onSortChange: function onSortChange(event) {
+    var _this4 = this;
+
+    this.setState({ sortValue: event.target.value }, function () {
+      console.log(_this4.state.sortValue);
+    });
+  },
 
 
   // onSubmitGitHubLogIn() {
@@ -542,8 +551,12 @@ var App = _react2.default.createClass({
       console.log(error);
     });
   },
+  reRenderButton: function reRenderButton() {
+    console.log('rerender');
+    this.setState({ renderByLanguage: true });
+  },
   render: function render() {
-    var _this4 = this;
+    var _this5 = this;
 
     // console.log(this.state.snippets.snippetsData[0].title);
     return _react2.default.createElement(
@@ -553,28 +566,28 @@ var App = _react2.default.createClass({
         'main',
         null,
         _react2.default.createElement(_reactRouter.Match, { pattern: '/', exactly: true, render: function render() {
-            return _react2.default.createElement(_Home2.default, _extends({}, _this4.state, {
-              onSubmitGitHubLogIn: _this4.onSubmitGitHubLogIn
+            return _react2.default.createElement(_Home2.default, _extends({}, _this5.state, {
+              onSubmitGitHubLogIn: _this5.onSubmitGitHubLogIn
             }));
           } }),
         _react2.default.createElement(_reactRouter.Match, { pattern: '/addsnippet', exactly: true, render: function render() {
             return _react2.default.createElement(
               'div',
               null,
-              _react2.default.createElement(_Header2.default, _extends({}, _this4.state, {
-                logIn: _this4.logIn,
-                logOut: _this4.logOut,
-                onSubmit: _this4.onSubmit,
-                onFormChange: _this4.onFormChange
+              _react2.default.createElement(_Header2.default, _extends({}, _this5.state, {
+                logIn: _this5.logIn,
+                logOut: _this5.logOut,
+                onSubmit: _this5.onSubmit,
+                onFormChange: _this5.onFormChange
               })),
-              _react2.default.createElement(_Addsnippet2.default, _extends({}, _this4.state, {
-                addNewSnippetToStateAndDB: _this4.addNewSnippetToStateAndDB,
-                changeEditor: _this4.changeEditor,
-                currentIndex: _this4.state.currentIndex,
-                snippets: _this4.state.snippets,
-                onFormChangeAddSnippet: _this4.onFormChangeAddSnippet,
-                onEditorChangeAddSnippet: _this4.onEditorChangeAddSnippet,
-                patchSnippets: _this4.patchSnippets
+              _react2.default.createElement(_Addsnippet2.default, _extends({}, _this5.state, {
+                addNewSnippetToStateAndDB: _this5.addNewSnippetToStateAndDB,
+                changeEditor: _this5.changeEditor,
+                currentIndex: _this5.state.currentIndex,
+                snippets: _this5.state.snippets,
+                onFormChangeAddSnippet: _this5.onFormChangeAddSnippet,
+                onEditorChangeAddSnippet: _this5.onEditorChangeAddSnippet,
+                patchSnippets: _this5.patchSnippets
               }))
             );
           } }),
@@ -582,20 +595,20 @@ var App = _react2.default.createClass({
             return _react2.default.createElement(
               'div',
               null,
-              _react2.default.createElement(_Header2.default, _extends({}, _this4.state, {
-                logIn: _this4.logIn,
-                logOut: _this4.logOut,
-                onSubmit: _this4.onSubmit,
-                onFormChange: _this4.onFormChange
+              _react2.default.createElement(_Header2.default, _extends({}, _this5.state, {
+                logIn: _this5.logIn,
+                logOut: _this5.logOut,
+                onSubmit: _this5.onSubmit,
+                onFormChange: _this5.onFormChange
               })),
-              _react2.default.createElement(_Editor2.default, _extends({}, _this4.state, {
-                changeEditor: _this4.changeEditor,
-                currentIndex: _this4.state.currentIndex,
-                snippets: _this4.state.snippets,
-                onFormChange: _this4.onFormChange,
-                onEditorChange: _this4.onEditorChange,
-                patchSnippets: _this4.patchSnippets,
-                deleteSnippet: _this4.deleteSnippet
+              _react2.default.createElement(_Editor2.default, _extends({}, _this5.state, {
+                changeEditor: _this5.changeEditor,
+                currentIndex: _this5.state.currentIndex,
+                snippets: _this5.state.snippets,
+                onFormChange: _this5.onFormChange,
+                onEditorChange: _this5.onEditorChange,
+                patchSnippets: _this5.patchSnippets,
+                deleteSnippet: _this5.deleteSnippet
               }))
             );
           } }),
@@ -603,19 +616,21 @@ var App = _react2.default.createClass({
             return _react2.default.createElement(
               'div',
               null,
-              _react2.default.createElement(_Header2.default, _extends({}, _this4.state, {
-                logIn: _this4.logIn,
-                logOut: _this4.logOut,
-                onSubmit: _this4.onSubmit,
-                onFormChange: _this4.onFormChange
+              _react2.default.createElement(_Header2.default, _extends({}, _this5.state, {
+                logIn: _this5.logIn,
+                logOut: _this5.logOut,
+                onSubmit: _this5.onSubmit,
+                onFormChange: _this5.onFormChange
               })),
-              _react2.default.createElement(_Main2.default, _extends({}, _this4.state, {
-                loggedIn: _this4.state.loggedIn,
-                currentUser: _this4.state.currentUser,
-                snippets: _this4.state.snippets,
-                currentIndex: _this4.state.currentIndex,
-                changeCurrentIndex: _this4.changeCurrentIndex,
-                addNewSnippetButton: _this4.addNewSnippetButton
+              _react2.default.createElement(_Main2.default, _extends({}, _this5.state, {
+                loggedIn: _this5.state.loggedIn,
+                currentUser: _this5.state.currentUser,
+                snippets: _this5.state.snippets,
+                currentIndex: _this5.state.currentIndex,
+                changeCurrentIndex: _this5.changeCurrentIndex,
+                addNewSnippetButton: _this5.addNewSnippetButton,
+                reRenderButton: _this5.reRenderButton,
+                onSortChange: _this5.onSortChange
               }))
             );
           } })
@@ -782,7 +797,7 @@ var Editor = _react2.default.createClass({
                 _react2.default.createElement(
                   'button',
                   { onClick: this.props.patchSnippets },
-                  'Save Changes'
+                  'Save To Database'
                 )
               ),
               _react2.default.createElement('br', null),
@@ -879,12 +894,63 @@ var _Addsnippet = require('./Addsnippet');
 
 var _Addsnippet2 = _interopRequireDefault(_Addsnippet);
 
+var _Sortbylist = require('./Sortbylist');
+
+var _Sortbylist2 = _interopRequireDefault(_Sortbylist);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Main = _react2.default.createClass({
   displayName: 'Main',
   render: function render() {
-    // console.log(this.props.snippetTitles);
+    // let languageMap = this.props.snippets.map((snippet, index) => {
+    //   if (this.props.snippets[index].language === undefined) {return}
+    //      else{ return this.props.snippets[index].language };
+    // });
+    //
+    // let uniqueLanguageMap = languageMap.filter((item, pos, self) => {
+    //   if (item === '') {return} else {
+    //     return self.indexOf(item) == pos;
+    //   }
+    // });
+    //
+    // const keywordMap = this.props.snippets.map((snippet, index) => {
+    //   if (this.props.snippets[index].keywords === undefined) {return}
+    //      else{ return this.props.snippets[index].keywords };
+    // });
+    //
+    // const filteredkeyWordMap = keywordMap.filter((item, pos) => {
+    //   return (item !== '');
+    // });
+    //
+    // let newkeywordArray = [];
+    // for (let i = 0; i < filteredkeyWordMap.length; i ++) {
+    //   newkeywordArray[i] = filteredkeyWordMap[i].split(',');
+    // };
+    //
+    // var keywordArrayMerged = [].concat.apply([], newkeywordArray);
+    //
+    // let trimmedKeywordArray = keywordArrayMerged.map((item, index) => {
+    //   return item.trim();
+    // });
+    //
+    // let initialsortByArray = uniqueLanguageMap.concat(trimmedKeywordArray);
+    //
+    // let sortByArrayUnique = initialsortByArray.filter((item, pos, self) => {
+    //     return self.indexOf(item) == pos;
+    // });
+    //
+    // let sortByArray = sortByArrayUnique.sort();
+    //
+    // sortByArray.unshift('All Titles');
+    //
+    // let sortByArrayRender = sortByArray.map((item, index) => {
+    //   return <Sortby
+    //     key={index}
+    //     value={item}
+    //     item={item}
+    //     />
+    // });
 
     return _react2.default.createElement(
       'section',
@@ -914,7 +980,7 @@ var Main = _react2.default.createClass({
           ),
           _react2.default.createElement(
             'div',
-            null,
+            { className: 'four columns' },
             _react2.default.createElement(
               _reactRouter.Link,
               { to: '/addsnippet' },
@@ -923,7 +989,14 @@ var Main = _react2.default.createClass({
                 { className: 'titleWord', id: 'addSnippetButton', onClick: this.props.addNewSnippetButton },
                 'Add New Snippet'
               )
-            )
+            ),
+            _react2.default.createElement('br', null),
+            _react2.default.createElement('br', null),
+            _react2.default.createElement(_Sortbylist2.default, {
+              snippets: this.props.snippets,
+              sortValue: this.props.sortValue,
+              onSortChange: this.props.onSortChange
+            })
           )
         )
       )
@@ -1007,7 +1080,11 @@ var Snippetslist = _react2.default.createClass({
   render: function render() {
     var _this = this;
 
-    // console.log(this.props.snippetTitles);
+    // if (renderByLanguage) {
+    //   const snippetmap = this.props.snippets.map((snippetLanguage, index) => {
+    //     return this.props.snippets.language
+    //   })
+    // }
     var snippetmap = this.props.snippets.map(function (snippetTitle, index) {
       return _react2.default.createElement(_Snippets2.default, {
         key: index,
@@ -1033,6 +1110,149 @@ var Snippetslist = _react2.default.createClass({
 });
 
 exports.default = Snippetslist;
+});
+
+require.register("components/Sortby.jsx", function(exports, require, module) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _reactRouter = require('react-router');
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Sortby = _react2.default.createClass({
+  displayName: 'Sortby',
+  render: function render() {
+    return _react2.default.createElement(
+      'option',
+      { value: this.props.item },
+      this.props.item
+    );
+  }
+});
+
+exports.default = Sortby;
+});
+
+require.register("components/Sortbylist.jsx", function(exports, require, module) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _Sortby = require('./Sortby');
+
+var _Sortby2 = _interopRequireDefault(_Sortby);
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = require('react-dom');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Sortbylist = _react2.default.createClass({
+  displayName: 'Sortbylist',
+  handleChange: function handleChange(event) {
+    console.log(event.target.value);
+    this.props.onSortChange(event);
+    // this.setState({value: event.target.value});
+  },
+  handleSubmit: function handleSubmit(event) {
+    console.log('test');
+    // alert('You picked :  ' + this.state.value);
+    event.preventDefault();
+  },
+  render: function render() {
+    var _this = this;
+
+    var languageMap = this.props.snippets.map(function (snippet, index) {
+      if (_this.props.snippets[index].language === undefined) {
+        return;
+      } else {
+        return _this.props.snippets[index].language;
+      };
+    });
+
+    var uniqueLanguageMap = languageMap.filter(function (item, pos, self) {
+      if (item === '') {
+        return;
+      } else {
+        return self.indexOf(item) == pos;
+      }
+    });
+
+    var keywordMap = this.props.snippets.map(function (snippet, index) {
+      if (_this.props.snippets[index].keywords === undefined) {
+        return;
+      } else {
+        return _this.props.snippets[index].keywords;
+      };
+    });
+
+    var filteredkeyWordMap = keywordMap.filter(function (item, pos) {
+      return item !== '';
+    });
+
+    var newkeywordArray = [];
+    for (var i = 0; i < filteredkeyWordMap.length; i++) {
+      newkeywordArray[i] = filteredkeyWordMap[i].split(',');
+    };
+
+    var keywordArrayMerged = [].concat.apply([], newkeywordArray);
+
+    var trimmedKeywordArray = keywordArrayMerged.map(function (item, index) {
+      return item.trim();
+    });
+
+    var initialsortByArray = uniqueLanguageMap.concat(trimmedKeywordArray);
+
+    var sortByArrayUnique = initialsortByArray.filter(function (item, pos, self) {
+      return self.indexOf(item) == pos;
+    });
+
+    var sortByArray = sortByArrayUnique.sort();
+
+    sortByArray.unshift('All Titles');
+
+    var sortByArrayRender = sortByArray.map(function (item, index) {
+      return _react2.default.createElement(_Sortby2.default, {
+        key: index,
+        value: item,
+        item: item,
+        handleChange: _this.handleChange,
+        sortValue: _this.props.sortValue
+      });
+    });
+
+    return _react2.default.createElement(
+      'form',
+      { onSubmit: this.handleSubmit },
+      _react2.default.createElement(
+        'label',
+        { className: 'titleWord' },
+        'Sort By',
+        _react2.default.createElement(
+          'select',
+          { className: 'u-full-width ', value: this.props.value, onChange: this.handleChange },
+          sortByArrayRender
+        )
+      ),
+      _react2.default.createElement('input', { type: 'submit', value: 'Select' })
+    );
+  }
+});
+
+exports.default = Sortbylist;
 });
 
 require.register("components/layouts/Header.jsx", function(exports, require, module) {
@@ -1089,26 +1309,12 @@ var Header = _react2.default.createClass({
             'ul',
             null,
             _react2.default.createElement(
-              'li',
-              { key: this.props.currentUser.id, className: 'userNav' },
-              this.props.currentUser.firstName
-            ),
-            _react2.default.createElement(
-              'li',
-              { className: 'userNav' },
+              _reactRouter.Link,
+              { to: '/main' },
               _react2.default.createElement(
-                _reactRouter.Link,
-                { to: '/main' },
-                'Main'
-              )
-            ),
-            _react2.default.createElement(
-              'li',
-              { className: 'userNav' },
-              _react2.default.createElement(
-                _reactRouter.Link,
-                { to: '/editor' },
-                'Editor'
+                'li',
+                { key: this.props.currentUser.id, className: 'userNav' },
+                this.props.currentUser.firstName
               )
             )
           )

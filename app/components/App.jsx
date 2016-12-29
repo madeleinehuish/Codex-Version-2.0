@@ -15,6 +15,7 @@ const App = React.createClass({
   getInitialState(){
   return {
     value: '',
+    sortValue: '',
     inputValue: '',
     addSnippet: {
       title: '',
@@ -34,6 +35,7 @@ const App = React.createClass({
     },
     searchVisible: false,
     formComplete: false,
+    renderByLanguage: false,
     snippets: [],
     snippetTitles: [],
     currentIndex: 0,
@@ -200,6 +202,13 @@ componentDidMount() {
 
   },
 
+  onSortChange(event) {
+    this.setState({ sortValue: event.target.value }, ()=> {
+      console.log(this.state.sortValue);
+    })
+
+  },
+
   // onSubmitGitHubLogIn() {
   //   axios.get('/api-oauth/github')
   //     .then((response) => {
@@ -239,7 +248,10 @@ componentDidMount() {
       });
   },
 
-
+  reRenderButton() {
+    console.log('rerender');
+    this.setState({ renderByLanguage: true });
+  },
 
 	render() {
     // console.log(this.state.snippets.snippetsData[0].title);
@@ -315,6 +327,8 @@ componentDidMount() {
                 currentIndex={this.state.currentIndex}
                 changeCurrentIndex={this.changeCurrentIndex}
                 addNewSnippetButton={this.addNewSnippetButton}
+                reRenderButton={this.reRenderButton}
+                onSortChange={this.onSortChange}
               />
             </div>
           }/>

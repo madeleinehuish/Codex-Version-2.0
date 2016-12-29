@@ -13,7 +13,11 @@ const Snippetslist = React.createClass({
   },
 
   render() {
-    // console.log(this.props.snippetTitles);
+    // if (renderByLanguage) {
+    //   const snippetmap = this.props.snippets.map((snippetLanguage, index) => {
+    //     return this.props.snippets.language
+    //   })
+    // }
     const snippetmap = this.props.snippets.map((snippetTitle, index) => {
       return <Snippets
         key={index}
