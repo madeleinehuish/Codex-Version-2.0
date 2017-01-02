@@ -19,6 +19,7 @@
     "nodemon": "nodemon server.js"
   },
   "dependencies": {
+    "algoliasearch": "^3.20.2",
     "auto-reload-brunch": "^2.7.1",
     "axios": "^0.15.2",
     "babel-brunch": "^6.0.6",

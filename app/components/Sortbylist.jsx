@@ -7,7 +7,7 @@ const Sortbylist = React.createClass({
 
   handleChange(event) {
     console.log(event.target.value);
-    this.props.onSortChange(event);
+    this.props.handleSort(event);
     // this.setState({value: event.target.value});
   },
 
@@ -18,9 +18,10 @@ const Sortbylist = React.createClass({
   },
 
   render() {
-    let languageMap = this.props.snippets.map((snippet, index) => {
-      if (this.props.snippets[index].language === undefined) {return}
-         else{ return this.props.snippets[index].language };
+
+    let languageMap = this.props.defaultSnippetArray.map((snippet, index) => {
+      if (this.props.defaultSnippetArray[index].language === undefined) {return ''}
+         else{ return this.props.defaultSnippetArray[index].language };
     });
 
     let uniqueLanguageMap = languageMap.filter((item, pos, self) => {
@@ -29,9 +30,11 @@ const Sortbylist = React.createClass({
       }
     });
 
-    const keywordMap = this.props.snippets.map((snippet, index) => {
-      if (this.props.snippets[index].keywords === undefined) {return}
-         else{ return this.props.snippets[index].keywords };
+    const keywordMap = this.props.defaultSnippetArray.map((snippet, index) => {
+      if (typeof this.props.defaultSnippetArray[index].keywords === undefined) {
+        return '';
+      }
+      else { return this.props.defaultSnippetArray[index].keywords };
     });
 
     const filteredkeyWordMap = keywordMap.filter((item, pos) => {
@@ -76,7 +79,7 @@ const Sortbylist = React.createClass({
               {sortByArrayRender}
             </select>
           </label>
-          <input type="submit" value="Select" />
+          {/* <input type="submit" value="Select" /> */}
       </form>
     );
   }

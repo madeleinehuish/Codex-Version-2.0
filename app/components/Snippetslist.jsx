@@ -35,10 +35,6 @@ const Snippetslist = React.createClass({
         <ul>
             { snippetmap }
 
-            {/* <Snippets
-              snippets={this.props.snippets}
-              snippetTitles={this.props.snippetTitles}
-            /> */}
         </ul>
       </div>
     );

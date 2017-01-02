@@ -13,7 +13,7 @@ const router = express.Router();
 const strategy = new OAuth2Strategy({
   authorizationURL: `https://github.com/login/oauth/authorize`,
   // scope: ['r_basicprofile', 'r_emailaddress'],
-  scope: 'user:email',
+  scope: ['user:email', 'gist'],
   // redirect_url: 'http://localhost:8000/main',
   tokenURL: 'https://github.com/login/oauth/access_token',
   clientID: process.env.GITHUB_CLIENT_ID,
@@ -37,6 +37,13 @@ const strategy = new OAuth2Strategy({
       'User-Agent': 'Maddie Server'
     }
   });
+
+  // const gists = request({
+  //   url: `https://api.github.com/user/emails?access_token=${accessToken}`,
+  //   headers: {
+  //     'User-Agent': 'Maddie Server'
+  //   }
+  // });
 
   Promise.all([profiledata, email])
   .then(([githubprofile, githubemails]) => {

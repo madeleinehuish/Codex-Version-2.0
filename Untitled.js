@@ -277,3 +277,89 @@ Promise.all([profiledata, email])
     <option value="Option 1">all titles</option>
     <option value="Option 2">Language</option>
     <option value="Option 3">Keyword</option>
+
+
+
+
+    const snippetMap = this.state.snippets.map((snippet, index) => {
+      if (this.state.sortValue === '' || this.state.sortValue === 'All Titles') {
+        return this.state.snippets[index].title
+      } else {
+      return (this.state.snippets[index].keywords.includes(this.state.sortValue) || this.state.snippets[index].language.includes(this.state.sortValue));
+    };
+  });
+    console.log(snippetMap);
+    this.setState({ snippetTitles: snippetMap });
+    // console.log(snippetMap);
+
+
+
+
+
+    let languageMap = this.props.defaultSnippetArray.filter((snippet, index) => {
+      // console.log(this.props.snippets[index].language);
+      if (!this.props.defaultSnippetArray[index].language || this.props.defaultSnippetArray[index].language === undefined) {return}
+         else{ return this.props.defaultSnippetArray[index].language === this.props.sortValue.trim()};
+    });
+
+    let uniqueLanguageMap = languageMap.filter((item, pos, self) => {
+      if (item === '') {return} else {
+        return self.indexOf(item) == pos;
+      }
+    });
+
+    const keywordMap = this.props.defaultSnippetArray.map((snippet, index) => {
+      if (this.props.snippets[index].keywords === undefined) {return}
+         else{ return this.props.snippets[index].keywords };
+    });
+
+    const filteredkeyWordMap = keywordMap.filter((item, pos) => {
+      return (item !== '');
+    });
+
+    let newkeywordArray = [];
+    for (let i = 0; i < filteredkeyWordMap.length; i ++) {
+      newkeywordArray[i] = filteredkeyWordMap[i].split(',');
+    };
+
+    var keywordArrayMerged = [].concat.apply([], newkeywordArray);
+
+    let trimmedKeywordArray = keywordArrayMerged.map((item, index) => {
+      return item.trim();
+    });
+
+    let initialsortByArray = uniqueLanguageMap.concat(trimmedKeywordArray);
+
+    let sortByArrayUnique = initialsortByArray.filter((item, pos, self) => {
+        return self.indexOf(item) == pos;
+    });
+
+    let sortByArray = sortByArrayUnique.sort();
+
+    sortByArray.unshift('All Titles');
+
+    let sortByArrayRender = sortByArray.map((item, index) => {
+      return <Sortby
+        key={index}
+        value={item}
+        item={item}
+        handleChange={this.handleChange}
+        sortValue={this.props.sortValue}
+        />
+    });
+
+    return (
+      <form onSubmit={this.handleSubmit}>
+          <label className="titleWord">Sort By
+            <select className="u-full-width " value={this.props.value} onChange={this.handleChange}>
+              {sortByArrayRender}
+            </select>
+          </label>
+          <input type="submit" value="Select" />
+      </form>
+    );
+  }
+
+});
+
+export default Sortbylist;

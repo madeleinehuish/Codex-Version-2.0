@@ -368,10 +368,13 @@ var App = _react2.default.createClass({
         notes: '',
         userId: null
       },
+      defaultTrue: false,
       searchVisible: false,
       formComplete: false,
       renderByLanguage: false,
       snippets: [],
+      defaultSnippetArray: [],
+      sortedSnippets: [],
       snippetTitles: [],
       currentIndex: 0,
       // snippettest: [],
@@ -446,20 +449,10 @@ var App = _react2.default.createClass({
       var id = res.data.id;
       return _axios2.default.get('/api-snippets/' + id);
     }).then(function (res) {
-      // console.log(res.data.snippetsData);
+
       var snippetData = res.data.snippetsData;
-      _this3.setState({ snippets: snippetData });
-      // console.log(this.state.snippets);
-      var snippetMap = _this3.state.snippets.map(function (snippet, index) {
-        // if (index === 0) {
-        //   return
-        // } else {
-        return _this3.state.snippets[index].title;
-        // }
-      });
-      _this3.setState({ snippetTitles: snippetMap });
-      // console.log(snippetMap);
-      // console.log(this.state.snippetTitles)
+      console.log(snippetData);
+      _this3.setState({ snippets: snippetData, defaultSnippetArray: snippetData, sortedSnippets: snippetData });
     }).catch(function (error) {
       console.log(error);
     });
@@ -506,14 +499,53 @@ var App = _react2.default.createClass({
 
     this.setState({ addSnippet: (0, _immutabilityHelper2.default)(this.state.addSnippet, _defineProperty({}, event.target.name, { $set: event.target.value })) });
   },
-  onSortChange: function onSortChange(event) {
+
+
+  // onSortChange(event) {
+  //   this.setState({ sortValue: event.target.value }, ()=> {
+  //     //try pasting code somewhere around here
+  //     const snippetMap = this.state.snippets.filter((snippet, index) => {
+  //         if (this.state.sortValue === '' || this.state.sortValue === 'All Titles') {
+  //           return this.state.snippets[index]
+  //         } else if (this.state.snippets[index].keywords.includes(this.state.sortValue) || this.state.snippets[index].language.includes(this.state.sortValue)) {
+  //         return this.state.snippets[index]
+  //       } else {return}
+  //     });
+  //     console.log(snippetMap);
+  //     this.setState({ snippets: snippetMap });
+  //     console.log(this.state.sortValue);
+  //   })
+  //
+  // },
+
+  handleSort: function handleSort(event) {
     var _this4 = this;
 
-    this.setState({ sortValue: event.target.value }, function () {
-      console.log(_this4.state.sortValue);
+    var sortValue = event.target.value;
+    this.setState({ sortValue: sortValue }, function () {
+      if (_this4.state.sortValue === 'All Titles') {
+        _this4.setState({ sortValue: '' });
+      }
     });
+    var filteredSnippets = void 0;
+    var sortThis = this.state.defaultSnippetArray;
+    if (sortValue !== "All Titles" || sortValue === '') {
+      filteredSnippets = sortThis.filter(function (element) {
+        if (element.language.includes(sortValue)) {
+          return element.language.includes(sortValue);
+        } else if (element.keywords.includes(sortValue)) {
+          return element.keywords.includes(sortValue);
+        }
+      });
+      this.setState({ snippets: filteredSnippets }, function () {
+        console.log(_this4.state.snippets);
+      });
+    } else {
+      this.setState({ snippets: this.state.defaultSnippetArray }, function () {
+        console.log('default snippets');
+      });
+    }
   },
-
 
   // onSubmitGitHubLogIn() {
   //   axios.get('/api-oauth/github')
@@ -630,7 +662,8 @@ var App = _react2.default.createClass({
                 changeCurrentIndex: _this5.changeCurrentIndex,
                 addNewSnippetButton: _this5.addNewSnippetButton,
                 reRenderButton: _this5.reRenderButton,
-                onSortChange: _this5.onSortChange
+                onSortChange: _this5.onSortChange,
+                handleSort: _this5.handleSort
               }))
             );
           } })
@@ -970,6 +1003,11 @@ var Main = _react2.default.createClass({
               this.props.currentUser.firstName,
               '\'s Code Library'
             ),
+            _react2.default.createElement(
+              'h5',
+              null,
+              this.props.sortValue
+            ),
             _react2.default.createElement(_Snippetslist2.default, {
               snippets: this.props.snippets,
               snippetTitles: this.props.snippetTitles,
@@ -995,7 +1033,9 @@ var Main = _react2.default.createClass({
             _react2.default.createElement(_Sortbylist2.default, {
               snippets: this.props.snippets,
               sortValue: this.props.sortValue,
-              onSortChange: this.props.onSortChange
+              onSortChange: this.props.onSortChange,
+              handleSort: this.props.handleSort,
+              defaultSnippetArray: this.props.defaultSnippetArray
             })
           )
         )
@@ -1148,6 +1188,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _Sortby = require('./Sortby');
 
 var _Sortby2 = _interopRequireDefault(_Sortby);
@@ -1164,7 +1206,7 @@ var Sortbylist = _react2.default.createClass({
   displayName: 'Sortbylist',
   handleChange: function handleChange(event) {
     console.log(event.target.value);
-    this.props.onSortChange(event);
+    this.props.handleSort(event);
     // this.setState({value: event.target.value});
   },
   handleSubmit: function handleSubmit(event) {
@@ -1175,11 +1217,11 @@ var Sortbylist = _react2.default.createClass({
   render: function render() {
     var _this = this;
 
-    var languageMap = this.props.snippets.map(function (snippet, index) {
-      if (_this.props.snippets[index].language === undefined) {
-        return;
+    var languageMap = this.props.defaultSnippetArray.map(function (snippet, index) {
+      if (_this.props.defaultSnippetArray[index].language === undefined) {
+        return '';
       } else {
-        return _this.props.snippets[index].language;
+        return _this.props.defaultSnippetArray[index].language;
       };
     });
 
@@ -1191,11 +1233,11 @@ var Sortbylist = _react2.default.createClass({
       }
     });
 
-    var keywordMap = this.props.snippets.map(function (snippet, index) {
-      if (_this.props.snippets[index].keywords === undefined) {
-        return;
+    var keywordMap = this.props.defaultSnippetArray.map(function (snippet, index) {
+      if (_typeof(_this.props.defaultSnippetArray[index].keywords) === undefined) {
+        return '';
       } else {
-        return _this.props.snippets[index].keywords;
+        return _this.props.defaultSnippetArray[index].keywords;
       };
     });
 
@@ -1246,8 +1288,7 @@ var Sortbylist = _react2.default.createClass({
           { className: 'u-full-width ', value: this.props.value, onChange: this.handleChange },
           sortByArrayRender
         )
-      ),
-      _react2.default.createElement('input', { type: 'submit', value: 'Select' })
+      )
     );
   }
 });

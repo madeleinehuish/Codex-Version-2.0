@@ -33,10 +33,13 @@ const App = React.createClass({
       notes: '',
       userId: null
     },
+    defaultTrue: false,
     searchVisible: false,
     formComplete: false,
     renderByLanguage: false,
     snippets: [],
+    defaultSnippetArray: [],
+    sortedSnippets: [],
     snippetTitles: [],
     currentIndex: 0,
     // snippettest: [],
@@ -130,25 +133,17 @@ componentDidMount() {
       return axios.get(`/api-snippets/${id}`);
     })
     .then(res => {
-      // console.log(res.data.snippetsData);
+
       let snippetData = res.data.snippetsData
-      this.setState({ snippets: snippetData });
-      // console.log(this.state.snippets);
-      const snippetMap = this.state.snippets.map((snippet, index) => {
-        // if (index === 0) {
-        //   return
-        // } else {
-        return this.state.snippets[index].title;
-      // }
-      })
-      this.setState({ snippetTitles: snippetMap });
-      // console.log(snippetMap);
-      // console.log(this.state.snippetTitles)
+      console.log(snippetData);
+      this.setState({ snippets: snippetData, defaultSnippetArray: snippetData, sortedSnippets: snippetData });
+
     })
     .catch((error) => {
       console.log(error);
     });
 },
+
 
   deleteSnippet() {
     const current = this.state.snippets[this.state.currentIndex];
@@ -202,13 +197,45 @@ componentDidMount() {
 
   },
 
-  onSortChange(event) {
-    this.setState({ sortValue: event.target.value }, ()=> {
-      console.log(this.state.sortValue);
-    })
+  // onSortChange(event) {
+  //   this.setState({ sortValue: event.target.value }, ()=> {
+  //     //try pasting code somewhere around here
+  //     const snippetMap = this.state.snippets.filter((snippet, index) => {
+  //         if (this.state.sortValue === '' || this.state.sortValue === 'All Titles') {
+  //           return this.state.snippets[index]
+  //         } else if (this.state.snippets[index].keywords.includes(this.state.sortValue) || this.state.snippets[index].language.includes(this.state.sortValue)) {
+  //         return this.state.snippets[index]
+  //       } else {return}
+  //     });
+  //     console.log(snippetMap);
+  //     this.setState({ snippets: snippetMap });
+  //     console.log(this.state.sortValue);
+  //   })
+  //
+  // },
 
+  handleSort(event) {
+    let sortValue = event.target.value;
+    this.setState({ sortValue: sortValue }, ()=> {
+      if (this.state.sortValue === 'All Titles') {
+        this.setState({ sortValue: ''});
+      }
+    });
+    let filteredSnippets;
+    let sortThis = this.state.defaultSnippetArray;
+    if (sortValue !== "All Titles" || sortValue === '') {
+      filteredSnippets = sortThis.filter((element) => {
+        if (element.language.includes(sortValue)) {
+          return element.language.includes(sortValue)
+        } else if (element.keywords.includes(sortValue)) {
+        return element.keywords.includes(sortValue)
+        }
+      });
+      this.setState({ snippets: filteredSnippets },()=>{console.log(this.state.snippets)})
+    } else {
+      this.setState({ snippets: this.state.defaultSnippetArray }, ()=>{console.log('default snippets')});
+    }
   },
-
   // onSubmitGitHubLogIn() {
   //   axios.get('/api-oauth/github')
   //     .then((response) => {
@@ -329,6 +356,7 @@ componentDidMount() {
                 addNewSnippetButton={this.addNewSnippetButton}
                 reRenderButton={this.reRenderButton}
                 onSortChange={this.onSortChange}
+                handleSort={this.handleSort}
               />
             </div>
           }/>

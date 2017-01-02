@@ -67,6 +67,7 @@ const Main = React.createClass({
             <div className="row">
               <div className="eight columns">
               <h4 className="titleWord">{this.props.currentUser.firstName}'s Code Library</h4>
+              <h5>{this.props.sortValue}</h5>
 
               <Snippetslist
                 snippets={this.props.snippets}
@@ -83,6 +84,8 @@ const Main = React.createClass({
                   snippets={this.props.snippets}
                   sortValue={this.props.sortValue}
                   onSortChange={this.props.onSortChange}
+                  handleSort={this.props.handleSort}
+                  defaultSnippetArray={this.props.defaultSnippetArray}
                 />
               </div>
             </div>
