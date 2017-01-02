@@ -6,6 +6,12 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const knex = require('../knex');
 const { camelizeKeys, decamelizeKeys } = require('humps');
+var _ = require('lodash');
+var async = require('async');
+var mysql = require('mysql');
+var algoliasearch = require('algoliasearch');
+var client = algoliasearch("N1SG3F753R", "••••••••••••••••••••••••••••••••");
+var index = client.initIndex('snippets');
 
 // eslint-disable-next-line new-cap
 const router = express.Router();
@@ -21,6 +27,7 @@ const authorize = function(req, res, next) {
     next();
   });
 };
+
 
 // this code pulls all snippets
 router.get('/api-snippets/:id', (req, res, next) => {
@@ -82,7 +89,7 @@ router.get('/api-snippets/:id', (req, res, next) => {
 // });
 
 router.post('/api-snippets', authorize, (req, res, next) => {
-  const userId = Number.parseInt(req.body.userId);
+  let userId = Number.parseInt(req.body.userId);
 
   if (Number.isNaN(userId)) {
     return next();
@@ -91,14 +98,22 @@ router.post('/api-snippets', authorize, (req, res, next) => {
   const { title, codeSnippet, language, keywords, notes } = req.body;
 
   console.log(title);
+
   const insertSnippet = { userId, title, codeSnippet, language, keywords, notes };
   let snippet;
-
 
   knex('snippets')
     .insert(decamelizeKeys(insertSnippet), '*')
     .then((rows) => {
       snippet = camelizeKeys(rows[0]);
+
+      index.saveObject({ snippet, objectID: '1' }, function(err, content) {
+          if (err) {
+            console.error(err);
+            return;
+          }
+          console.log(content);
+        });
 
       res.send(snippet);
     })
@@ -181,6 +196,12 @@ router.delete('/api-snippets/:id', authorize, (req, res, next) => {
     })
     .then(() => {
       delete deleteThisSnippet.id;
+      index.deleteObject('id', function(err) {
+        if (err) {
+          console.error(err);
+          return;
+        }
+      });
 
       res.send(deleteThisSnippet);
     })

@@ -1,65 +1,33 @@
 import axios from 'axios';
 import { Link } from 'react-router';
 import React from 'react';
-import { render } from 'react-dom';
+import { render, ReactDOM } from 'react-dom';
 import Snippetslist from './Snippetslist';
 import Addsnippet from './Addsnippet';
 import Sortbylist from './Sortbylist';
+import Search from './Search';
+import {InstantSearch, Hits, SearchBox} from 'react-instantsearch/dom';
+import setimmediate from 'setimmediate';
 
 
 const Main = React.createClass({
 
 
+  // Product({hit}) {
+  //   return (
+  //     <div>
+  //       {hit.name}
+  //     </div>
+  //   );
+  // },
+
 
   render() {
-    // let languageMap = this.props.snippets.map((snippet, index) => {
-    //   if (this.props.snippets[index].language === undefined) {return}
-    //      else{ return this.props.snippets[index].language };
-    // });
-    //
-    // let uniqueLanguageMap = languageMap.filter((item, pos, self) => {
-    //   if (item === '') {return} else {
-    //     return self.indexOf(item) == pos;
-    //   }
-    // });
-    //
-    // const keywordMap = this.props.snippets.map((snippet, index) => {
-    //   if (this.props.snippets[index].keywords === undefined) {return}
-    //      else{ return this.props.snippets[index].keywords };
-    // });
-    //
-    // const filteredkeyWordMap = keywordMap.filter((item, pos) => {
-    //   return (item !== '');
-    // });
-    //
-    // let newkeywordArray = [];
-    // for (let i = 0; i < filteredkeyWordMap.length; i ++) {
-    //   newkeywordArray[i] = filteredkeyWordMap[i].split(',');
-    // };
-    //
-    // var keywordArrayMerged = [].concat.apply([], newkeywordArray);
-    //
-    // let trimmedKeywordArray = keywordArrayMerged.map((item, index) => {
-    //   return item.trim();
-    // });
-    //
-    // let initialsortByArray = uniqueLanguageMap.concat(trimmedKeywordArray);
-    //
-    // let sortByArrayUnique = initialsortByArray.filter((item, pos, self) => {
-    //     return self.indexOf(item) == pos;
-    // });
-    //
-    // let sortByArray = sortByArrayUnique.sort();
-    //
-    // sortByArray.unshift('All Titles');
-    //
-    // let sortByArrayRender = sortByArray.map((item, index) => {
-    //   return <Sortby
-    //     key={index}
-    //     value={item}
-    //     item={item}
-    //     />
-    // });
+    // const Search =
+    //     <div className="container">
+    //       <Hits hitComponent={this.Product}/>
+    //     </div>
+    // ;
 
     return (
       <section >
@@ -87,6 +55,15 @@ const Main = React.createClass({
                   handleSort={this.props.handleSort}
                   defaultSnippetArray={this.props.defaultSnippetArray}
                 />
+                <br/><br/>
+                <InstantSearch
+                  appId="N1SG3F753R"
+                  apiKey="4501729e99160b33af59fcc9fb0570bb"
+                  indexName="snippets"
+                >
+                {/* <SearchBox /> */}
+                <Search/>
+                </InstantSearch>
               </div>
             </div>
         </div>

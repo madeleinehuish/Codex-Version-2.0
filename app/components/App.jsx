@@ -10,6 +10,7 @@ import Home from './Home';
 import Main from './Main';
 import Addsnippet from './Addsnippet';
 
+
 const App = React.createClass({
 
   getInitialState(){
@@ -63,6 +64,16 @@ fibonacci();`,
     newTestCodeValue: ``
     }
   },
+
+
+  // var index = client.initIndex('contacts');
+  // var contactsJSON = require('./contacts.json');
+  //
+  // index.addObjects(contactsJSON, function(err, content) {
+  //   if (err) {
+  //     console.error(err);
+  //   }
+  // });
 
   addNewSnippetButton() {
     const newIndex = this.state.snippetTitles.length;
@@ -134,9 +145,15 @@ componentDidMount() {
     })
     .then(res => {
 
-      let snippetData = res.data.snippetsData
+      let snippetData = res.data.snippetsData;
       console.log(snippetData);
+      // let x = JSON.stringify(snippetData);
+      // console.log(x);
       this.setState({ snippets: snippetData, defaultSnippetArray: snippetData, sortedSnippets: snippetData });
+
+      // index.addObjects(objects, function(err, content) {
+      //   console.log(content);
+      // });
 
     })
     .catch((error) => {

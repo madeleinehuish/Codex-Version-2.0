@@ -39,7 +39,7 @@ const strategy = new OAuth2Strategy({
   });
 
   // const gists = request({
-  //   url: `https://api.github.com/user/emails?access_token=${accessToken}`,
+  //   url: `https://api.github.com/user/gists?access_token=${accessToken}`,
   //   headers: {
   //     'User-Agent': 'Maddie Server'
   //   }
@@ -50,7 +50,8 @@ const strategy = new OAuth2Strategy({
 
     ghprofile = JSON.parse(githubprofile);
     emails = JSON.parse(githubemails);
-    // console.log(ghprofile);
+    // gists = JSON.parse(githubgists);
+    // console.log(gists);
 
 
     return knex('users')

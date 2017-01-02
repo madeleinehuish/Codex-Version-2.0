@@ -390,6 +390,17 @@ var App = _react2.default.createClass({
       newTestCodeValue: ''
     };
   },
+
+
+  // var index = client.initIndex('contacts');
+  // var contactsJSON = require('./contacts.json');
+  //
+  // index.addObjects(contactsJSON, function(err, content) {
+  //   if (err) {
+  //     console.error(err);
+  //   }
+  // });
+
   addNewSnippetButton: function addNewSnippetButton() {
     var newIndex = this.state.snippetTitles.length;
     console.log(newIndex);
@@ -452,7 +463,13 @@ var App = _react2.default.createClass({
 
       var snippetData = res.data.snippetsData;
       console.log(snippetData);
+      // let x = JSON.stringify(snippetData);
+      // console.log(x);
       _this3.setState({ snippets: snippetData, defaultSnippetArray: snippetData, sortedSnippets: snippetData });
+
+      // index.addObjects(objects, function(err, content) {
+      //   console.log(content);
+      // });
     }).catch(function (error) {
       console.log(error);
     });
@@ -931,59 +948,32 @@ var _Sortbylist = require('./Sortbylist');
 
 var _Sortbylist2 = _interopRequireDefault(_Sortbylist);
 
+var _Search = require('./Search');
+
+var _Search2 = _interopRequireDefault(_Search);
+
+var _dom = require('react-instantsearch/dom');
+
+var _setimmediate = require('setimmediate');
+
+var _setimmediate2 = _interopRequireDefault(_setimmediate);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Main = _react2.default.createClass({
   displayName: 'Main',
+
+
+  // Product({hit}) {
+  //   return (
+  //     <div>
+  //       {hit.name}
+  //     </div>
+  //   );
+  // },
+
+
   render: function render() {
-    // let languageMap = this.props.snippets.map((snippet, index) => {
-    //   if (this.props.snippets[index].language === undefined) {return}
-    //      else{ return this.props.snippets[index].language };
-    // });
-    //
-    // let uniqueLanguageMap = languageMap.filter((item, pos, self) => {
-    //   if (item === '') {return} else {
-    //     return self.indexOf(item) == pos;
-    //   }
-    // });
-    //
-    // const keywordMap = this.props.snippets.map((snippet, index) => {
-    //   if (this.props.snippets[index].keywords === undefined) {return}
-    //      else{ return this.props.snippets[index].keywords };
-    // });
-    //
-    // const filteredkeyWordMap = keywordMap.filter((item, pos) => {
-    //   return (item !== '');
-    // });
-    //
-    // let newkeywordArray = [];
-    // for (let i = 0; i < filteredkeyWordMap.length; i ++) {
-    //   newkeywordArray[i] = filteredkeyWordMap[i].split(',');
-    // };
-    //
-    // var keywordArrayMerged = [].concat.apply([], newkeywordArray);
-    //
-    // let trimmedKeywordArray = keywordArrayMerged.map((item, index) => {
-    //   return item.trim();
-    // });
-    //
-    // let initialsortByArray = uniqueLanguageMap.concat(trimmedKeywordArray);
-    //
-    // let sortByArrayUnique = initialsortByArray.filter((item, pos, self) => {
-    //     return self.indexOf(item) == pos;
-    // });
-    //
-    // let sortByArray = sortByArrayUnique.sort();
-    //
-    // sortByArray.unshift('All Titles');
-    //
-    // let sortByArrayRender = sortByArray.map((item, index) => {
-    //   return <Sortby
-    //     key={index}
-    //     value={item}
-    //     item={item}
-    //     />
-    // });
 
     return _react2.default.createElement(
       'section',
@@ -1036,7 +1026,18 @@ var Main = _react2.default.createClass({
               onSortChange: this.props.onSortChange,
               handleSort: this.props.handleSort,
               defaultSnippetArray: this.props.defaultSnippetArray
-            })
+            }),
+            _react2.default.createElement('br', null),
+            _react2.default.createElement('br', null),
+            _react2.default.createElement(
+              _dom.InstantSearch,
+              {
+                appId: 'N1SG3F753R',
+                apiKey: '4501729e99160b33af59fcc9fb0570bb',
+                indexName: 'snippets'
+              },
+              _react2.default.createElement(_Search2.default, null)
+            )
           )
         )
       )
@@ -1045,6 +1046,52 @@ var Main = _react2.default.createClass({
 });
 
 exports.default = Main;
+});
+
+require.register("components/Search.jsx", function(exports, require, module) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = require('react-dom');
+
+var _dom = require('react-instantsearch/dom');
+
+var _setimmediate = require('setimmediate');
+
+var _setimmediate2 = _interopRequireDefault(_setimmediate);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Search = _react2.default.createClass({
+  displayName: 'Search',
+  searchproduct: function searchproduct(_ref) {
+    var hit = _ref.hit;
+
+    return _react2.default.createElement(
+      'div',
+      null,
+      hit.title
+    );
+    console.log(hit);
+  },
+  render: function render() {
+    return _react2.default.createElement(
+      'div',
+      { className: 'container' },
+      _react2.default.createElement(_dom.SearchBox, null),
+      _react2.default.createElement(_dom.Hits, { hitComponent: this.searchproduct })
+    );
+  }
+});
+
+exports.default = Search;
 });
 
 require.register("components/Snippets.jsx", function(exports, require, module) {
@@ -1389,7 +1436,9 @@ _reactDom2.default.render(_react2.default.createElement(_App2.default, null), do
 });
 
 require.alias("buffer/index.js", "buffer");
-require.alias("process/browser.js", "process");process = require('process');require.register("___globals___", function(exports, require, module) {
+require.alias("events/events.js", "events");
+require.alias("process/browser.js", "process");
+require.alias("util/util.js", "sys");process = require('process');require.register("___globals___", function(exports, require, module) {
   
 });})();require('___globals___');
 
