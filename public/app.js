@@ -453,7 +453,14 @@ var App = _react2.default.createClass({
     }).then(function (res) {
       // console.log(res.data); //getting through
       _this3.setState({ currentUser: res.data });
-      // console.log(this.state.currentUser); //working
+      console.log(res.data.gistUrl);
+      // axios.get('/api-snippets/gists')
+      //   .then((result)=>{
+      //     console.log(result);
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //   });
       return res;
     }).then(function (res) {
       // console.log(res.data.id);
@@ -962,17 +969,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var Main = _react2.default.createClass({
   displayName: 'Main',
-
-
-  // Product({hit}) {
-  //   return (
-  //     <div>
-  //       {hit.name}
-  //     </div>
-  //   );
-  // },
-
-
   render: function render() {
 
     return _react2.default.createElement(
@@ -1018,6 +1014,8 @@ var Main = _react2.default.createClass({
                 'Add New Snippet'
               )
             ),
+            _react2.default.createElement('br', null),
+            _react2.default.createElement('br', null),
             _react2.default.createElement('br', null),
             _react2.default.createElement('br', null),
             _react2.default.createElement(_Sortbylist2.default, {
@@ -1076,8 +1074,12 @@ var Search = _react2.default.createClass({
 
     return _react2.default.createElement(
       'div',
-      null,
-      hit.title
+      { id: 'searchBox' },
+      _react2.default.createElement(
+        'span',
+        { className: 'hit-name' },
+        _react2.default.createElement(_dom.Highlight, { attributeName: 'title', hit: hit })
+      )
     );
     console.log(hit);
   },
@@ -1085,8 +1087,12 @@ var Search = _react2.default.createClass({
     return _react2.default.createElement(
       'div',
       { className: 'container' },
+      _react2.default.createElement(_dom.CurrentRefinements, null),
+      _react2.default.createElement(_dom.ClearAll, null),
       _react2.default.createElement(_dom.SearchBox, null),
-      _react2.default.createElement(_dom.Hits, { hitComponent: this.searchproduct })
+      _react2.default.createElement(_dom.RefinementList, { attributeName: 'category' }),
+      _react2.default.createElement(_dom.Hits, { hitComponent: this.searchproduct }),
+      _react2.default.createElement(_dom.Pagination, null)
     );
   }
 });

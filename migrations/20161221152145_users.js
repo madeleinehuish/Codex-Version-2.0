@@ -6,6 +6,7 @@ exports.up = function(knex) {
     table.string('first_name').notNullable().defaultTo('');
     table.string('last_name').notNullable().defaultTo('');
     table.string('email').notNullable();
+    table.string('gist_url').notNullable();
     table.string('github_id').unique().notNullable();
     table.string('github_token').notNullable();
     table.timestamps(true, true);

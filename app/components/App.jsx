@@ -135,7 +135,14 @@ componentDidMount() {
     .then(res => {
       // console.log(res.data); //getting through
       this.setState({ currentUser: res.data });
-      // console.log(this.state.currentUser); //working
+      console.log(res.data.gistUrl);
+      // axios.get('/api-snippets/gists')
+      //   .then((result)=>{
+      //     console.log(result);
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //   });
       return res;
     })
     .then((res) => {

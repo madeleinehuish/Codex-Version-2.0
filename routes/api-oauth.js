@@ -6,7 +6,8 @@ const knex = require('../knex');
 const passport = require('passport');
 const OAuth2Strategy = require('passport-oauth2');
 const { camelizeKeys, decamelizeKeys } = require('humps');
-const request = require('request-promise')
+const request = require('request-promise');
+var axios = require('axios');
 
 const router = express.Router();
 
@@ -38,18 +39,16 @@ const strategy = new OAuth2Strategy({
     }
   });
 
-  // const gists = request({
-  //   url: `https://api.github.com/user/gists?access_token=${accessToken}`,
-  //   headers: {
-  //     'User-Agent': 'Maddie Server'
-  //   }
-  // });
+
 
   Promise.all([profiledata, email])
   .then(([githubprofile, githubemails]) => {
 
     ghprofile = JSON.parse(githubprofile);
     emails = JSON.parse(githubemails);
+
+
+
     // gists = JSON.parse(githubgists);
     // console.log(gists);
 
@@ -66,10 +65,22 @@ const strategy = new OAuth2Strategy({
     const nameSplit = ghprofile.name.split(' ');
     const firstName = nameSplit[0];
     const lastName = nameSplit[1];
-    console.log(firstName);
-    console.log(lastName);
-    console.log(emails[0].email);
-    console.log(ghprofile);
+    // console.log(firstName);
+    // console.log(lastName);
+    // console.log(emails[0].email);
+    // console.log(ghprofile);
+    // console.log(ghprofile.gists_url);
+    const gistUrl = ghprofile.gists_url.replace('{/gist_id}', '');
+    console.log(gistUrl);
+    axios.get(`${gistUrl}?access_token=${accessToken}`)
+      .then((res) => {
+        console.log('gist data');
+        console.log(res.data[0].files);
+      })
+      .catch((err) => {
+        done(err);
+      });
+
     // console.log(emails[0].email);
     if (user) {
       return user;
@@ -79,6 +90,7 @@ const strategy = new OAuth2Strategy({
         first_name: firstName,
         last_name: lastName,
         email: emails[0].email,
+        gist_url: gistUrl,
         github_id: ghprofile.id,
         github_token: accessToken,
       }), '*');

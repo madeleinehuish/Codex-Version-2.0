@@ -63,6 +63,27 @@ router.get('/api-snippets/:id', (req, res, next) => {
     });
 });
 
+
+router.get('/api-snippets/gists', authorize, (req, res, next) => {
+  const userData = req.body;
+  console.log(userData);
+  res.send(userData);
+  // const gists = request({
+  //   url: `${gistUrl}?access_token=${accessToken}`,
+  //   headers: {
+  //     'User-Agent': 'Maddie Server'
+  //   }
+  // });
+  // console.log(gists);
+  // Promise(gists)
+  //   .then((res) => {
+  //     ghgists = JSON.parse(res);
+  //     console.log(ghgists);
+  //   })
+  //   .catch((err) => {
+  //     done(err);
+  //   });
+});
 // router.get('/api-snippets/:id', authorize, (req, res, next) => {
 //   const userId = Number.parseInt(req.params.id);
 //
