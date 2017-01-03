@@ -105,7 +105,7 @@ fibonacci();`,
       this.forceUpdate();
       console.log('reset!');
     });
-
+ //update default snippets and recalculate
 
   },
 
@@ -148,7 +148,16 @@ componentDidMount() {
     .then((res) => {
       // console.log(res.data.id);
       let id = res.data.id;
-      return axios.get(`/api-snippets/${id}`);
+      // let gistUrlData = { this.state.currentUser.gistUrl }
+      // axios.post('/api-snippets/gists', gistUrlData )
+      //   .then((result)=> {
+      //     console.log(result);
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //   })
+      console.log(this.state.currentUser.gistUrl);
+      return axios.get(`/api-snippets/${id}?gistUrl=${this.state.currentUser.gistUrl}&githubToken=${this.state.currentUser.githubToken}`)
     })
     .then(res => {
 

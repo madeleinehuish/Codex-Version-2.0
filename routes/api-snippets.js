@@ -12,6 +12,8 @@ var mysql = require('mysql');
 var algoliasearch = require('algoliasearch');
 var client = algoliasearch("N1SG3F753R", "••••••••••••••••••••••••••••••••");
 var index = client.initIndex('snippets');
+var axios = require('axios');
+const request = require('request-promise');
 
 // eslint-disable-next-line new-cap
 const router = express.Router();
@@ -30,14 +32,73 @@ const authorize = function(req, res, next) {
 
 
 // this code pulls all snippets
-router.get('/api-snippets/:id', (req, res, next) => {
+router.get(`/api-snippets/:id`, authorize, (req, res, next) => {
   const userId = Number.parseInt(req.params.id);
 
   if (!Number.isInteger(userId)) {
     return next(boom.create(400, 'Order Id must be an integer'));
   }
-
+  // const  { gistUrl } = req.query.gistUrl;
+  // const { githubToken } = req.query.githubToken;
+  console.log(req.query.gistUrl);
+  console.log(req.cookies.token);
+  console.log(req.query.githubToken);
   let snippets;
+  var gistLanguages = [];
+  var gistSnippetMap = [];
+  var gistData = {};
+
+  // const gistrequest = request({
+  //   url: `${req.query.gistUrl}?access_token=${req.query.githubToken}`,
+  //   headers: {
+  //     'User-Agent': 'Maddie Server'
+  //   }
+  // });
+
+  axios.get(`${req.query.gistUrl}?access_token=${req.query.githubToken}`)
+    .then((res) => {
+      console.log('look here');
+      console.log(res);
+      let resMap = [];
+      let finalResArray = [];
+      let resMapinit = [];
+
+      for (let i = 0; i < res.data.length; i++) {
+        if (Object.keys(res.data[i].files).length > 1) {
+           resMap[i] = Object.keys(res.data[i].files).map((key) => {return res.data[i].files[key]});
+        } else {
+          let resKey = Object.keys(res.data[i].files);
+
+          resMap[i] = res.data[i].files[resKey];
+        }
+
+        finalResArray = [].concat.apply([], resMap);
+      }
+
+      gistLanguages = finalResArray.map((gist) => { return gist.language});
+      const gistsUrls = finalResArray.map((gist) => { return gist.raw_url});
+      const promiseArray = gistsUrls.map(url => axios.get(url));
+
+      return axios.all(promiseArray);
+    })
+    .then((result) => {
+      gistSnippetMap = result.map((snippet, index) => {
+        return result[index].data;
+      })
+      console.log('inside');
+      console.log(gistLanguages);
+      console.log(gistSnippetMap);
+      gistData = { gistLanguages, gistSnippetMap };
+      // return gistData;
+
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+  console.log('outside');
+  console.log(gistData);
+  console.log(gistLanguages);
+  console.log(gistSnippetMap);
 
   knex('snippets')
     // .whereRaw('user_id = ?', [req.params.id])
@@ -46,8 +107,7 @@ router.get('/api-snippets/:id', (req, res, next) => {
       if (!row) {
         throw boom.create(404, 'Not Found');
       }
-      snippets = camelizeKeys(row);
-      return snippets;
+      return camelizeKeys(row);
     })
     .then((snippets) => {
       return knex('snippets')

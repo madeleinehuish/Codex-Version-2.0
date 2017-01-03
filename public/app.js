@@ -428,6 +428,7 @@ var App = _react2.default.createClass({
       _this.forceUpdate();
       console.log('reset!');
     });
+    //update default snippets and recalculate
   },
   changeCurrentIndex: function changeCurrentIndex(newIndex) {
     var _this2 = this;
@@ -465,7 +466,16 @@ var App = _react2.default.createClass({
     }).then(function (res) {
       // console.log(res.data.id);
       var id = res.data.id;
-      return _axios2.default.get('/api-snippets/' + id);
+      // let gistUrlData = { this.state.currentUser.gistUrl }
+      // axios.post('/api-snippets/gists', gistUrlData )
+      //   .then((result)=> {
+      //     console.log(result);
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //   })
+      console.log(_this3.state.currentUser.gistUrl);
+      return _axios2.default.get('/api-snippets/' + id + '?gistUrl=' + _this3.state.currentUser.gistUrl + '&githubToken=' + _this3.state.currentUser.githubToken);
     }).then(function (res) {
 
       var snippetData = res.data.snippetsData;

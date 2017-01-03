@@ -46,103 +46,86 @@ const strategy = new OAuth2Strategy({
 
   Promise.all([profiledata, email])
   .then(([githubprofile, githubemails]) => {
-
     ghprofile = JSON.parse(githubprofile);
     emails = JSON.parse(githubemails);
-
-
-
-    // gists = JSON.parse(githubgists);
-    // console.log(gists);
-
 
     return knex('users')
             .where('github_id', ghprofile.id)
             .first()
-
-
-
-
   })
   .then((user) => {
     const nameSplit = ghprofile.name.split(' ');
     const firstName = nameSplit[0];
     const lastName = nameSplit[1];
-    // console.log(firstName);
-    // console.log(lastName);
-    // console.log(emails[0].email);
-    // console.log(ghprofile);
-    // console.log(ghprofile.gists_url);
     const gistUrl = ghprofile.gists_url.replace('{/gist_id}', '');
-    let gistLanguages;
-    const gistSnippets = axios.get(`${gistUrl}?access_token=${accessToken}`)
-      .then((res) => {
-        // console.log(res.data);
-        console.log('gist data');
-        // console.log(res.data[0].files);
-        console.log('check it out');
-        let resMap = [];
-        let finalResArray = [];
-        let resMapinit = [];
-        for (let i = 0; i < res.data.length; i++) {
-          if (Object.keys(res.data[i].files).length > 1) {
-             resMap[i] = Object.keys(res.data[i].files).map((key) => {return res.data[i].files[key]});
-          } else {
-            let resKey = Object.keys(res.data[i].files);
-            console.log(resKey);
-            console.log(res.data[i].files[resKey]);
-            resMap[i] = res.data[i].files[resKey];
-          }
-            // resMap[i] = res.data[i].files};
-            // console.log()
-          // console.log(res.data[i].files);
-          finalResArray = [].concat.apply([], resMap);
-          console.log(finalResArray);
-          console.log(finalResArray.length);
-        }
-        // console.log(res.data.length);
-        // console.log(finalResArray);
-        // console.log(finalResArray.length);
-
-        // console.log(res.data[1].files);
-        // const gistData = res.data[0].files;
-        // const gistMap = Object.keys(gistData).map((key) => { return gistData[key] });
-        // console.log(gistMap);
-        gistLanguages = finalResArray.map((gist) => { return gist.language});
-        const gistsUrls = finalResArray.map((gist) => { return gist.raw_url});
-        // console.log(gistLanguages);
-        // console.log(gistsUrls);
-        let promiseArray = gistsUrls.map(url => axios.get(url));
-        return axios.all(promiseArray);
-      })
-      .then((result) => {
-        const gistSnippetMap = result.map((snippet, index) => {
-          return result[index].data;
-        })
-        // console.log(gistSnippetMap);
-        return { gistLanguages, gistSnippetMap };
-      })
-      .catch((err) => {
-        done(err);
-      });
-    // console.log(gistSnippets);
-    // console.log(emails[0].email);
+    // let gistLanguages = [];
+    // let gistSnippetMap = [];
+    // // let gistData = {};
+    // axios.get(`${gistUrl}?access_token=${accessToken}`)
+    //   .then((res) => {
+    //     let resMap = [];
+    //     let finalResArray = [];
+    //     let resMapinit = [];
+    //
+    //     for (let i = 0; i < res.data.length; i++) {
+    //       if (Object.keys(res.data[i].files).length > 1) {
+    //          resMap[i] = Object.keys(res.data[i].files).map((key) => {return res.data[i].files[key]});
+    //       } else {
+    //         let resKey = Object.keys(res.data[i].files);
+    //
+    //         resMap[i] = res.data[i].files[resKey];
+    //       }
+    //
+    //       finalResArray = [].concat.apply([], resMap);
+    //     }
+    //
+    //     gistLanguages = finalResArray.map((gist) => { return gist.language});
+    //     const gistsUrls = finalResArray.map((gist) => { return gist.raw_url});
+    //     const promiseArray = gistsUrls.map(url => axios.get(url));
+    //
+    //     return axios.all(promiseArray);
+    //   })
+    //   .then((result) => {
+    //     gistSnippetMap = result.map((snippet, index) => {
+    //       return result[index].data;
+    //     })
+    //     console.log('inside');
+    //     console.log(gistLanguages);
+    //     console.log(gistSnippetMap);
+    //     // gistData = { gistLanguages, gistSnippetMap };
+    //     // return gistData;
+    //   })
+    //   .catch((err) => {
+    //     done(err);
+    //   });
+    // console.log('outside');
+    // console.log(gistLanguages);
+    // console.log(gistSnippetMap);
     if (user) {
-      return user;
+      console.log('Updating');
+      console.log(accessToken);
+      console.log(user.id);
+      return knex('users')
+        .update({
+          github_token: accessToken
+        }, '*')
+        .where('id', user.id);
     }
     return knex('users')
-      .insert(({
+      .insert([{
         first_name: firstName,
         last_name: lastName,
         email: emails[0].email,
         gist_url: gistUrl,
         github_id: ghprofile.id,
         github_token: accessToken,
-      }), '*');
+      }], '*');
     })
-    .then((user) => {
-      console.log(user);
-      done(null, camelizeKeys(user));
+    .then((users) => {
+      const user = users[0];
+
+      // console.log(user);
+      done(null, Object.assign(camelizeKeys(user), { githubToken: accessToken }));
     })
     .catch((err) => {
       done(err);
@@ -157,7 +140,7 @@ router.get('/github/callback', passport.authenticate('oauth2', {
   session: false,
   failureRedirect: '/'
 }), (req, res) => {
-  console.log(req.user);
+  // console.log(req.user);
   const expiry = new Date(Date.now() + 1000 * 60 * 60 * 3); // 3 hours
   const token = jwt.sign({ userId: req.user.id }, process.env.JWT_SECRET, {
     expiresIn: '3h'
