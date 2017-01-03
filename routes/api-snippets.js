@@ -128,13 +128,13 @@ router.post('/api-snippets', authorize, (req, res, next) => {
     .then((rows) => {
       snippet = camelizeKeys(rows[0]);
 
-      index.saveObject({ snippet, objectID: '1' }, function(err, content) {
-          if (err) {
-            console.error(err);
-            return;
-          }
-          console.log(content);
-        });
+      // index.saveObject({ snippet, objectID: '1' }, function(err, content) {
+      //     if (err) {
+      //       console.error(err);
+      //       return;
+      //     }
+      //     console.log(content);
+      //   });
 
       res.send(snippet);
     })

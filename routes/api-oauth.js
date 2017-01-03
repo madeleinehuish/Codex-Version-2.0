@@ -9,6 +9,8 @@ const { camelizeKeys, decamelizeKeys } = require('humps');
 const request = require('request-promise');
 var axios = require('axios');
 var _ = require('lodash');
+// var assert = require('assert');
+// var values = require('object.values');
 
 const router = express.Router();
 
@@ -72,35 +74,58 @@ const strategy = new OAuth2Strategy({
     // console.log(ghprofile);
     // console.log(ghprofile.gists_url);
     const gistUrl = ghprofile.gists_url.replace('{/gist_id}', '');
-    console.log(gistUrl);
-    axios.get(`${gistUrl}?access_token=${accessToken}`)
+    let gistLanguages;
+    const gistSnippets = axios.get(`${gistUrl}?access_token=${accessToken}`)
       .then((res) => {
+        // console.log(res.data);
         console.log('gist data');
-        console.log(res.data[0].files);
-        const gistData = res.data[0].files;
-        const gistMap = Object.keys(gistData).map((key) => { return gistData[key] });
-        console.log(gistMap);
-        const gistsLanguages = gistMap.map((gist) => { return gist.language});
-        const gistsUrls = gistMap.map((gist) => { return gist.raw_url});
-        console.log(gistsLanguages);
-        console.log(gistsUrls);
+        // console.log(res.data[0].files);
+        console.log('check it out');
+        let resMap = [];
+        let finalResArray = [];
+        let resMapinit = [];
+        for (let i = 0; i < res.data.length; i++) {
+          if (Object.keys(res.data[i].files).length > 1) {
+             resMap[i] = Object.keys(res.data[i].files).map((key) => {return res.data[i].files[key]});
+          } else {
+            let resKey = Object.keys(res.data[i].files);
+            console.log(resKey);
+            console.log(res.data[i].files[resKey]);
+            resMap[i] = res.data[i].files[resKey];
+          }
+            // resMap[i] = res.data[i].files};
+            // console.log()
+          // console.log(res.data[i].files);
+          finalResArray = [].concat.apply([], resMap);
+          console.log(finalResArray);
+          console.log(finalResArray.length);
+        }
+        // console.log(res.data.length);
+        // console.log(finalResArray);
+        // console.log(finalResArray.length);
+
+        // console.log(res.data[1].files);
+        // const gistData = res.data[0].files;
+        // const gistMap = Object.keys(gistData).map((key) => { return gistData[key] });
+        // console.log(gistMap);
+        gistLanguages = finalResArray.map((gist) => { return gist.language});
+        const gistsUrls = finalResArray.map((gist) => { return gist.raw_url});
+        // console.log(gistLanguages);
+        // console.log(gistsUrls);
         let promiseArray = gistsUrls.map(url => axios.get(url));
         return axios.all(promiseArray);
       })
       .then((result) => {
-        // for (let i=0; i < result.length; i++){
-        //   console.log(result[i].data);
-        // };
         const gistSnippetMap = result.map((snippet, index) => {
           return result[index].data;
         })
-        console.log(gistSnippetMap);
-
+        // console.log(gistSnippetMap);
+        return { gistLanguages, gistSnippetMap };
       })
       .catch((err) => {
         done(err);
       });
-
+    // console.log(gistSnippets);
     // console.log(emails[0].email);
     if (user) {
       return user;
