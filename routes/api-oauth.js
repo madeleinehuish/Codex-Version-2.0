@@ -8,6 +8,7 @@ const OAuth2Strategy = require('passport-oauth2');
 const { camelizeKeys, decamelizeKeys } = require('humps');
 const request = require('request-promise');
 var axios = require('axios');
+var _ = require('lodash');
 
 const router = express.Router();
 
@@ -76,6 +77,25 @@ const strategy = new OAuth2Strategy({
       .then((res) => {
         console.log('gist data');
         console.log(res.data[0].files);
+        const gistData = res.data[0].files;
+        const gistMap = Object.keys(gistData).map((key) => { return gistData[key] });
+        console.log(gistMap);
+        const gistsLanguages = gistMap.map((gist) => { return gist.language});
+        const gistsUrls = gistMap.map((gist) => { return gist.raw_url});
+        console.log(gistsLanguages);
+        console.log(gistsUrls);
+        let promiseArray = gistsUrls.map(url => axios.get(url));
+        return axios.all(promiseArray);
+      })
+      .then((result) => {
+        // for (let i=0; i < result.length; i++){
+        //   console.log(result[i].data);
+        // };
+        const gistSnippetMap = result.map((snippet, index) => {
+          return result[index].data;
+        })
+        console.log(gistSnippetMap);
+
       })
       .catch((err) => {
         done(err);
