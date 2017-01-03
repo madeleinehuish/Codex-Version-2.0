@@ -414,3 +414,111 @@ fibonacci();",
   created_at: new Date('2016-06-26 14:26:16 UTC'),
   updated_at: new Date('2016-06-26 14:26:16 UTC')
 }
+
+
+
+
+
+
+
+
+// this code pulls all snippets
+router.get(`/api-snippets/:id`, authorize, (req, res, next) => {
+  const userId = Number.parseInt(req.params.id);
+
+  if (!Number.isInteger(userId)) {
+    return next(boom.create(400, 'Order Id must be an integer'));
+  }
+  // const  { gistUrl } = req.query.gistUrl;
+  // const { githubToken } = req.query.githubToken;
+  console.log(req.query.gistUrl);
+  console.log(req.cookies.token);
+  console.log(req.query.githubToken);
+  let snippets;
+  var gistLanguages = [];
+  var gistSnippetMap = [];
+  var gistsTitles = [];
+  var gistData = {};
+
+  axios.get(`${req.query.gistUrl}?access_token=${req.query.githubToken}`)
+    .then((res) => {
+      console.log('look here');
+      console.log(res.data);
+      let resMap = [];
+      let finalResArray = [];
+      let resMapinit = [];
+
+      for (let i = 0; i < res.data.length; i++) {
+        if (Object.keys(res.data[i].files).length > 1) {
+           resMap[i] = Object.keys(res.data[i].files).map((key) => {return res.data[i].files[key]});
+        } else {
+          let resKey = Object.keys(res.data[i].files);
+
+          resMap[i] = res.data[i].files[resKey];
+        }
+
+        finalResArray = [].concat.apply([], resMap);
+      }
+      console.log('finalResArray');
+      console.log(finalResArray);
+      gistLanguages = finalResArray.map((gist) => { return gist.language });
+      const gistsUrls = finalResArray.map((gist) => { return gist.raw_url });
+      gistsTitles = finalResArray.map((gist) => { return gist.filename });
+      const promiseArray = gistsUrls.map(url => axios.get(url));
+
+      return axios.all(promiseArray);
+    })
+    .then((result) => {
+      gistSnippetMap = result.map((snippet, index) => {
+        return result[index].data;
+      })
+
+      gistData = { gistsTitles, gistLanguages, gistSnippetMap };
+      return gistData;
+
+    })
+    .then((res)=> {
+
+      for (let i = 0; i < res.gistsTitles.length; i++) {
+        const insertSnippet = { userId, title: res.gistsTitles[i], codeSnippet: res.gistSnippetMap[i], language: res.gistLanguages[i], keywords: 'gist', notes: '' };
+        let snippet;
+
+        knex('snippets')
+          .insert(decamelizeKeys(insertSnippet), '*')
+          .then((rows) => {
+            snippet = camelizeKeys(rows[0]);
+            console.log(snippet);
+            // res.send(snippet);
+          })
+          .catch((err) => {
+            next(err);
+          });
+      }
+    })
+    .then(()=> {
+      knex('snippets')
+
+        .where('user_id', userId)
+        .then((row) => {
+          if (!row) {
+            throw boom.create(404, 'Not Found');
+          }
+          return camelizeKeys(row);
+        })
+        .then((snippets) => {
+          return knex('snippets')
+                 .orderBy('title')
+
+        })
+        .then((rows) => {
+          const snippetsData = camelizeKeys(rows);
+          res.send({ snippetsData });
+        })
+        .catch((err) => {
+          next(err);
+        });
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+});

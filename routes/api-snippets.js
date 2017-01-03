@@ -46,19 +46,13 @@ router.get(`/api-snippets/:id`, authorize, (req, res, next) => {
   let snippets;
   var gistLanguages = [];
   var gistSnippetMap = [];
+  var gistsTitles = [];
   var gistData = {};
-
-  // const gistrequest = request({
-  //   url: `${req.query.gistUrl}?access_token=${req.query.githubToken}`,
-  //   headers: {
-  //     'User-Agent': 'Maddie Server'
-  //   }
-  // });
 
   axios.get(`${req.query.gistUrl}?access_token=${req.query.githubToken}`)
     .then((res) => {
       console.log('look here');
-      console.log(res);
+      console.log(res.data);
       let resMap = [];
       let finalResArray = [];
       let resMapinit = [];
@@ -74,9 +68,11 @@ router.get(`/api-snippets/:id`, authorize, (req, res, next) => {
 
         finalResArray = [].concat.apply([], resMap);
       }
-
-      gistLanguages = finalResArray.map((gist) => { return gist.language});
-      const gistsUrls = finalResArray.map((gist) => { return gist.raw_url});
+      console.log('finalResArray');
+      console.log(finalResArray);
+      gistLanguages = finalResArray.map((gist) => { return gist.language });
+      const gistsUrls = finalResArray.map((gist) => { return gist.raw_url });
+      gistsTitles = finalResArray.map((gist) => { return gist.filename });
       const promiseArray = gistsUrls.map(url => axios.get(url));
 
       return axios.all(promiseArray);
@@ -85,41 +81,61 @@ router.get(`/api-snippets/:id`, authorize, (req, res, next) => {
       gistSnippetMap = result.map((snippet, index) => {
         return result[index].data;
       })
-      console.log('inside');
-      console.log(gistLanguages);
-      console.log(gistSnippetMap);
-      gistData = { gistLanguages, gistSnippetMap };
-      // return gistData;
 
+      gistData = { gistsTitles, gistLanguages, gistSnippetMap };
+      return gistData;
+    })
+    .then((res)=> {
+
+      for (let i = 0; i < res.gistsTitles.length; i++) {
+        const insertSnippet = { userId, title: res.gistsTitles[i], codeSnippet: res.gistSnippetMap[i], language: res.gistLanguages[i], keywords: 'gist', notes: '' };
+        let snippet;
+
+          knex('snippets')
+            .where('title', res.gistsTitles[i])
+            .first()
+            .then((snippet) => {
+              if (!snippet) {
+                knex('snippets')
+                  .insert(decamelizeKeys(insertSnippet), '*')
+                  .then((rows) => {
+                    snippet = camelizeKeys(rows[0]);
+                    console.log(snippet);
+                    // res.send(snippet);
+                  })
+                  .catch((err) => {
+                    next(err);
+                  });
+              }
+
+            })
+      };
+    })
+    .then(()=> {
+      knex('snippets')
+
+        .where('user_id', userId)
+        .then((row) => {
+          if (!row) {
+            throw boom.create(404, 'Not Found');
+          }
+          return camelizeKeys(row);
+        })
+        .then((snippets) => {
+          return knex('snippets')
+                 .orderBy('title')
+
+        })
+        .then((rows) => {
+          const snippetsData = camelizeKeys(rows);
+          res.send({ snippetsData });
+        })
+        .catch((err) => {
+          next(err);
+        });
     })
     .catch((err) => {
       console.error(err);
-    });
-  console.log('outside');
-  console.log(gistData);
-  console.log(gistLanguages);
-  console.log(gistSnippetMap);
-
-  knex('snippets')
-    // .whereRaw('user_id = ?', [req.params.id])
-    .where('user_id', userId)
-    .then((row) => {
-      if (!row) {
-        throw boom.create(404, 'Not Found');
-      }
-      return camelizeKeys(row);
-    })
-    .then((snippets) => {
-      return knex('snippets')
-             .orderBy('title')
-
-    })
-    .then((rows) => {
-      const snippetsData = camelizeKeys(rows);
-      res.send({ snippetsData });
-    })
-    .catch((err) => {
-      next(err);
     });
 });
 
@@ -277,12 +293,12 @@ router.delete('/api-snippets/:id', authorize, (req, res, next) => {
     })
     .then(() => {
       delete deleteThisSnippet.id;
-      index.deleteObject('id', function(err) {
-        if (err) {
-          console.error(err);
-          return;
-        }
-      });
+      // index.deleteObject('id', function(err) {
+      //   if (err) {
+      //     console.error(err);
+      //     return;
+      //   }
+      // });
 
       res.send(deleteThisSnippet);
     })
