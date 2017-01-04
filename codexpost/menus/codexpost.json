@@ -1,0 +1,26 @@
+{
+  "context-menu": {
+    "atom-text-editor": [
+      {
+        "label": "Post Snippet",
+        "command": "codexpost:fetch"
+      }
+    ]
+  },
+  "menu": [
+    {
+      "label": "Packages",
+      "submenu": [
+        {
+          "label": "codexpost",
+          "submenu": [
+            {
+            "label": "Post Snippet",
+            "command": "codexpost:fetch"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

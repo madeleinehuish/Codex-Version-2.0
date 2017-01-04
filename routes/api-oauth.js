@@ -58,49 +58,7 @@ const strategy = new OAuth2Strategy({
     const firstName = nameSplit[0];
     const lastName = nameSplit[1];
     const gistUrl = ghprofile.gists_url.replace('{/gist_id}', '');
-    // let gistLanguages = [];
-    // let gistSnippetMap = [];
-    // // let gistData = {};
-    // axios.get(`${gistUrl}?access_token=${accessToken}`)
-    //   .then((res) => {
-    //     let resMap = [];
-    //     let finalResArray = [];
-    //     let resMapinit = [];
-    //
-    //     for (let i = 0; i < res.data.length; i++) {
-    //       if (Object.keys(res.data[i].files).length > 1) {
-    //          resMap[i] = Object.keys(res.data[i].files).map((key) => {return res.data[i].files[key]});
-    //       } else {
-    //         let resKey = Object.keys(res.data[i].files);
-    //
-    //         resMap[i] = res.data[i].files[resKey];
-    //       }
-    //
-    //       finalResArray = [].concat.apply([], resMap);
-    //     }
-    //
-    //     gistLanguages = finalResArray.map((gist) => { return gist.language});
-    //     const gistsUrls = finalResArray.map((gist) => { return gist.raw_url});
-    //     const promiseArray = gistsUrls.map(url => axios.get(url));
-    //
-    //     return axios.all(promiseArray);
-    //   })
-    //   .then((result) => {
-    //     gistSnippetMap = result.map((snippet, index) => {
-    //       return result[index].data;
-    //     })
-    //     console.log('inside');
-    //     console.log(gistLanguages);
-    //     console.log(gistSnippetMap);
-    //     // gistData = { gistLanguages, gistSnippetMap };
-    //     // return gistData;
-    //   })
-    //   .catch((err) => {
-    //     done(err);
-    //   });
-    // console.log('outside');
-    // console.log(gistLanguages);
-    // console.log(gistSnippetMap);
+
     if (user) {
       console.log('Updating');
       console.log(accessToken);

@@ -96,17 +96,17 @@ fibonacci();`,
     // this.setState({ snippets: this.state.snippets.concat( this.state.addSnippet ) });
     axios.post('/api-snippets', this.state.addSnippet )
     .then(res => {
+      const addSnippet = res.data;
+      this.setState({
+        snippets: this.state.snippets.concat([addSnippet]),
+        defaultSnippetArray: this.state.defaultSnippetArray.concat([addSnippet]),
+        addSnippet: this.state.defaultSnippet
+      });
       console.log(res.data);
     })
     .catch((error) => {
       console.log(error);
     });
-    this.setState({ addSnippet: this.state.defaultSnippet }, ()=> {
-      this.forceUpdate();
-      console.log('reset!');
-    });
- //update default snippets and recalculate
-
   },
 
 changeCurrentIndex(newIndex) {
@@ -125,37 +125,24 @@ componentDidMount() {
 
     axios.get('/api-token')
     .then(res => {
-      // console.log(res.data);  //getting through
+
       this.setState({ loggedIn : true });
-      // console.log(this.state.loggedIn); //working
+
     })
     .then(() => {
       return axios.get('/api-users')
     })
     .then(res => {
-      // console.log(res.data); //getting through
+
       this.setState({ currentUser: res.data });
       console.log(res.data.gistUrl);
-      // axios.get('/api-snippets/gists')
-      //   .then((result)=>{
-      //     console.log(result);
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //   });
+
       return res;
     })
     .then((res) => {
-      // console.log(res.data.id);
+
       let id = res.data.id;
-      // let gistUrlData = { this.state.currentUser.gistUrl }
-      // axios.post('/api-snippets/gists', gistUrlData )
-      //   .then((result)=> {
-      //     console.log(result);
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //   })
+
       console.log(this.state.currentUser.gistUrl);
       return axios.get(`/api-snippets/${id}?gistUrl=${this.state.currentUser.gistUrl}&githubToken=${this.state.currentUser.githubToken}`)
     })
@@ -181,10 +168,14 @@ componentDidMount() {
   deleteSnippet() {
     const current = this.state.snippets[this.state.currentIndex];
     let id = current.id;
-    console.log(id);
     // axios.delete(`/api-snippets/${id}`)
     axios.delete(`/api-snippets/${id}`)
     .then((res)=> {
+      console.log(res.data);
+      const delSnippet = res.data;
+      this.setState({
+        defaultSnippetArray: this.state.defaultSnippetArray.splice(this.state.currentIndex, 0)
+      });
       console.log(res.data);
     })
     .catch((error) => {
@@ -230,23 +221,6 @@ componentDidMount() {
 
   },
 
-  // onSortChange(event) {
-  //   this.setState({ sortValue: event.target.value }, ()=> {
-  //     //try pasting code somewhere around here
-  //     const snippetMap = this.state.snippets.filter((snippet, index) => {
-  //         if (this.state.sortValue === '' || this.state.sortValue === 'All Titles') {
-  //           return this.state.snippets[index]
-  //         } else if (this.state.snippets[index].keywords.includes(this.state.sortValue) || this.state.snippets[index].language.includes(this.state.sortValue)) {
-  //         return this.state.snippets[index]
-  //       } else {return}
-  //     });
-  //     console.log(snippetMap);
-  //     this.setState({ snippets: snippetMap });
-  //     console.log(this.state.sortValue);
-  //   })
-  //
-  // },
-
   handleSort(event) {
     let sortValue = event.target.value;
     this.setState({ sortValue: sortValue }, ()=> {
@@ -269,38 +243,16 @@ componentDidMount() {
       this.setState({ snippets: this.state.defaultSnippetArray }, ()=>{console.log('default snippets')});
     }
   },
-  // onSubmitGitHubLogIn() {
-  //   axios.get('/api-oauth/github')
-  //     .then((response) => {
-  //       console.log(response.data);
-  //     })
-  //     .catch((res) => {
-  //       if(res instanceof Error) {
-  //         console.log(res.message);
-  //       } else {
-  //         console.log(res.data);
-  //       }
-  //     });
-  // },
 
   patchSnippets() {
-    console.log(this.state.currentIndex);
+
     const current = this.state.snippets[this.state.currentIndex];
-    console.log(typeof current);
     let id = current.id;
-    // let id = current;
-    // id = id.toString();
-    console.log(id);
-    // const id = this.state.currentIndex
-    console.log(typeof(id));
-    // const title = this.state.snippets[id].title;
-    // const codeSnippet = this.state.snippets[id].codeSnippet;
-    // const keywords = this.state.snippets[id].keywords;
-    // const notes = this.state.snippets[id].notes;
-    // console.log(this.state.snippets[id + 1]);
+
 
     axios.patch(`/api-snippets/${id}`, this.state.snippets[this.state.currentIndex])
       .then((res)=> {
+
         console.log(res.data);
       })
       .catch((error) => {

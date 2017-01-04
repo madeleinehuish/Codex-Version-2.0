@@ -86,12 +86,11 @@ router.get(`/api-snippets/:id`, authorize, (req, res, next) => {
       return gistData;
     })
     .then((res)=> {
-
-      for (let i = 0; i < res.gistsTitles.length; i++) {
+      const promises = res.gistsTitles.map((gist, i) => {
         const insertSnippet = { userId, title: res.gistsTitles[i], codeSnippet: res.gistSnippetMap[i], language: res.gistLanguages[i], keywords: 'gist', notes: '' };
         let snippet;
 
-          knex('snippets')
+          return knex('snippets')
             .where('title', res.gistsTitles[i])
             .first()
             .then((snippet) => {
@@ -109,7 +108,9 @@ router.get(`/api-snippets/:id`, authorize, (req, res, next) => {
               }
 
             })
-      };
+      })
+      return Promise.all(promises);
+//
     })
     .then(()=> {
       knex('snippets')
@@ -186,6 +187,7 @@ router.get('/api-snippets/gists', authorize, (req, res, next) => {
 // });
 
 router.post('/api-snippets', authorize, (req, res, next) => {
+  console.log('got into post');
   let userId = Number.parseInt(req.body.userId);
 
   if (Number.isNaN(userId)) {

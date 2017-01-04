@@ -301,8 +301,6 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 var _axios = require('axios');
 
 var _axios2 = _interopRequireDefault(_axios);
@@ -420,15 +418,16 @@ var App = _react2.default.createClass({
 
     // this.setState({ snippets: this.state.snippets.concat( this.state.addSnippet ) });
     _axios2.default.post('/api-snippets', this.state.addSnippet).then(function (res) {
+      var addSnippet = res.data;
+      _this.setState({
+        snippets: _this.state.snippets.concat([addSnippet]),
+        defaultSnippetArray: _this.state.defaultSnippetArray.concat([addSnippet]),
+        addSnippet: _this.state.defaultSnippet
+      });
       console.log(res.data);
     }).catch(function (error) {
       console.log(error);
     });
-    this.setState({ addSnippet: this.state.defaultSnippet }, function () {
-      _this.forceUpdate();
-      console.log('reset!');
-    });
-    //update default snippets and recalculate
   },
   changeCurrentIndex: function changeCurrentIndex(newIndex) {
     var _this2 = this;
@@ -446,34 +445,20 @@ var App = _react2.default.createClass({
     var _this3 = this;
 
     _axios2.default.get('/api-token').then(function (res) {
-      // console.log(res.data);  //getting through
+
       _this3.setState({ loggedIn: true });
-      // console.log(this.state.loggedIn); //working
     }).then(function () {
       return _axios2.default.get('/api-users');
     }).then(function (res) {
-      // console.log(res.data); //getting through
+
       _this3.setState({ currentUser: res.data });
       console.log(res.data.gistUrl);
-      // axios.get('/api-snippets/gists')
-      //   .then((result)=>{
-      //     console.log(result);
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //   });
+
       return res;
     }).then(function (res) {
-      // console.log(res.data.id);
+
       var id = res.data.id;
-      // let gistUrlData = { this.state.currentUser.gistUrl }
-      // axios.post('/api-snippets/gists', gistUrlData )
-      //   .then((result)=> {
-      //     console.log(result);
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //   })
+
       console.log(_this3.state.currentUser.gistUrl);
       return _axios2.default.get('/api-snippets/' + id + '?gistUrl=' + _this3.state.currentUser.gistUrl + '&githubToken=' + _this3.state.currentUser.githubToken);
     }).then(function (res) {
@@ -492,11 +477,17 @@ var App = _react2.default.createClass({
     });
   },
   deleteSnippet: function deleteSnippet() {
+    var _this4 = this;
+
     var current = this.state.snippets[this.state.currentIndex];
     var id = current.id;
-    console.log(id);
     // axios.delete(`/api-snippets/${id}`)
     _axios2.default.delete('/api-snippets/' + id).then(function (res) {
+      console.log(res.data);
+      var delSnippet = res.data;
+      _this4.setState({
+        defaultSnippetArray: _this4.state.defaultSnippetArray.splice(_this4.state.currentIndex, 0)
+      });
       console.log(res.data);
     }).catch(function (error) {
       console.log(error);
@@ -533,32 +524,13 @@ var App = _react2.default.createClass({
 
     this.setState({ addSnippet: (0, _immutabilityHelper2.default)(this.state.addSnippet, _defineProperty({}, event.target.name, { $set: event.target.value })) });
   },
-
-
-  // onSortChange(event) {
-  //   this.setState({ sortValue: event.target.value }, ()=> {
-  //     //try pasting code somewhere around here
-  //     const snippetMap = this.state.snippets.filter((snippet, index) => {
-  //         if (this.state.sortValue === '' || this.state.sortValue === 'All Titles') {
-  //           return this.state.snippets[index]
-  //         } else if (this.state.snippets[index].keywords.includes(this.state.sortValue) || this.state.snippets[index].language.includes(this.state.sortValue)) {
-  //         return this.state.snippets[index]
-  //       } else {return}
-  //     });
-  //     console.log(snippetMap);
-  //     this.setState({ snippets: snippetMap });
-  //     console.log(this.state.sortValue);
-  //   })
-  //
-  // },
-
   handleSort: function handleSort(event) {
-    var _this4 = this;
+    var _this5 = this;
 
     var sortValue = event.target.value;
     this.setState({ sortValue: sortValue }, function () {
-      if (_this4.state.sortValue === 'All Titles') {
-        _this4.setState({ sortValue: '' });
+      if (_this5.state.sortValue === 'All Titles') {
+        _this5.setState({ sortValue: '' });
       }
     });
     var filteredSnippets = void 0;
@@ -572,7 +544,7 @@ var App = _react2.default.createClass({
         }
       });
       this.setState({ snippets: filteredSnippets }, function () {
-        console.log(_this4.state.snippets);
+        console.log(_this5.state.snippets);
       });
     } else {
       this.setState({ snippets: this.state.defaultSnippetArray }, function () {
@@ -580,38 +552,13 @@ var App = _react2.default.createClass({
       });
     }
   },
-
-  // onSubmitGitHubLogIn() {
-  //   axios.get('/api-oauth/github')
-  //     .then((response) => {
-  //       console.log(response.data);
-  //     })
-  //     .catch((res) => {
-  //       if(res instanceof Error) {
-  //         console.log(res.message);
-  //       } else {
-  //         console.log(res.data);
-  //       }
-  //     });
-  // },
-
   patchSnippets: function patchSnippets() {
-    console.log(this.state.currentIndex);
+
     var current = this.state.snippets[this.state.currentIndex];
-    console.log(typeof current === 'undefined' ? 'undefined' : _typeof(current));
     var id = current.id;
-    // let id = current;
-    // id = id.toString();
-    console.log(id);
-    // const id = this.state.currentIndex
-    console.log(typeof id === 'undefined' ? 'undefined' : _typeof(id));
-    // const title = this.state.snippets[id].title;
-    // const codeSnippet = this.state.snippets[id].codeSnippet;
-    // const keywords = this.state.snippets[id].keywords;
-    // const notes = this.state.snippets[id].notes;
-    // console.log(this.state.snippets[id + 1]);
 
     _axios2.default.patch('/api-snippets/' + id, this.state.snippets[this.state.currentIndex]).then(function (res) {
+
       console.log(res.data);
     }).catch(function (error) {
       console.log(error);
@@ -622,7 +569,7 @@ var App = _react2.default.createClass({
     this.setState({ renderByLanguage: true });
   },
   render: function render() {
-    var _this5 = this;
+    var _this6 = this;
 
     // console.log(this.state.snippets.snippetsData[0].title);
     return _react2.default.createElement(
@@ -632,28 +579,28 @@ var App = _react2.default.createClass({
         'main',
         null,
         _react2.default.createElement(_reactRouter.Match, { pattern: '/', exactly: true, render: function render() {
-            return _react2.default.createElement(_Home2.default, _extends({}, _this5.state, {
-              onSubmitGitHubLogIn: _this5.onSubmitGitHubLogIn
+            return _react2.default.createElement(_Home2.default, _extends({}, _this6.state, {
+              onSubmitGitHubLogIn: _this6.onSubmitGitHubLogIn
             }));
           } }),
         _react2.default.createElement(_reactRouter.Match, { pattern: '/addsnippet', exactly: true, render: function render() {
             return _react2.default.createElement(
               'div',
               null,
-              _react2.default.createElement(_Header2.default, _extends({}, _this5.state, {
-                logIn: _this5.logIn,
-                logOut: _this5.logOut,
-                onSubmit: _this5.onSubmit,
-                onFormChange: _this5.onFormChange
+              _react2.default.createElement(_Header2.default, _extends({}, _this6.state, {
+                logIn: _this6.logIn,
+                logOut: _this6.logOut,
+                onSubmit: _this6.onSubmit,
+                onFormChange: _this6.onFormChange
               })),
-              _react2.default.createElement(_Addsnippet2.default, _extends({}, _this5.state, {
-                addNewSnippetToStateAndDB: _this5.addNewSnippetToStateAndDB,
-                changeEditor: _this5.changeEditor,
-                currentIndex: _this5.state.currentIndex,
-                snippets: _this5.state.snippets,
-                onFormChangeAddSnippet: _this5.onFormChangeAddSnippet,
-                onEditorChangeAddSnippet: _this5.onEditorChangeAddSnippet,
-                patchSnippets: _this5.patchSnippets
+              _react2.default.createElement(_Addsnippet2.default, _extends({}, _this6.state, {
+                addNewSnippetToStateAndDB: _this6.addNewSnippetToStateAndDB,
+                changeEditor: _this6.changeEditor,
+                currentIndex: _this6.state.currentIndex,
+                snippets: _this6.state.snippets,
+                onFormChangeAddSnippet: _this6.onFormChangeAddSnippet,
+                onEditorChangeAddSnippet: _this6.onEditorChangeAddSnippet,
+                patchSnippets: _this6.patchSnippets
               }))
             );
           } }),
@@ -661,20 +608,20 @@ var App = _react2.default.createClass({
             return _react2.default.createElement(
               'div',
               null,
-              _react2.default.createElement(_Header2.default, _extends({}, _this5.state, {
-                logIn: _this5.logIn,
-                logOut: _this5.logOut,
-                onSubmit: _this5.onSubmit,
-                onFormChange: _this5.onFormChange
+              _react2.default.createElement(_Header2.default, _extends({}, _this6.state, {
+                logIn: _this6.logIn,
+                logOut: _this6.logOut,
+                onSubmit: _this6.onSubmit,
+                onFormChange: _this6.onFormChange
               })),
-              _react2.default.createElement(_Editor2.default, _extends({}, _this5.state, {
-                changeEditor: _this5.changeEditor,
-                currentIndex: _this5.state.currentIndex,
-                snippets: _this5.state.snippets,
-                onFormChange: _this5.onFormChange,
-                onEditorChange: _this5.onEditorChange,
-                patchSnippets: _this5.patchSnippets,
-                deleteSnippet: _this5.deleteSnippet
+              _react2.default.createElement(_Editor2.default, _extends({}, _this6.state, {
+                changeEditor: _this6.changeEditor,
+                currentIndex: _this6.state.currentIndex,
+                snippets: _this6.state.snippets,
+                onFormChange: _this6.onFormChange,
+                onEditorChange: _this6.onEditorChange,
+                patchSnippets: _this6.patchSnippets,
+                deleteSnippet: _this6.deleteSnippet
               }))
             );
           } }),
@@ -682,22 +629,22 @@ var App = _react2.default.createClass({
             return _react2.default.createElement(
               'div',
               null,
-              _react2.default.createElement(_Header2.default, _extends({}, _this5.state, {
-                logIn: _this5.logIn,
-                logOut: _this5.logOut,
-                onSubmit: _this5.onSubmit,
-                onFormChange: _this5.onFormChange
+              _react2.default.createElement(_Header2.default, _extends({}, _this6.state, {
+                logIn: _this6.logIn,
+                logOut: _this6.logOut,
+                onSubmit: _this6.onSubmit,
+                onFormChange: _this6.onFormChange
               })),
-              _react2.default.createElement(_Main2.default, _extends({}, _this5.state, {
-                loggedIn: _this5.state.loggedIn,
-                currentUser: _this5.state.currentUser,
-                snippets: _this5.state.snippets,
-                currentIndex: _this5.state.currentIndex,
-                changeCurrentIndex: _this5.changeCurrentIndex,
-                addNewSnippetButton: _this5.addNewSnippetButton,
-                reRenderButton: _this5.reRenderButton,
-                onSortChange: _this5.onSortChange,
-                handleSort: _this5.handleSort
+              _react2.default.createElement(_Main2.default, _extends({}, _this6.state, {
+                loggedIn: _this6.state.loggedIn,
+                currentUser: _this6.state.currentUser,
+                snippets: _this6.state.snippets,
+                currentIndex: _this6.state.currentIndex,
+                changeCurrentIndex: _this6.changeCurrentIndex,
+                addNewSnippetButton: _this6.addNewSnippetButton,
+                reRenderButton: _this6.reRenderButton,
+                onSortChange: _this6.onSortChange,
+                handleSort: _this6.handleSort
               }))
             );
           } })
@@ -1036,16 +983,7 @@ var Main = _react2.default.createClass({
               defaultSnippetArray: this.props.defaultSnippetArray
             }),
             _react2.default.createElement('br', null),
-            _react2.default.createElement('br', null),
-            _react2.default.createElement(
-              _dom.InstantSearch,
-              {
-                appId: 'N1SG3F753R',
-                apiKey: '4501729e99160b33af59fcc9fb0570bb',
-                indexName: 'snippets'
-              },
-              _react2.default.createElement(_Search2.default, null)
-            )
+            _react2.default.createElement('br', null)
           )
         )
       )

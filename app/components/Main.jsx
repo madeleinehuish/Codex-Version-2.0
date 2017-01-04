@@ -44,13 +44,13 @@ const Main = React.createClass({
                   defaultSnippetArray={this.props.defaultSnippetArray}
                 />
                 <br/><br/>
-                <InstantSearch
+                {/* <InstantSearch
                   appId="N1SG3F753R"
                   apiKey="4501729e99160b33af59fcc9fb0570bb"
                   indexName="snippets"
                 >
                   <Search/>
-                </InstantSearch>
+                </InstantSearch> */}
               </div>
             </div>
         </div>

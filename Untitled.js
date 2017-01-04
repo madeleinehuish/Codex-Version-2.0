@@ -522,3 +522,106 @@ router.get(`/api-snippets/:id`, authorize, (req, res, next) => {
       console.error(err);
     });
 });
+
+
+
+'use babel';
+
+export default class CodexpostView {
+
+  constructor(serializedState) {
+    // Create root element
+    this.element = document.createElement('div');
+    this.element.classList.add('codexpost');
+
+    // Create message element
+    const message = document.createElement('div');
+    message.textContent = 'The Codexpost package is Alive! It\'s ALIVE!';
+    message.classList.add('message');
+    this.element.appendChild(message);
+  }
+
+  // Returns an object that can be retrieved when package is activated
+  serialize() {}
+
+  // Tear down any state and detach
+  destroy() {
+    this.element.remove();
+  }
+
+  getElement() {
+    return this.element;
+  }
+
+}
+
+
+//from file codexpost-view.js
+
+'use babel';
+
+import { CompositeDisposable } from 'atom';
+import axios from 'axios';
+
+export default {
+
+  subscriptions: null,
+
+  activate() {
+
+    this.subscriptions = new CompositeDisposable()
+
+    this.subscriptions.add(atom.commands.add('atom-workspace', {
+      'codexpost:fetch': () => this.fetch()
+    }))
+  },
+
+  deactivate() {
+    this.subscriptions.dispose();
+  },
+
+  fetch() {
+    let editor
+    let self = this
+
+    if (editor = atom.workspace.getActiveTextEditor()) {
+      let selected = editor.getSelectedText()
+      let language = editor.getGrammar().name
+      let url = '/api-snippets'
+      atom.notifications.addSuccess('Something Working!')
+
+      self.post(selected, language, url)
+        .then(() => {
+          atom.notifications.addSuccess(language)
+          return self.post(selected, language, url)
+        })
+        .then((res) => {
+          console.log(res)
+          atom.notifications.addSuccess('Added Snippet to Codex!')
+        })
+        .catch((error) => {
+          atom.notifications.addWarning('huh?')
+          atom.notifications.addWarning(error.reason)
+        })
+    }
+  },
+
+  post(selected, language, url) {
+    let snippetObject = {
+      title: 'atom snippet',
+      codeSnippet: selected,
+      language: language,
+      keywords: 'atom',
+      notes: ''
+    }
+    axios.post(url, snippetObject)
+      .then((res)=> {
+        console.log('posted from Atom Editor')
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+  }
+
+
+}
