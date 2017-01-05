@@ -5,7 +5,6 @@ exports.up = function(knex) {
   return knex.schema.createTable('snippets', (table) => {
     table.increments();
     table.integer('user_id')
-      .notNullable()
       .references('id')
       .inTable('users')
       .onDelete('CASCADE')

@@ -2,6 +2,7 @@
 
 import { CompositeDisposable } from 'atom';
 import axios from 'axios';
+import request from 'request';
 
 export default {
 
@@ -27,44 +28,49 @@ export default {
     if (editor = atom.workspace.getActiveTextEditor()) {
       let selected = editor.getSelectedText()
       let language = editor.getGrammar().name
-      let url = '/api-snippets'
-      atom.notifications.addSuccess('Something Working!')
 
-      self.post(selected, language, url)
-        .then(() => {
-          atom.notifications.addSuccess(language)
-          return self.post(selected, language, url)
-        })
+      self.post(selected, language)
         .then((res) => {
-          console.log(res)
           atom.notifications.addSuccess('Added Snippet to Codex!')
         })
         .catch((error) => {
-          atom.notifications.addWarning('huh?')
           atom.notifications.addWarning(error.reason)
         })
     }
   },
 
-  post(selected, language, url) {
-    atom.notifications.addSuccess('Got into post!')
-    let snippetObject = {
+  post(selected, language) {
+    let snippetData = {
       title: 'atom snippet',
       codeSnippet: selected,
       language: language,
       keywords: 'atom',
       notes: ''
     }
-    atom.notifications.addSuccess('Got past variable declarations')
-    atom.notifications.addSuccess(url)
-    axios.post(url, snippetObject)
-      .then((res)=> {
-        atom.notifications.addSuccess('Got into axios!')
-        console.log('posted from Atom Editor')
-      })
-      .catch((err) => {
-        console.error(err)
-      })
+    atom.notifications.addSuccess('Got into post!')
+    return new Promise((resolve, reject) => {
+      axios.post('http://localhost:8000/api-snippets', snippetData )
+        .then((res) => {
+          atom.notifications.addSuccess('Successful Post with Axios!')
+          resolve(body)
+        })
+        .catch((err) =>{
+          reject({
+            reason: 'Unable to post'
+          })
+        })
+
+      // request.post({ url:'http://localhost:8000/api-snippets', formData: formData }, (error, response, body) => {
+      //   if (!error && response.statusCode == 200) {
+      //     resolve(body)
+      //   } else {
+      //     reject({
+      //       reason: 'Unable to post'
+      //     })
+      //   }
+      // })
+    })
+
   }
 
 

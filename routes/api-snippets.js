@@ -113,8 +113,24 @@ router.get(`/api-snippets/:id`, authorize, (req, res, next) => {
 //
     })
     .then(()=> {
-      knex('snippets')
+      // knex('snippets')
+      //   .where('user_id', null)
+      //   .update(decamelizeKeys('user_id', userId))
+      //
+      //   // .then((snippet) => {
+      //   //   console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+      //   //   console.log(snippet);
+      //   //   const id = snippet.id;
+      //   //
+      //   //   // insert(decamelizeKeys(row), '*')
+      //   // })
+      //   .catch((err) => {
+      //     next(err);
+      //   });
 
+      knex('snippets')
+        // .where('user_id', null)
+        // .update(decamelizeKeys('user_id', userId))
         .where('user_id', userId)
         .then((row) => {
           if (!row) {
@@ -186,17 +202,23 @@ router.get('/api-snippets/gists', authorize, (req, res, next) => {
 //   });
 // });
 
-router.post('/api-snippets', authorize, (req, res, next) => {
+router.post('/api-snippets', (req, res, next) => {
   console.log('got into post');
-  let userId = Number.parseInt(req.body.userId);
-
-  if (Number.isNaN(userId)) {
-    return next();
-  }
+  console.log(req.body);
+  // console.log(res.body);
+  // console.log(res);
+  // console.log(req.form);
+  // let userId = Number.parseInt(req.body.userId);
+  //
+  // if (Number.isNaN(userId)) {
+  //   return next();
+  // }
 
   const { title, codeSnippet, language, keywords, notes } = req.body;
 
   console.log(title);
+
+  const userId = null;
 
   const insertSnippet = { userId, title, codeSnippet, language, keywords, notes };
   let snippet;
@@ -205,15 +227,7 @@ router.post('/api-snippets', authorize, (req, res, next) => {
     .insert(decamelizeKeys(insertSnippet), '*')
     .then((rows) => {
       snippet = camelizeKeys(rows[0]);
-
-      // index.saveObject({ snippet, objectID: '1' }, function(err, content) {
-      //     if (err) {
-      //       console.error(err);
-      //       return;
-      //     }
-      //     console.log(content);
-      //   });
-
+      console.log('got through knex');
       res.send(snippet);
     })
     .catch((err) => {
