@@ -104,7 +104,7 @@ nav.six.columns > ul > li#login-icon {
 #home {
   /*background-color: #59657f;*/
   /*background: url('../images/dutchlibrary.jpg');*/
-  background: url('assets/images/dutchlibrary.jpg') no-repeat bottom center scroll;
+  background: url('assets/images/bluecode.jpg') no-repeat center center scroll;
   /*background-image: url('../assets/images/dutchlibrary.jpg');
   background-size: cover;
   overflow:hidden;*/
@@ -126,10 +126,18 @@ nav.six.columns > ul > li#login-icon {
 }
 
 .mainTitle {
-  color: #59656f;
+  /*color: #59656f;*/
+  color: white;
   border: 1px solid;
   padding: 7px;
   border-radius: 2%;
+}
+
+.mainTitleWord {
+  color: white;
+  margin-top:100px;
+  /*margin-top: 15px;*/
+  margin-bottom: -1px;
 }
 
 /*---------- HERO ----------*/
