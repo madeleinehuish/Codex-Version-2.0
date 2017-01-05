@@ -24,12 +24,9 @@ const Addsnippet = React.createClass({
     if (this.props.snippets.length === 0) {
       return <section></section>;
     }
-    const newIndex = 1;
-    // const newIndex = this.props.currentIndex;
+    // const newIndex = 1;
+    const newIndex = this.props.currentIndex;
     const current = this.props.snippets[newIndex];
-    // console.log(current.codeSnippet);
-    console.log(this.props.snippets[1].codeSnippet);
-    // const title = this.props.snippets[this.props.currentIndex].title;
 
     return (
       <section >

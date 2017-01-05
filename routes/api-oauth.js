@@ -7,18 +7,23 @@ const passport = require('passport');
 const OAuth2Strategy = require('passport-oauth2');
 const { camelizeKeys, decamelizeKeys } = require('humps');
 const request = require('request-promise');
-var axios = require('axios');
-var _ = require('lodash');
-
+const axios = require('axios');
+const _ = require('lodash');
 const router = express.Router();
-
+let callbackenvURL;
+if (process.env.NODE_ENV !== 'production') {
+  callbackenvURL = 'http://localhost:8000/api-oauth/github/callback'
+} else {
+  callbackenvURL = 'https://madeleinehuish-codex.herokuapp.com/api-oauth/github/callback'
+};
 const strategy = new OAuth2Strategy({
   authorizationURL: `https://github.com/login/oauth/authorize`,
   scope: ['user:email', 'gist'],
   tokenURL: 'https://github.com/login/oauth/access_token',
   clientID: process.env.GITHUB_CLIENT_ID,
   clientSecret: process.env.GITHUB_CLIENT_SECRET,
-  callbackURL: 'https://madeleinehuish-codex.herokuapp.com/api-oauth/github/callback'
+  callbackURL: callbackenvURL
+
 }, (accessToken, refreshToken, profile, done) => {
   let ghprofile = null;
   let emails = null;

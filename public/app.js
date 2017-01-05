@@ -195,12 +195,9 @@ var Addsnippet = _react2.default.createClass({
     if (this.props.snippets.length === 0) {
       return _react2.default.createElement('section', null);
     }
-    var newIndex = 1;
-    // const newIndex = this.props.currentIndex;
+    // const newIndex = 1;
+    var newIndex = this.props.currentIndex;
     var current = this.props.snippets[newIndex];
-    // console.log(current.codeSnippet);
-    console.log(this.props.snippets[1].codeSnippet);
-    // const title = this.props.snippets[this.props.currentIndex].title;
 
     return _react2.default.createElement(
       'section',
