@@ -11,7 +11,7 @@ const Home = React.createClass({
     return (
       <section id="home">
         <div id="hero">
-          <h1 className="titleWord">Codex</h1>
+          <h1 className="mainTitleWord">Codex</h1>
           {/* <div className="twelve columns"> */}
             <a className="mainTitle" href="/api-oauth/github">Sign in with GitHub</a>
           {/* </div> */}

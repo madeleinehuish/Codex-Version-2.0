@@ -145,14 +145,33 @@ router.get(`/api-snippets/:id`, authorize, (req, res, next) => {
 });
 
 //used from Atom Plugin to post to database
-router.post('/api-snippets', (req, res, next) => {
+router.post('/api-snippets', authorize, (req, res, next) => {
   console.log('got into post');
   console.log(req.body);
 
-  const { userId, title, codeSnippet, language, keywords, notes } = req.body;
-  if (keywords.includes('atom')) {
-    const userId = null;
-  }
+  const { title, codeSnippet, language, keywords, notes } = req.body;
+  const { userId } = req.token;
+
+  const insertSnippet = { userId, title, codeSnippet, language, keywords, notes };
+  let snippet;
+
+  knex('snippets')
+    .insert(decamelizeKeys(insertSnippet), '*')
+    .then((rows) => {
+      snippet = camelizeKeys(rows[0]);
+      console.log('got through knex');
+      res.send(snippet);
+    })
+    .catch((err) => {
+      next(err);
+    });
+});
+
+router.post('/api-snippets/atom', (req, res, next) => {
+  console.log('got into post');
+  console.log(req.body);
+
+  const { title, codeSnippet, language, keywords, notes } = req.body;
   const userId = null;
   const insertSnippet = { userId, title, codeSnippet, language, keywords, notes };
   let snippet;

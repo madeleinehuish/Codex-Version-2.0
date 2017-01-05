@@ -834,7 +834,7 @@ var Home = _react2.default.createClass({
         { id: 'hero' },
         _react2.default.createElement(
           'h1',
-          { className: 'titleWord' },
+          { className: 'mainTitleWord' },
           'Codex'
         ),
         _react2.default.createElement(
