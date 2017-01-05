@@ -149,7 +149,10 @@ router.post('/api-snippets', (req, res, next) => {
   console.log('got into post');
   console.log(req.body);
 
-  const { title, codeSnippet, language, keywords, notes } = req.body;
+  const { userId, title, codeSnippet, language, keywords, notes } = req.body;
+  if (keywords.includes('atom')) {
+    const userId = null;
+  }
   const userId = null;
   const insertSnippet = { userId, title, codeSnippet, language, keywords, notes };
   let snippet;

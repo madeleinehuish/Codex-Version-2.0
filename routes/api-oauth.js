@@ -18,7 +18,7 @@ const strategy = new OAuth2Strategy({
   tokenURL: 'https://github.com/login/oauth/access_token',
   clientID: process.env.GITHUB_CLIENT_ID,
   clientSecret: process.env.GITHUB_CLIENT_SECRET,
-  callbackURL: 'http://localhost:8000/api-oauth/github/callback'
+  callbackURL: 'https://madeleinehuish-codex.herokuapp.com/api-oauth/github/callback'
 }, (accessToken, refreshToken, profile, done) => {
   let ghprofile = null;
   let emails = null;
