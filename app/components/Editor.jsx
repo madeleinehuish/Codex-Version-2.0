@@ -56,7 +56,7 @@ const Editor = React.createClass({
           <div className="row">
           <form>
             <div className="four columns">
-            <h4 className="titleWord">{this.props.snippets[this.props.currentIndex].title}</h4>
+            <h5 className="titleWord">{this.props.snippets[this.props.currentIndex].title}</h5>
             <div id="codeSnippet">
             <AceEditor
               mode="javascript"
@@ -93,9 +93,9 @@ const Editor = React.createClass({
               </div>
               <br/>
 
-              <Link to="/main"><button onClick={this.props.patchSnippets}>Save To Database</button></Link>
+              <Link to="/main"><button onClick={this.props.patchSnippets}>Save To Codex</button></Link>
               <br/><br/>
-              <Link to="/main"><button onClick={this.props.deleteSnippet}>Delete This Snippet</button></Link>
+              <Link to="/main"><button onClick={this.props.deleteSnippet}>Delete</button></Link>
 
             </div>
 

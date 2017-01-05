@@ -53,8 +53,10 @@ header > div.twelve.columns, nav.six.columns {
 #logoWord {
   margin-top: 5px;
   color: #fff;
-  margin-left: 50px;
+  margin-left: 100px;
 }
+
+
 
 .snippetTitles {
   color: #59656f;
@@ -101,8 +103,11 @@ nav.six.columns > ul > li#login-icon {
 
 #home {
   /*background-color: #59657f;*/
-  background: url('../images/dutchlibrary.jpg');
-  /*background: url(images/dutchlibrary.jpg) no-repeat bottom center scroll;*/
+  /*background: url('../images/dutchlibrary.jpg');*/
+  /*background: url('../assets/images/dutchlibrary.jpg') no-repeat center center fixed;*/
+  /*background-image: url('../assets/images/dutchlibrary.jpg');
+  background-size: cover;
+  overflow:hidden;*/
 }
 
 .titleWord {
@@ -153,5 +158,24 @@ nav.six.columns > ul > li#login-icon {
 #searchBox {
    margin-top: 10px;
 }
+
+label, legend {
+  font-weight: 300;
+}
+
+.avatar {
+  width: auto;
+  height: 30px;
+  padding-right: 10px;
+  margin-left: -80px;
+}
+
+body {
+  font-weight: 300;
+}
+/*#search-img {
+  width: 4%;
+  float: left;
+}*/
 
 /*# sourceMappingURL=app.css.map*/

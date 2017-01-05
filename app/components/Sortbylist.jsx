@@ -75,7 +75,7 @@ const Sortbylist = React.createClass({
 
     return (
       <form onSubmit={this.handleSubmit}>
-          <label className="titleWord">Sort By
+          <label className="titleWord">Filter
             <select className="u-full-width " value={this.props.value} onChange={this.handleChange}>
               {sortByArrayRender}
             </select>

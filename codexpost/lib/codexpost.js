@@ -31,8 +31,8 @@ export default {
       // let language = languageinit.split(" ").join(', ')
 
       self.post(selected, language)
-        .then((res) => {
-          atom.notifications.addSuccess('Added Snippet to Codex!')
+        .then(() => {
+          atom.notifications.addSuccess('Thumbs up!')
         })
         .catch((error) => {
           atom.notifications.addWarning(error.reason)
@@ -48,31 +48,21 @@ export default {
       keywords: 'atom',
       notes: ''
     }
-    atom.notifications.addSuccess('Got into post!')
+
     return new Promise((resolve, reject) => {
       axios.post('http://localhost:8000/api-snippets', snippetData )
         .then((res) => {
+          atom.notifications.addSuccess('Status : ' + res.status)
+          if(res.status === 200) {
           atom.notifications.addSuccess('Successful Post with Axios!')
+        }
           resolve(body)
         })
         .catch((err) =>{
           reject({
-            reason: 'Unable to post'
+            // reason: 'Unable to post'
           })
         })
-
-      // request.post({ url:'http://localhost:8000/api-snippets', formData: formData }, (error, response, body) => {
-      //   if (!error && response.statusCode == 200) {
-      //     resolve(body)
-      //   } else {
-      //     reject({
-      //       reason: 'Unable to post'
-      //     })
-      //   }
-      // })
     })
-
   }
-
-
 }

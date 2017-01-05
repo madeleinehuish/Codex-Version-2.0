@@ -40,7 +40,7 @@ getInitialState(){
     renderByLanguage: false,
     snippets: [],
     defaultSnippetArray: [],
-    sortedSnippets: [],
+    // sortedSnippets: [],
     snippetTitles: [],
     currentIndex: 0,
     loggedIn: false,
@@ -101,7 +101,7 @@ componentDidMount() {
   .then(res => {
     let snippetData = res.data.snippetsData;
 
-    this.setState({ snippets: snippetData, defaultSnippetArray: snippetData, sortedSnippets: snippetData });
+    this.setState({ snippets: snippetData, defaultSnippetArray: snippetData });
   })
   .catch((error) => {
     console.log(error);
@@ -153,6 +153,25 @@ onFormChange(event) {
 onFormChangeAddSnippet(event) {
   this.setState({ addSnippet: update(this.state.addSnippet, {[event.target.name]: {$set: event.target.value}}) });
 },
+
+handleSearch(event) {
+  console.log(event.target.value);
+    this.setState({ value: event.target.value });
+
+      let searchRender = this.state.snippets.filter((element, index) => {
+
+        if(element.title.toUpperCase().includes(event.target.value.toUpperCase())) {
+          return true;
+        }
+        return false;
+      });
+
+      if (!event.target.value) {
+        this.setState({ snippets: this.state.defaultSnippetArray })
+      } else {
+          this.setState({ snippets : searchRender });
+        }
+  },
 
 handleSort(event) {
   let sortValue = event.target.value;
@@ -278,6 +297,7 @@ render() {
               reRenderButton={this.reRenderButton}
               onSortChange={this.onSortChange}
               handleSort={this.handleSort}
+              handleSearch={this.handleSearch}
             />
           </div>
         }/>

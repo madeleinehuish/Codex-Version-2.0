@@ -372,7 +372,7 @@ var App = _react2.default.createClass({
       renderByLanguage: false,
       snippets: [],
       defaultSnippetArray: [],
-      sortedSnippets: [],
+      // sortedSnippets: [],
       snippetTitles: [],
       currentIndex: 0,
       loggedIn: false,
@@ -427,7 +427,7 @@ var App = _react2.default.createClass({
     }).then(function (res) {
       var snippetData = res.data.snippetsData;
 
-      _this3.setState({ snippets: snippetData, defaultSnippetArray: snippetData, sortedSnippets: snippetData });
+      _this3.setState({ snippets: snippetData, defaultSnippetArray: snippetData });
     }).catch(function (error) {
       console.log(error);
     });
@@ -470,6 +470,24 @@ var App = _react2.default.createClass({
   },
   onFormChangeAddSnippet: function onFormChangeAddSnippet(event) {
     this.setState({ addSnippet: (0, _immutabilityHelper2.default)(this.state.addSnippet, _defineProperty({}, event.target.name, { $set: event.target.value })) });
+  },
+  handleSearch: function handleSearch(event) {
+    console.log(event.target.value);
+    this.setState({ value: event.target.value });
+
+    var searchRender = this.state.snippets.filter(function (element, index) {
+
+      if (element.title.toUpperCase().includes(event.target.value.toUpperCase())) {
+        return true;
+      }
+      return false;
+    });
+
+    if (!event.target.value) {
+      this.setState({ snippets: this.state.defaultSnippetArray });
+    } else {
+      this.setState({ snippets: searchRender });
+    }
   },
   handleSort: function handleSort(event) {
     var _this5 = this;
@@ -595,7 +613,8 @@ var App = _react2.default.createClass({
                 addNewSnippetButton: _this7.addNewSnippetButton,
                 reRenderButton: _this7.reRenderButton,
                 onSortChange: _this7.onSortChange,
-                handleSort: _this7.handleSort
+                handleSort: _this7.handleSort,
+                handleSearch: _this7.handleSearch
               }))
             );
           } })
@@ -701,7 +720,7 @@ var Editor = _react2.default.createClass({
               'div',
               { className: 'four columns' },
               _react2.default.createElement(
-                'h4',
+                'h5',
                 { className: 'titleWord' },
                 this.props.snippets[this.props.currentIndex].title
               ),
@@ -761,7 +780,7 @@ var Editor = _react2.default.createClass({
                 _react2.default.createElement(
                   'button',
                   { onClick: this.props.patchSnippets },
-                  'Save To Database'
+                  'Save To Codex'
                 )
               ),
               _react2.default.createElement('br', null),
@@ -772,7 +791,7 @@ var Editor = _react2.default.createClass({
                 _react2.default.createElement(
                   'button',
                   { onClick: this.props.deleteSnippet },
-                  'Delete This Snippet'
+                  'Delete'
                 )
               )
             )
@@ -862,17 +881,15 @@ var _Sortbylist = require('./Sortbylist');
 
 var _Sortbylist2 = _interopRequireDefault(_Sortbylist);
 
-var _Search = require('./Search');
+var _SearchBox = require('./SearchBox');
 
-var _Search2 = _interopRequireDefault(_Search);
-
-var _dom = require('react-instantsearch/dom');
-
-var _setimmediate = require('setimmediate');
-
-var _setimmediate2 = _interopRequireDefault(_setimmediate);
+var _SearchBox2 = _interopRequireDefault(_SearchBox);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// import {InstantSearch, Hits, SearchBox, Highlight} from 'react-instantsearch/dom';
+// import setimmediate from 'setimmediate';
+
 
 var Main = _react2.default.createClass({
   displayName: 'Main',
@@ -889,7 +906,7 @@ var Main = _react2.default.createClass({
           { className: 'row' },
           _react2.default.createElement(
             'div',
-            { className: 'eight columns' },
+            { className: 'offset-by-one seven columns' },
             _react2.default.createElement(
               'h5',
               { className: 'titleWord' },
@@ -924,70 +941,55 @@ var Main = _react2.default.createClass({
               handleSort: this.props.handleSort,
               defaultSnippetArray: this.props.defaultSnippetArray
             }),
-            _react2.default.createElement('br', null),
-            _react2.default.createElement('br', null)
+            _react2.default.createElement(_SearchBox2.default, {
+              handleSearch: this.props.handleSearch,
+              value: this.props.value
+            })
           )
         )
       )
     );
   }
 });
-
+// import Search from './Search';
 exports.default = Main;
 });
 
-require.register("components/Search.jsx", function(exports, require, module) {
-'use strict';
+require.register("components/SearchBox.jsx", function(exports, require, module) {
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _react = require('react');
+var _react = require("react");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = require('react-dom');
-
-var _dom = require('react-instantsearch/dom');
-
-var _setimmediate = require('setimmediate');
-
-var _setimmediate2 = _interopRequireDefault(_setimmediate);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Search = _react2.default.createClass({
-  displayName: 'Search',
-  searchproduct: function searchproduct(_ref) {
-    var hit = _ref.hit;
-
-    return _react2.default.createElement(
-      'div',
-      { id: 'searchBox' },
-      _react2.default.createElement(
-        'span',
-        { className: 'hit-name' },
-        _react2.default.createElement(_dom.Highlight, { attributeName: 'title', hit: hit })
-      )
-    );
-    console.log(hit);
-  },
+var SearchBox = _react2.default.createClass({
+  displayName: "SearchBox",
   render: function render() {
     return _react2.default.createElement(
-      'div',
-      { className: 'container' },
-      _react2.default.createElement(_dom.CurrentRefinements, null),
-      _react2.default.createElement(_dom.ClearAll, null),
-      _react2.default.createElement(_dom.SearchBox, null),
-      _react2.default.createElement(_dom.RefinementList, { attributeName: 'category' }),
-      _react2.default.createElement(_dom.Hits, { hitComponent: this.searchproduct }),
-      _react2.default.createElement(_dom.Pagination, null)
+      "form",
+      { id: "search-box" },
+      _react2.default.createElement(
+        "div",
+        { className: "twelve columns titleWord", id: "search-options" },
+        "Search by Title",
+        _react2.default.createElement("input", {
+          onChange: this.props.handleSearch,
+          type: "text",
+          value: this.props.value
+        }),
+        _react2.default.createElement("img", { src: "images/search-icon.png" })
+      )
     );
   }
 });
 
-exports.default = Search;
+exports.default = SearchBox;
 });
 
 require.register("components/Snippets.jsx", function(exports, require, module) {
@@ -1222,7 +1224,7 @@ var Sortbylist = _react2.default.createClass({
       _react2.default.createElement(
         'label',
         { className: 'titleWord' },
-        'Sort By',
+        'Filter',
         _react2.default.createElement(
           'select',
           { className: 'u-full-width ', value: this.props.value, onChange: this.handleChange },
@@ -1289,6 +1291,7 @@ var Header = _react2.default.createClass({
           _react2.default.createElement(
             'ul',
             null,
+            _react2.default.createElement('img', { className: 'avatar', src: this.props.currentUser.avatar }),
             _react2.default.createElement(
               _reactRouter.Link,
               { to: '/main' },

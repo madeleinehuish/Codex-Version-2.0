@@ -709,3 +709,18 @@ url, snippetObject)
     reject({ reason: 'Unable to access'})
     console.error(err)
   })
+
+
+  // .then((res) => {
+  //   atom.notifications.addSuccess('Successful Post with Axios!')
+  //   resolve(body)
+  // })
+  // .catch((err) =>{
+  //   if (err) {
+  //     reject({
+  //       reason: 'Unable to post'
+  //     })
+  //   }
+  // })
+
+// request.post({ url:'http://localhost:8000/api-snippets', formData: formData }, (error, response, body) => {

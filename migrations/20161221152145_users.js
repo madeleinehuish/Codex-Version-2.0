@@ -9,6 +9,7 @@ exports.up = function(knex) {
     table.string('gist_url').notNullable();
     table.string('github_id').unique().notNullable();
     table.string('github_token').notNullable();
+    table.string('avatar').defaultTo('')
     table.timestamps(true, true);
   });
 };

@@ -5,9 +5,10 @@ import { render, ReactDOM } from 'react-dom';
 import Snippetslist from './Snippetslist';
 import Addsnippet from './Addsnippet';
 import Sortbylist from './Sortbylist';
-import Search from './Search';
-import {InstantSearch, Hits, SearchBox, Highlight} from 'react-instantsearch/dom';
-import setimmediate from 'setimmediate';
+// import Search from './Search';
+import SearchBox from './SearchBox';
+// import {InstantSearch, Hits, SearchBox, Highlight} from 'react-instantsearch/dom';
+// import setimmediate from 'setimmediate';
 
 
 const Main = React.createClass({
@@ -19,7 +20,7 @@ const Main = React.createClass({
       <section >
         <div className="container">
             <div className="row">
-              <div className="eight columns">
+              <div className="offset-by-one seven columns">
               {/* <h4 className="titleWord">{this.props.currentUser.firstName}'s Code Library</h4> */}
               <h5 className="titleWord">{this.props.sortValue}</h5>
               <Snippetslist
@@ -40,7 +41,11 @@ const Main = React.createClass({
                   handleSort={this.props.handleSort}
                   defaultSnippetArray={this.props.defaultSnippetArray}
                 />
-                <br/><br/>
+
+                <SearchBox
+                  handleSearch={this.props.handleSearch}
+                  value={this.props.value}
+                />
                 {/* <InstantSearch
                   appId="N1SG3F753R"
                   apiKey="4501729e99160b33af59fcc9fb0570bb"

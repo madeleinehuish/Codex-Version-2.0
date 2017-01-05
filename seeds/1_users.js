@@ -12,7 +12,8 @@ exports.seed = function(knex) {
         email: 'test@email.com',
         gist_url: 'testing@testing.com',
         github_id: 'test',
-        github_token: 'test1'
+        github_token: 'test1',
+        avatar: ''
       }, {
         id: 2,
         first_name: 'Scooby',
@@ -20,7 +21,8 @@ exports.seed = function(knex) {
         email: 'scoobydoo@gmail.com',
         gist_url: 'testing2@testing2.com',
         github_id: '123456789',
-        github_token: '45324678909999'
+        github_token: '45324678909999',
+        avatar: ''
       }]);
     })
     .then(() => {

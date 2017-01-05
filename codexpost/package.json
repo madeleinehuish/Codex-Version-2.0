@@ -1,13 +1,13 @@
 {
   "name": "codexpost",
   "main": "./lib/codexpost",
-  "version": "0.0.0",
-  "description": "A short description of your package",
+  "version": "1.0.0",
+  "description": "Posts selected code to the Codex program from Atom editor",
   "keywords": [],
   "activationCommands": {
     "atom-workspace": "codexpost:fetch"
   },
-  "repository": "https://github.com/atom/codexpost",
+  "repository": "https://github.com/madeleinehuish/q4project/tree/master/codexpost",
   "license": "MIT",
   "engines": {
     "atom": ">=1.0.0 <2.0.0"

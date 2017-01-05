@@ -42,7 +42,7 @@ const strategy = new OAuth2Strategy({
   .then(([githubprofile, githubemails]) => {
     ghprofile = JSON.parse(githubprofile);
     emails = JSON.parse(githubemails);
-
+    console.log(ghprofile);
     return knex('users')
             .where('github_id', ghprofile.id)
             .first()
@@ -52,6 +52,7 @@ const strategy = new OAuth2Strategy({
     const firstName = nameSplit[0];
     const lastName = nameSplit[1];
     const gistUrl = ghprofile.gists_url.replace('{/gist_id}', '');
+    const avatar = ghprofile.avatar_url;
 
     if (user) {
 
@@ -69,6 +70,7 @@ const strategy = new OAuth2Strategy({
         gist_url: gistUrl,
         github_id: ghprofile.id,
         github_token: accessToken,
+        avatar: ghprofile.avatar_url
       }], '*');
     })
     .then((users) => {
