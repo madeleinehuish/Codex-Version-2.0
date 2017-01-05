@@ -61,6 +61,8 @@ app.use(snippets);
 app.use(users);
 app.use(token);
 
+app.use('/assets', express.static('app/assets'));
+
 app.use((_req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });

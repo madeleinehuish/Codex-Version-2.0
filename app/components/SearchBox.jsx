@@ -12,7 +12,7 @@ const SearchBox = React.createClass({
             value={this.props.value}
           />
           {/* <div id="search-img"> */}
-            <img src="images/search-icon.png" />
+            <img id="search-img" src="assets/images/search-icon.png"/>
           {/* </div> */}
         </div>
       </form>

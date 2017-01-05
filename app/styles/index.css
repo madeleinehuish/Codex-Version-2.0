@@ -104,7 +104,7 @@ nav.six.columns > ul > li#login-icon {
 #home {
   /*background-color: #59657f;*/
   /*background: url('../images/dutchlibrary.jpg');*/
-  /*background: url('../assets/images/dutchlibrary.jpg') no-repeat center center fixed;*/
+  background: url('assets/images/dutchlibrary.jpg') no-repeat bottom center scroll;
   /*background-image: url('../assets/images/dutchlibrary.jpg');
   background-size: cover;
   overflow:hidden;*/
@@ -173,7 +173,15 @@ label, legend {
 body {
   font-weight: 300;
 }
-/*#search-img {
-  width: 4%;
-  float: left;
+
+/*option {
+  font-weight: lighter;
 }*/
+
+
+#search-img {
+  width: 8%;
+  /*padding-top: px;*/
+  padding-left: 8px;
+  /*float: left;*/
+}

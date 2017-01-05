@@ -983,7 +983,7 @@ var SearchBox = _react2.default.createClass({
           type: "text",
           value: this.props.value
         }),
-        _react2.default.createElement("img", { src: "images/search-icon.png" })
+        _react2.default.createElement("img", { id: "search-img", src: "assets/images/search-icon.png" })
       )
     );
   }
