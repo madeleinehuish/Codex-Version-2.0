@@ -102,12 +102,9 @@ nav.six.columns > ul > li#login-icon {
 /*--------------- HOMEPAGE ----------------*/
 
 #home {
-  /*background-color: #59657f;*/
-  /*background: url('../images/dutchlibrary.jpg');*/
-  background: url('assets/images/dutchlibrary.jpg') no-repeat bottom center scroll;
-  /*background-image: url('../assets/images/dutchlibrary.jpg');
-  background-size: cover;
-  overflow:hidden;*/
+
+  /*background: url('assets/images/dutchlibrary.jpg') no-repeat bottom center scroll;*/
+
 }
 
 .titleWord {
