@@ -955,6 +955,60 @@ var Main = _react2.default.createClass({
 exports.default = Main;
 });
 
+require.register("components/Search.jsx", function(exports, require, module) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = require('react-dom');
+
+var _dom = require('react-instantsearch/dom');
+
+var _setimmediate = require('setimmediate');
+
+var _setimmediate2 = _interopRequireDefault(_setimmediate);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Search = _react2.default.createClass({
+  displayName: 'Search',
+  searchproduct: function searchproduct(_ref) {
+    var hit = _ref.hit;
+
+    return _react2.default.createElement(
+      'div',
+      { id: 'searchBox' },
+      _react2.default.createElement(
+        'span',
+        { className: 'hit-name' },
+        _react2.default.createElement(_dom.Highlight, { attributeName: 'title', hit: hit })
+      )
+    );
+    console.log(hit);
+  },
+  render: function render() {
+    return _react2.default.createElement(
+      'div',
+      { className: 'container' },
+      _react2.default.createElement(_dom.CurrentRefinements, null),
+      _react2.default.createElement(_dom.ClearAll, null),
+      _react2.default.createElement(_dom.SearchBox, null),
+      _react2.default.createElement(_dom.RefinementList, { attributeName: 'category' }),
+      _react2.default.createElement(_dom.Hits, { hitComponent: this.searchproduct }),
+      _react2.default.createElement(_dom.Pagination, null)
+    );
+  }
+});
+
+exports.default = Search;
+});
+
 require.register("components/SearchBox.jsx", function(exports, require, module) {
 "use strict";
 
