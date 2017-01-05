@@ -348,7 +348,7 @@ var App = _react2.default.createClass({
   getInitialState: function getInitialState() {
     return {
       value: '',
-      sortValue: '',
+      sortValue: 'All Titles',
       inputValue: '',
       addSnippet: {
         title: '',
@@ -375,48 +375,19 @@ var App = _react2.default.createClass({
       sortedSnippets: [],
       snippetTitles: [],
       currentIndex: 0,
-      // snippettest: [],
-      // searchArray: [],
-      // sortType: '',
       loggedIn: false,
       currentUser: {},
       title: '',
-      // email: '',
-      // firstName: '',
-      // lastName: '',
       testCode: 'function fibonacci(indexNumber) {\nif (indexNumber === 0 || indexNumber === 1) {\nreturn 1;\n} else {\nreturn (fibonacci(indexNumber-1) + fibonacci(indexNumber-2));\n}\n}\n\nfibonacci();',
       newTestCodeValue: ''
     };
   },
-
-
-  // var index = client.initIndex('contacts');
-  // var contactsJSON = require('./contacts.json');
-  //
-  // index.addObjects(contactsJSON, function(err, content) {
-  //   if (err) {
-  //     console.error(err);
-  //   }
-  // });
-
   addNewSnippetButton: function addNewSnippetButton() {
     var newIndex = this.state.snippetTitles.length;
-    console.log(newIndex);
-    // this.setState(
-    //   { snippets: update(this.state.snippets, { title : {$push: ''}})},
-    //   { snippets: update(this.state.snippets, { codeSnippet : {$push: ''}})},
-    //   { snippets: update(this.state.snippets, { language : {$push: ''}})},
-    //   { snippets: update(this.state.snippets, { keywords : {$push: ''}})},
-    //   { snippets: update(this.state.snippets, { notes : {$push: ''}})},
-    //
-    //   const state1 = ['x'];
-    //     { snippets: = update(this.state.snippets, {$push: ['y']});
-    // );
   },
   addNewSnippetToStateAndDB: function addNewSnippetToStateAndDB() {
     var _this = this;
 
-    // this.setState({ snippets: this.state.snippets.concat( this.state.addSnippet ) });
     _axios2.default.post('/api-snippets', this.state.addSnippet).then(function (res) {
       var addSnippet = res.data;
       _this.setState({
@@ -424,7 +395,6 @@ var App = _react2.default.createClass({
         defaultSnippetArray: _this.state.defaultSnippetArray.concat([addSnippet]),
         addSnippet: _this.state.defaultSnippet
       });
-      console.log(res.data);
     }).catch(function (error) {
       console.log(error);
     });
@@ -432,7 +402,6 @@ var App = _react2.default.createClass({
   changeCurrentIndex: function changeCurrentIndex(newIndex) {
     var _this2 = this;
 
-    console.log(newIndex);
     this.setState({ currentIndex: newIndex }, function () {
       console.log(_this2.state.currentIndex);
     });
@@ -445,33 +414,22 @@ var App = _react2.default.createClass({
     var _this3 = this;
 
     _axios2.default.get('/api-token').then(function (res) {
-
       _this3.setState({ loggedIn: true });
     }).then(function () {
+
       return _axios2.default.get('/api-users');
     }).then(function (res) {
-
       _this3.setState({ currentUser: res.data });
-      console.log(res.data.gistUrl);
 
       return res;
     }).then(function (res) {
-
       var id = res.data.id;
 
-      console.log(_this3.state.currentUser.gistUrl);
       return _axios2.default.get('/api-snippets/' + id + '?gistUrl=' + _this3.state.currentUser.gistUrl + '&githubToken=' + _this3.state.currentUser.githubToken);
     }).then(function (res) {
-
       var snippetData = res.data.snippetsData;
-      console.log(snippetData);
-      // let x = JSON.stringify(snippetData);
-      // console.log(x);
-      _this3.setState({ snippets: snippetData, defaultSnippetArray: snippetData, sortedSnippets: snippetData });
 
-      // index.addObjects(objects, function(err, content) {
-      //   console.log(content);
-      // });
+      _this3.setState({ snippets: snippetData, defaultSnippetArray: snippetData, sortedSnippets: snippetData });
     }).catch(function (error) {
       console.log(error);
     });
@@ -481,14 +439,13 @@ var App = _react2.default.createClass({
 
     var current = this.state.snippets[this.state.currentIndex];
     var id = current.id;
-    // axios.delete(`/api-snippets/${id}`)
+
     _axios2.default.delete('/api-snippets/' + id).then(function (res) {
-      console.log(res.data);
       var delSnippet = res.data;
+
       _this4.setState({
         defaultSnippetArray: _this4.state.defaultSnippetArray.splice(_this4.state.currentIndex, 0)
       });
-      console.log(res.data);
     }).catch(function (error) {
       console.log(error);
     });
@@ -508,31 +465,22 @@ var App = _react2.default.createClass({
     this.setState({ addSnippet: (0, _immutabilityHelper2.default)(this.state.addSnippet, { userId: { $set: this.state.currentUser.id } }) });
   },
   onFormChange: function onFormChange(event) {
-    console.log(event.target.value);
-    // console.log(this.state.title);
-    console.log(this.state.snippets[this.state.currentIndex].title);
-    // const snippet = this.state.snippets[this.state.currentIndex];
-    // this.setState({ snippets[this.state.currentIndex].title : event.target.value });
-    // this.setState( snippets[this.state.currentIndex].title : event.target.value );
     this.setState({ snippets: (0, _immutabilityHelper2.default)(this.state.snippets, _defineProperty({}, this.state.currentIndex, _defineProperty({}, event.target.name, { $set: event.target.value }))) });
-    // return Object.assign({}, snippets, { title: event.target.value });
   },
   onFormChangeAddSnippet: function onFormChangeAddSnippet(event) {
-    console.log(event.target.value);
-    // console.log(this.state.title);
-    console.log(this.state.addSnippet.title);
-
     this.setState({ addSnippet: (0, _immutabilityHelper2.default)(this.state.addSnippet, _defineProperty({}, event.target.name, { $set: event.target.value })) });
   },
   handleSort: function handleSort(event) {
     var _this5 = this;
 
     var sortValue = event.target.value;
-    this.setState({ sortValue: sortValue }, function () {
-      if (_this5.state.sortValue === 'All Titles') {
-        _this5.setState({ sortValue: '' });
-      }
-    });
+    this.setState({ sortValue: sortValue }
+    //   , ()=> {
+    //   if (this.state.sortValue === 'All Titles') {
+    //     this.setState({ sortValue: ''});
+    //   }
+    // }
+    );
     var filteredSnippets = void 0;
     var sortThis = this.state.defaultSnippetArray;
     if (sortValue !== "All Titles" || sortValue === '') {
@@ -571,7 +519,6 @@ var App = _react2.default.createClass({
   render: function render() {
     var _this6 = this;
 
-    // console.log(this.state.snippets.snippetsData[0].title);
     return _react2.default.createElement(
       _reactRouter.BrowserRouter,
       null,
@@ -941,14 +888,8 @@ var Main = _react2.default.createClass({
             'div',
             { className: 'eight columns' },
             _react2.default.createElement(
-              'h4',
-              { className: 'titleWord' },
-              this.props.currentUser.firstName,
-              '\'s Code Library'
-            ),
-            _react2.default.createElement(
               'h5',
-              null,
+              { className: 'titleWord' },
               this.props.sortValue
             ),
             _react2.default.createElement(_Snippetslist2.default, {
@@ -971,8 +912,6 @@ var Main = _react2.default.createClass({
                 'Add New Snippet'
               )
             ),
-            _react2.default.createElement('br', null),
-            _react2.default.createElement('br', null),
             _react2.default.createElement('br', null),
             _react2.default.createElement('br', null),
             _react2.default.createElement(_Sortbylist2.default, {
@@ -1071,19 +1010,14 @@ var Snippets = _react2.default.createClass({
     this.props.changeCurrentIndex(newIndex);
   },
   render: function render() {
-    return (
-      // <div className="four columns">
+    return _react2.default.createElement(
+      'li',
+      null,
       _react2.default.createElement(
-        'li',
-        null,
-        _react2.default.createElement(
-          _reactRouter.Link,
-          { to: '/editor', onClick: this.changeCurrentKey, value: this.props.value, name: this.props.value, className: 'snippetTitles' },
-          this.props.snippetTitle
-        )
+        _reactRouter.Link,
+        { to: '/editor', onClick: this.changeCurrentKey, value: this.props.value, name: this.props.value, className: 'snippetTitles' },
+        this.props.snippetTitle
       )
-      // </div>
-
     );
   }
 });
@@ -1121,11 +1055,6 @@ var Snippetslist = _react2.default.createClass({
   render: function render() {
     var _this = this;
 
-    // if (renderByLanguage) {
-    //   const snippetmap = this.props.snippets.map((snippetLanguage, index) => {
-    //     return this.props.snippets.language
-    //   })
-    // }
     var snippetmap = this.props.snippets.map(function (snippetTitle, index) {
       return _react2.default.createElement(_Snippets2.default, {
         key: index,
@@ -1133,7 +1062,6 @@ var Snippetslist = _react2.default.createClass({
         snippetTitle: _this.props.snippets[index].title,
         currentIndex: _this.props.currentIndex,
         changeCurrentIndex: _this.props.changeCurrentIndex
-        // value={this.state.snippets[index].title}
       });
     });
 
@@ -1356,7 +1284,8 @@ var Header = _react2.default.createClass({
               _react2.default.createElement(
                 'li',
                 { key: this.props.currentUser.id, className: 'userNav' },
-                this.props.currentUser.firstName
+                this.props.currentUser.firstName,
+                '\'s Code Library'
               )
             )
           )

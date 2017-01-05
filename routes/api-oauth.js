@@ -9,16 +9,12 @@ const { camelizeKeys, decamelizeKeys } = require('humps');
 const request = require('request-promise');
 var axios = require('axios');
 var _ = require('lodash');
-// var assert = require('assert');
-// var values = require('object.values');
 
 const router = express.Router();
 
 const strategy = new OAuth2Strategy({
   authorizationURL: `https://github.com/login/oauth/authorize`,
-  // scope: ['r_basicprofile', 'r_emailaddress'],
   scope: ['user:email', 'gist'],
-  // redirect_url: 'http://localhost:8000/main',
   tokenURL: 'https://github.com/login/oauth/access_token',
   clientID: process.env.GITHUB_CLIENT_ID,
   clientSecret: process.env.GITHUB_CLIENT_SECRET,
@@ -42,8 +38,6 @@ const strategy = new OAuth2Strategy({
     }
   });
 
-
-
   Promise.all([profiledata, email])
   .then(([githubprofile, githubemails]) => {
     ghprofile = JSON.parse(githubprofile);
@@ -60,9 +54,7 @@ const strategy = new OAuth2Strategy({
     const gistUrl = ghprofile.gists_url.replace('{/gist_id}', '');
 
     if (user) {
-      console.log('Updating');
-      console.log(accessToken);
-      console.log(user.id);
+
       return knex('users')
         .update({
           github_token: accessToken
@@ -82,7 +74,6 @@ const strategy = new OAuth2Strategy({
     .then((users) => {
       const user = users[0];
 
-      // console.log(user);
       done(null, Object.assign(camelizeKeys(user), { githubToken: accessToken }));
     })
     .catch((err) => {
@@ -98,7 +89,7 @@ router.get('/github/callback', passport.authenticate('oauth2', {
   session: false,
   failureRedirect: '/'
 }), (req, res) => {
-  // console.log(req.user);
+
   const expiry = new Date(Date.now() + 1000 * 60 * 60 * 3); // 3 hours
   const token = jwt.sign({ userId: req.user.id }, process.env.JWT_SECRET, {
     expiresIn: '3h'

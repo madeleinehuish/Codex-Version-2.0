@@ -16,7 +16,7 @@ const App = React.createClass({
   getInitialState(){
   return {
     value: '',
-    sortValue: '',
+    sortValue: 'All Titles',
     inputValue: '',
     addSnippet: {
       title: '',
@@ -43,15 +43,9 @@ const App = React.createClass({
     sortedSnippets: [],
     snippetTitles: [],
     currentIndex: 0,
-    // snippettest: [],
-    // searchArray: [],
-    // sortType: '',
     loggedIn: false,
     currentUser: {},
     title: '',
-    // email: '',
-    // firstName: '',
-    // lastName: '',
     testCode: `function fibonacci(indexNumber) {
 if (indexNumber === 0 || indexNumber === 1) {
 return 1;
@@ -65,35 +59,11 @@ fibonacci();`,
     }
   },
 
-
-  // var index = client.initIndex('contacts');
-  // var contactsJSON = require('./contacts.json');
-  //
-  // index.addObjects(contactsJSON, function(err, content) {
-  //   if (err) {
-  //     console.error(err);
-  //   }
-  // });
-
   addNewSnippetButton() {
     const newIndex = this.state.snippetTitles.length;
-    console.log(newIndex);
-    // this.setState(
-    //   { snippets: update(this.state.snippets, { title : {$push: ''}})},
-    //   { snippets: update(this.state.snippets, { codeSnippet : {$push: ''}})},
-    //   { snippets: update(this.state.snippets, { language : {$push: ''}})},
-    //   { snippets: update(this.state.snippets, { keywords : {$push: ''}})},
-    //   { snippets: update(this.state.snippets, { notes : {$push: ''}})},
-    //
-    //   const state1 = ['x'];
-    //     { snippets: = update(this.state.snippets, {$push: ['y']});
-    // );
   },
 
   addNewSnippetToStateAndDB() {
-
-
-    // this.setState({ snippets: this.state.snippets.concat( this.state.addSnippet ) });
     axios.post('/api-snippets', this.state.addSnippet )
     .then(res => {
       const addSnippet = res.data;
@@ -102,7 +72,6 @@ fibonacci();`,
         defaultSnippetArray: this.state.defaultSnippetArray.concat([addSnippet]),
         addSnippet: this.state.defaultSnippet
       });
-      console.log(res.data);
     })
     .catch((error) => {
       console.log(error);
@@ -110,7 +79,6 @@ fibonacci();`,
   },
 
 changeCurrentIndex(newIndex) {
-  console.log(newIndex);
   this.setState({ currentIndex: newIndex }, ()=> {
     console.log(this.state.currentIndex);
   });
@@ -122,234 +90,206 @@ changeEditor(newValue) {
 },
 
 componentDidMount() {
+  axios.get('/api-token')
+  .then(res => {
+    this.setState({ loggedIn : true });
+  })
+  .then(() => {
 
-    axios.get('/api-token')
-    .then(res => {
+    return axios.get('/api-users')
+  })
+  .then(res => {
+    this.setState({ currentUser: res.data });
 
-      this.setState({ loggedIn : true });
+    return res;
+  })
+  .then((res) => {
+    let id = res.data.id;
 
-    })
-    .then(() => {
-      return axios.get('/api-users')
-    })
-    .then(res => {
+    return axios.get(`/api-snippets/${id}?gistUrl=${this.state.currentUser.gistUrl}&githubToken=${this.state.currentUser.githubToken}`)
+  })
+  .then(res => {
+    let snippetData = res.data.snippetsData;
 
-      this.setState({ currentUser: res.data });
-      console.log(res.data.gistUrl);
+    this.setState({ snippets: snippetData, defaultSnippetArray: snippetData, sortedSnippets: snippetData });
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+},
 
-      return res;
-    })
-    .then((res) => {
 
-      let id = res.data.id;
+deleteSnippet() {
+  const current = this.state.snippets[this.state.currentIndex];
+  let id = current.id;
 
-      console.log(this.state.currentUser.gistUrl);
-      return axios.get(`/api-snippets/${id}?gistUrl=${this.state.currentUser.gistUrl}&githubToken=${this.state.currentUser.githubToken}`)
-    })
-    .then(res => {
+  axios.delete(`/api-snippets/${id}`)
+  .then((res)=> {
+    const delSnippet = res.data;
 
-      let snippetData = res.data.snippetsData;
-      console.log(snippetData);
-      // let x = JSON.stringify(snippetData);
-      // console.log(x);
-      this.setState({ snippets: snippetData, defaultSnippetArray: snippetData, sortedSnippets: snippetData });
+    this.setState({
+      defaultSnippetArray: this.state.defaultSnippetArray.splice(this.state.currentIndex, 0)
+    });
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+},
 
-      // index.addObjects(objects, function(err, content) {
-      //   console.log(content);
-      // });
+logOut() {
+  this.setState({
+    loggedIn: false,
+    currentUser: {},
+    previousOrders: {}
+  });
+},
 
+onEditorChange(newValue) {
+  this.setState({ snippets: update(this.state.snippets, {[this.state.currentIndex]: { codeSnippet: {$set: newValue}}})})
+},
+
+onEditorChangeAddSnippet(newValue) {
+  this.setState({ addSnippet: update(this.state.addSnippet, { codeSnippet: {$set: newValue}}) });
+  this.setState({ addSnippet: update(this.state.addSnippet, { userId: {$set: this.state.currentUser.id }}) });
+},
+
+onFormChange(event) {
+  this.setState({ snippets: update(this.state.snippets, {[this.state.currentIndex]: {[event.target.name]: {$set: event.target.value}}}) });
+},
+
+onFormChangeAddSnippet(event) {
+  this.setState({ addSnippet: update(this.state.addSnippet, {[event.target.name]: {$set: event.target.value}}) });
+},
+
+handleSort(event) {
+  let sortValue = event.target.value;
+  this.setState({ sortValue: sortValue }
+  //   , ()=> {
+  //   if (this.state.sortValue === 'All Titles') {
+  //     this.setState({ sortValue: ''});
+  //   }
+  // }
+  );
+  let filteredSnippets;
+  let sortThis = this.state.defaultSnippetArray;
+  if (sortValue !== "All Titles" || sortValue === '') {
+    filteredSnippets = sortThis.filter((element) => {
+      if (element.language.includes(sortValue)) {
+        return element.language.includes(sortValue)
+      } else if (element.keywords.includes(sortValue)) {
+      return element.keywords.includes(sortValue)
+      }
+    });
+    this.setState({ snippets: filteredSnippets },()=>{console.log(this.state.snippets)})
+  } else {
+    this.setState({ snippets: this.state.defaultSnippetArray }, ()=>{console.log('default snippets')});
+  }
+},
+
+patchSnippets() {
+
+  const current = this.state.snippets[this.state.currentIndex];
+  let id = current.id;
+
+
+  axios.patch(`/api-snippets/${id}`, this.state.snippets[this.state.currentIndex])
+    .then((res)=> {
+
+      console.log(res.data);
     })
     .catch((error) => {
       console.log(error);
     });
 },
 
+reRenderButton() {
+  console.log('rerender');
+  this.setState({ renderByLanguage: true });
+},
 
-  deleteSnippet() {
-    const current = this.state.snippets[this.state.currentIndex];
-    let id = current.id;
-    // axios.delete(`/api-snippets/${id}`)
-    axios.delete(`/api-snippets/${id}`)
-    .then((res)=> {
-      console.log(res.data);
-      const delSnippet = res.data;
-      this.setState({
-        defaultSnippetArray: this.state.defaultSnippetArray.splice(this.state.currentIndex, 0)
-      });
-      console.log(res.data);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-  },
-
-  logOut() {
-    this.setState({
-      loggedIn: false,
-      currentUser: {},
-      previousOrders: {}
-    });
-  },
-
-  onEditorChange(newValue) {
-    this.setState({ snippets: update(this.state.snippets, {[this.state.currentIndex]: { codeSnippet: {$set: newValue}}})})
-  },
-
-  onEditorChangeAddSnippet(newValue) {
-    this.setState({ addSnippet: update(this.state.addSnippet, { codeSnippet: {$set: newValue}}) });
-    this.setState({ addSnippet: update(this.state.addSnippet, { userId: {$set: this.state.currentUser.id }}) });
-  },
-
-  onFormChange(event) {
-    console.log(event.target.value)
-    // console.log(this.state.title);
-    console.log(this.state.snippets[this.state.currentIndex].title);
-    // const snippet = this.state.snippets[this.state.currentIndex];
-    // this.setState({ snippets[this.state.currentIndex].title : event.target.value });
-    // this.setState( snippets[this.state.currentIndex].title : event.target.value );
-    this.setState({ snippets: update(this.state.snippets, {[this.state.currentIndex]: {[event.target.name]: {$set: event.target.value}}}) });
-    // return Object.assign({}, snippets, { title: event.target.value });
-  },
-
-  onFormChangeAddSnippet(event) {
-    console.log(event.target.value)
-    // console.log(this.state.title);
-    console.log(this.state.addSnippet.title);
-
-    this.setState({ addSnippet: update(this.state.addSnippet, {[event.target.name]: {$set: event.target.value}}) });
-
-
-  },
-
-  handleSort(event) {
-    let sortValue = event.target.value;
-    this.setState({ sortValue: sortValue }, ()=> {
-      if (this.state.sortValue === 'All Titles') {
-        this.setState({ sortValue: ''});
-      }
-    });
-    let filteredSnippets;
-    let sortThis = this.state.defaultSnippetArray;
-    if (sortValue !== "All Titles" || sortValue === '') {
-      filteredSnippets = sortThis.filter((element) => {
-        if (element.language.includes(sortValue)) {
-          return element.language.includes(sortValue)
-        } else if (element.keywords.includes(sortValue)) {
-        return element.keywords.includes(sortValue)
-        }
-      });
-      this.setState({ snippets: filteredSnippets },()=>{console.log(this.state.snippets)})
-    } else {
-      this.setState({ snippets: this.state.defaultSnippetArray }, ()=>{console.log('default snippets')});
-    }
-  },
-
-  patchSnippets() {
-
-    const current = this.state.snippets[this.state.currentIndex];
-    let id = current.id;
-
-
-    axios.patch(`/api-snippets/${id}`, this.state.snippets[this.state.currentIndex])
-      .then((res)=> {
-
-        console.log(res.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  },
-
-  reRenderButton() {
-    console.log('rerender');
-    this.setState({ renderByLanguage: true });
-  },
-
-	render() {
-    // console.log(this.state.snippets.snippetsData[0].title);
-    return (
-			<BrowserRouter>
-				<main>
-          <Match pattern="/" exactly render={
-            () =>
-            <Home
+render() {
+  return (
+		<BrowserRouter>
+			<main>
+        <Match pattern="/" exactly render={
+          () =>
+          <Home
+            { ...this.state }
+            onSubmitGitHubLogIn={this.onSubmitGitHubLogIn}
+          />
+        }/>
+        <Match pattern="/addsnippet" exactly render={
+          () =>
+          <div>
+            <Header
               { ...this.state }
-              onSubmitGitHubLogIn={this.onSubmitGitHubLogIn}
+              logIn={this.logIn}
+              logOut={this.logOut}
+              onSubmit={this.onSubmit}
+              onFormChange={this.onFormChange}
             />
-          }/>
-          <Match pattern="/addsnippet" exactly render={
-            () =>
-            <div>
-              <Header
-                { ...this.state }
-                logIn={this.logIn}
-                logOut={this.logOut}
-                onSubmit={this.onSubmit}
-                onFormChange={this.onFormChange}
-              />
-              <Addsnippet
-                { ...this.state }
-                addNewSnippetToStateAndDB={this.addNewSnippetToStateAndDB}
-                changeEditor={this.changeEditor}
-                currentIndex={this.state.currentIndex}
-                snippets={this.state.snippets}
-                onFormChangeAddSnippet={this.onFormChangeAddSnippet}
-                onEditorChangeAddSnippet={this.onEditorChangeAddSnippet}
-                patchSnippets={this.patchSnippets}
-              />
-            </div>
-          }/>
-          <Match pattern="/editor" exactly render={
-            () =>
-            <div>
-              <Header
-                { ...this.state }
-                logIn={this.logIn}
-                logOut={this.logOut}
-                onSubmit={this.onSubmit}
-                onFormChange={this.onFormChange}
-              />
-              <Editor
-                { ...this.state }
-                changeEditor={this.changeEditor}
-                currentIndex={this.state.currentIndex}
-                snippets={this.state.snippets}
-                onFormChange={this.onFormChange}
-                onEditorChange={this.onEditorChange}
-                patchSnippets={this.patchSnippets}
-                deleteSnippet={this.deleteSnippet}
-              />
-            </div>
-          }/>
-          <Match pattern="/main" exactly render={
-            () =>
-            <div>
-              <Header
-                { ...this.state }
-                logIn={this.logIn}
-                logOut={this.logOut}
-                onSubmit={this.onSubmit}
-                onFormChange={this.onFormChange}
-              />
-              <Main
-                { ...this.state }
-                loggedIn={this.state.loggedIn}
-                currentUser={this.state.currentUser}
-                snippets={this.state.snippets}
-                currentIndex={this.state.currentIndex}
-                changeCurrentIndex={this.changeCurrentIndex}
-                addNewSnippetButton={this.addNewSnippetButton}
-                reRenderButton={this.reRenderButton}
-                onSortChange={this.onSortChange}
-                handleSort={this.handleSort}
-              />
-            </div>
-          }/>
-				</main>
-			</BrowserRouter>
-		)
-	}
-
+            <Addsnippet
+              { ...this.state }
+              addNewSnippetToStateAndDB={this.addNewSnippetToStateAndDB}
+              changeEditor={this.changeEditor}
+              currentIndex={this.state.currentIndex}
+              snippets={this.state.snippets}
+              onFormChangeAddSnippet={this.onFormChangeAddSnippet}
+              onEditorChangeAddSnippet={this.onEditorChangeAddSnippet}
+              patchSnippets={this.patchSnippets}
+            />
+          </div>
+        }/>
+        <Match pattern="/editor" exactly render={
+          () =>
+          <div>
+            <Header
+              { ...this.state }
+              logIn={this.logIn}
+              logOut={this.logOut}
+              onSubmit={this.onSubmit}
+              onFormChange={this.onFormChange}
+            />
+            <Editor
+              { ...this.state }
+              changeEditor={this.changeEditor}
+              currentIndex={this.state.currentIndex}
+              snippets={this.state.snippets}
+              onFormChange={this.onFormChange}
+              onEditorChange={this.onEditorChange}
+              patchSnippets={this.patchSnippets}
+              deleteSnippet={this.deleteSnippet}
+            />
+          </div>
+        }/>
+        <Match pattern="/main" exactly render={
+          () =>
+          <div>
+            <Header
+              { ...this.state }
+              logIn={this.logIn}
+              logOut={this.logOut}
+              onSubmit={this.onSubmit}
+              onFormChange={this.onFormChange}
+            />
+            <Main
+              { ...this.state }
+              loggedIn={this.state.loggedIn}
+              currentUser={this.state.currentUser}
+              snippets={this.state.snippets}
+              currentIndex={this.state.currentIndex}
+              changeCurrentIndex={this.changeCurrentIndex}
+              addNewSnippetButton={this.addNewSnippetButton}
+              reRenderButton={this.reRenderButton}
+              onSortChange={this.onSortChange}
+              handleSort={this.handleSort}
+            />
+          </div>
+        }/>
+			</main>
+		</BrowserRouter>
+	)
+}
 });
 
 export default App;

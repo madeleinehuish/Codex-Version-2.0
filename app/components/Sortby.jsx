@@ -6,11 +6,9 @@ const Sortby = React.createClass({
 
   render() {
     return (
-
-          <option value={this.props.item}>
-            {this.props.item}
-          </option>
-
+      <option value={this.props.item}>
+        {this.props.item}
+      </option>
     );
   }
 });

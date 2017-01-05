@@ -31,18 +31,13 @@ const authorize = function(req, res, next) {
 };
 
 
-// this code pulls all snippets
+// this code pulls all snippets into state at beginning of load
 router.get(`/api-snippets/:id`, authorize, (req, res, next) => {
   const userId = Number.parseInt(req.params.id);
 
   if (!Number.isInteger(userId)) {
     return next(boom.create(400, 'Order Id must be an integer'));
   }
-  // const  { gistUrl } = req.query.gistUrl;
-  // const { githubToken } = req.query.githubToken;
-  console.log(req.query.gistUrl);
-  console.log(req.cookies.token);
-  console.log(req.query.githubToken);
   let snippets;
   var gistLanguages = [];
   var gistSnippetMap = [];
@@ -51,8 +46,6 @@ router.get(`/api-snippets/:id`, authorize, (req, res, next) => {
 
   axios.get(`${req.query.gistUrl}?access_token=${req.query.githubToken}`)
     .then((res) => {
-      console.log('look here');
-      console.log(res.data);
       let resMap = [];
       let finalResArray = [];
       let resMapinit = [];
@@ -68,8 +61,6 @@ router.get(`/api-snippets/:id`, authorize, (req, res, next) => {
 
         finalResArray = [].concat.apply([], resMap);
       }
-      console.log('finalResArray');
-      console.log(finalResArray);
       gistLanguages = finalResArray.map((gist) => { return gist.language });
       const gistsUrls = finalResArray.map((gist) => { return gist.raw_url });
       gistsTitles = finalResArray.map((gist) => { return gist.filename });
@@ -79,10 +70,12 @@ router.get(`/api-snippets/:id`, authorize, (req, res, next) => {
     })
     .then((result) => {
       gistSnippetMap = result.map((snippet, index) => {
+
         return result[index].data;
       })
 
       gistData = { gistsTitles, gistLanguages, gistSnippetMap };
+
       return gistData;
     })
     .then((res)=> {
@@ -90,61 +83,54 @@ router.get(`/api-snippets/:id`, authorize, (req, res, next) => {
         const insertSnippet = { userId, title: res.gistsTitles[i], codeSnippet: res.gistSnippetMap[i], language: res.gistLanguages[i], keywords: 'gist', notes: '' };
         let snippet;
 
-          return knex('snippets')
-            .where('title', res.gistsTitles[i])
-            .first()
-            .then((snippet) => {
-              if (!snippet) {
-                knex('snippets')
-                  .insert(decamelizeKeys(insertSnippet), '*')
-                  .then((rows) => {
-                    snippet = camelizeKeys(rows[0]);
-                    console.log(snippet);
-                    // res.send(snippet);
-                  })
-                  .catch((err) => {
-                    next(err);
-                  });
-              }
-
-            })
+        return knex('snippets')
+          .where('title', res.gistsTitles[i])
+          .first()
+          .then((snippet) => {
+            if (!snippet) {
+              knex('snippets')
+                .insert(decamelizeKeys(insertSnippet), '*')
+                .then((rows) => {
+                  snippet = camelizeKeys(rows[0]);
+                  console.log(snippet);
+                  // res.send(snippet);
+                })
+                .catch((err) => {
+                  next(err);
+                });
+            }
+          })
       })
       return Promise.all(promises);
 //
     })
-    .then(()=> {
-      // knex('snippets')
-      //   .where('user_id', null)
-      //   .update(decamelizeKeys('user_id', userId))
-      //
-      //   // .then((snippet) => {
-      //   //   console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-      //   //   console.log(snippet);
-      //   //   const id = snippet.id;
-      //   //
-      //   //   // insert(decamelizeKeys(row), '*')
-      //   // })
-      //   .catch((err) => {
-      //     next(err);
-      //   });
-
+    //attempting to update snippets with null userId
+    // .then(()=> {
+    //   knex('snippets')
+    //     .where('user_id', null)
+    //     .update(decamelizeKeys('user_id', userId))
+    //     .catch((err) => {
+    //       next(err);
+    //     });
+    //   })
+    .then(() => {
       knex('snippets')
-        // .where('user_id', null)
-        // .update(decamelizeKeys('user_id', userId))
         .where('user_id', userId)
         .then((row) => {
           if (!row) {
             throw boom.create(404, 'Not Found');
           }
+
           return camelizeKeys(row);
         })
         .then((snippets) => {
+
           return knex('snippets')
                  .orderBy('title')
-
         })
         .then((rows) => {
           const snippetsData = camelizeKeys(rows);
+
           res.send({ snippetsData });
         })
         .catch((err) => {
@@ -156,70 +142,13 @@ router.get(`/api-snippets/:id`, authorize, (req, res, next) => {
     });
 });
 
-
-router.get('/api-snippets/gists', authorize, (req, res, next) => {
-  const userData = req.body;
-  console.log(userData);
-  res.send(userData);
-  // const gists = request({
-  //   url: `${gistUrl}?access_token=${accessToken}`,
-  //   headers: {
-  //     'User-Agent': 'Maddie Server'
-  //   }
-  // });
-  // console.log(gists);
-  // Promise(gists)
-  //   .then((res) => {
-  //     ghgists = JSON.parse(res);
-  //     console.log(ghgists);
-  //   })
-  //   .catch((err) => {
-  //     done(err);
-  //   });
-});
-// router.get('/api-snippets/:id', authorize, (req, res, next) => {
-//   const userId = Number.parseInt(req.params.id);
-//
-//   if (!Number.isInteger(userId)) {
-//     return next(boom.create(400, 'Order Id must be an integer'));
-//   }
-//
-//   knex('snippets')
-//   // .innerJoin('snippets', 'snippets.user_id', 'users.id')
-//   .where({
-//     'user_id': req.token.userId
-//   })
-//   .first()
-//   .then((row) => {
-//     if (row) {
-//       return res.send(true);
-//     }
-//
-//     res.send(false);
-//   })
-//   .catch((err) => {
-//     next(err);
-//   });
-// });
-
+//used from Atom Plugin to post to database
 router.post('/api-snippets', (req, res, next) => {
   console.log('got into post');
   console.log(req.body);
-  // console.log(res.body);
-  // console.log(res);
-  // console.log(req.form);
-  // let userId = Number.parseInt(req.body.userId);
-  //
-  // if (Number.isNaN(userId)) {
-  //   return next();
-  // }
 
   const { title, codeSnippet, language, keywords, notes } = req.body;
-
-  console.log(title);
-
   const userId = null;
-
   const insertSnippet = { userId, title, codeSnippet, language, keywords, notes };
   let snippet;
 
@@ -288,9 +217,7 @@ router.delete('/api-snippets/:id', authorize, (req, res, next) => {
   if (Number.isNaN(snippetId)) {
     return next();
   }
-
   const clause = { id: snippetId };
-
   let deleteThisSnippet;
 
   knex('snippets')
@@ -300,7 +227,6 @@ router.delete('/api-snippets/:id', authorize, (req, res, next) => {
       if (!row) {
         throw boom.create(404, 'Snippet to delete not found');
       }
-
       deleteThisSnippet = camelizeKeys(row);
 
       return knex('snippets')
@@ -309,12 +235,6 @@ router.delete('/api-snippets/:id', authorize, (req, res, next) => {
     })
     .then(() => {
       delete deleteThisSnippet.id;
-      // index.deleteObject('id', function(err) {
-      //   if (err) {
-      //     console.error(err);
-      //     return;
-      //   }
-      // });
 
       res.send(deleteThisSnippet);
     })

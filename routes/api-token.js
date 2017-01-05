@@ -26,29 +26,8 @@ router.get('/api-token', (req, res) => {
 });
 
 router.post('/api-token', (req, res, next) => {
-  // const { email, password } = req.body;
-  //
-  // if (!email || !email.trim()) {
-  //   return next(boom.create(400, 'Email must not be blank'));
-  // }
-  //
-  // if (!password || password.length < 8) {
-  //   return next(boom.create(400, 'Password must not be blank'));
-  // }
 
   let user;
-
-  // const client = new postmark.Client('b2a5c213-b95c-417f-bf81-11e9525f603f');
-
-  // eslint-disable-next-line max-len
-  // const message = 'Bwa ha ha ha ha ha ha ha ha ha. CH ch ch ah ah ah. Ee ee ee ee.';
-
-  // client.sendEmail({
-  //   'From': 'screamqueen@kenmcgrady.com',
-  //   'To': email,
-  //   'Subject': 'Boo! Welcome to Scream Queen!',
-  //   'TextBody': message
-  // });
 
   knex('users')
     .where('email', email)

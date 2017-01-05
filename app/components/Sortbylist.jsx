@@ -79,11 +79,9 @@ const Sortbylist = React.createClass({
               {sortByArrayRender}
             </select>
           </label>
-          {/* <input type="submit" value="Select" /> */}
       </form>
     );
   }
-
 });
 
 export default Sortbylist;

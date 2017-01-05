@@ -20,9 +20,8 @@ const Main = React.createClass({
         <div className="container">
             <div className="row">
               <div className="eight columns">
-              <h4 className="titleWord">{this.props.currentUser.firstName}'s Code Library</h4>
-              <h5>{this.props.sortValue}</h5>
-
+              {/* <h4 className="titleWord">{this.props.currentUser.firstName}'s Code Library</h4> */}
+              <h5 className="titleWord">{this.props.sortValue}</h5>
               <Snippetslist
                 snippets={this.props.snippets}
                 snippetTitles={this.props.snippetTitles}
@@ -33,8 +32,6 @@ const Main = React.createClass({
               </div>
               <div className="four columns">
                 <Link to="/addsnippet"><button className="titleWord" id="addSnippetButton" onClick={this.props.addNewSnippetButton}>Add New Snippet</button></Link>
-                <br/><br/>
-                {/* <button className="titleWord" id="addSnippetButton" onClick={this.props.addNewGistButton}>Add Gists to Library</button> */}
                 <br/><br/>
                 <Sortbylist
                   snippets={this.props.snippets}

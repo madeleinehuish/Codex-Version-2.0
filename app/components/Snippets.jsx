@@ -11,13 +11,11 @@ const Snippets = React.createClass({
 
   render() {
     return (
-        // <div className="four columns">
-          <li>
-          <Link to="/editor" onClick={this.changeCurrentKey} value={this.props.value} name={this.props.value} className="snippetTitles">
-            {this.props.snippetTitle}
-          </Link>
-          </li>
-        // </div>
+      <li>
+      <Link to="/editor" onClick={this.changeCurrentKey} value={this.props.value} name={this.props.value} className="snippetTitles">
+        {this.props.snippetTitle}
+      </Link>
+      </li>
     );
   }
 });
