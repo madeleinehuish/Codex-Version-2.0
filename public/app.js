@@ -377,9 +377,7 @@ var App = _react2.default.createClass({
       currentIndex: 0,
       loggedIn: false,
       currentUser: {},
-      title: '',
-      testCode: 'function fibonacci(indexNumber) {\nif (indexNumber === 0 || indexNumber === 1) {\nreturn 1;\n} else {\nreturn (fibonacci(indexNumber-1) + fibonacci(indexNumber-2));\n}\n}\n\nfibonacci();',
-      newTestCodeValue: ''
+      title: ''
     };
   },
   addNewSnippetButton: function addNewSnippetButton() {
@@ -444,7 +442,9 @@ var App = _react2.default.createClass({
       var delSnippet = res.data;
 
       _this4.setState({
-        defaultSnippetArray: _this4.state.defaultSnippetArray.splice(_this4.state.currentIndex, 0)
+        defaultSnippetArray: (0, _immutabilityHelper2.default)(_this4.state.defaultSnippetArray, { $splice: [[_this4.state.currentIndex, 1]] }),
+        snippets: (0, _immutabilityHelper2.default)(_this4.state.snippets, { $splice: [[_this4.state.currentIndex, 1]] })
+
       });
     }).catch(function (error) {
       console.log(error);
@@ -466,6 +466,7 @@ var App = _react2.default.createClass({
   },
   onFormChange: function onFormChange(event) {
     this.setState({ snippets: (0, _immutabilityHelper2.default)(this.state.snippets, _defineProperty({}, this.state.currentIndex, _defineProperty({}, event.target.name, { $set: event.target.value }))) });
+    this.setState({ defaultSnippetArray: (0, _immutabilityHelper2.default)(this.state.defaultSnippetArray, _defineProperty({}, this.state.currentIndex, _defineProperty({}, event.target.name, { $set: event.target.value }))) });
   },
   onFormChangeAddSnippet: function onFormChangeAddSnippet(event) {
     this.setState({ addSnippet: (0, _immutabilityHelper2.default)(this.state.addSnippet, _defineProperty({}, event.target.name, { $set: event.target.value })) });
@@ -501,12 +502,15 @@ var App = _react2.default.createClass({
     }
   },
   patchSnippets: function patchSnippets() {
+    var _this6 = this;
 
     var current = this.state.snippets[this.state.currentIndex];
     var id = current.id;
 
     _axios2.default.patch('/api-snippets/' + id, this.state.snippets[this.state.currentIndex]).then(function (res) {
-
+      // this.setState({ snippets: update(this.state.snippets, {name: {$set: current}} ) });
+      _this6.setState({ snippets: (0, _immutabilityHelper2.default)(_this6.state.snippets, _defineProperty({}, _this6.state.currentIndex, { $set: current })) });
+      _this6.setState({ defaultSnippetArray: (0, _immutabilityHelper2.default)(_this6.state.defaultSnippetArray, _defineProperty({}, _this6.state.currentIndex, { $set: current })) });
       console.log(res.data);
     }).catch(function (error) {
       console.log(error);
@@ -517,7 +521,7 @@ var App = _react2.default.createClass({
     this.setState({ renderByLanguage: true });
   },
   render: function render() {
-    var _this6 = this;
+    var _this7 = this;
 
     return _react2.default.createElement(
       _reactRouter.BrowserRouter,
@@ -526,28 +530,28 @@ var App = _react2.default.createClass({
         'main',
         null,
         _react2.default.createElement(_reactRouter.Match, { pattern: '/', exactly: true, render: function render() {
-            return _react2.default.createElement(_Home2.default, _extends({}, _this6.state, {
-              onSubmitGitHubLogIn: _this6.onSubmitGitHubLogIn
+            return _react2.default.createElement(_Home2.default, _extends({}, _this7.state, {
+              onSubmitGitHubLogIn: _this7.onSubmitGitHubLogIn
             }));
           } }),
         _react2.default.createElement(_reactRouter.Match, { pattern: '/addsnippet', exactly: true, render: function render() {
             return _react2.default.createElement(
               'div',
               null,
-              _react2.default.createElement(_Header2.default, _extends({}, _this6.state, {
-                logIn: _this6.logIn,
-                logOut: _this6.logOut,
-                onSubmit: _this6.onSubmit,
-                onFormChange: _this6.onFormChange
+              _react2.default.createElement(_Header2.default, _extends({}, _this7.state, {
+                logIn: _this7.logIn,
+                logOut: _this7.logOut,
+                onSubmit: _this7.onSubmit,
+                onFormChange: _this7.onFormChange
               })),
-              _react2.default.createElement(_Addsnippet2.default, _extends({}, _this6.state, {
-                addNewSnippetToStateAndDB: _this6.addNewSnippetToStateAndDB,
-                changeEditor: _this6.changeEditor,
-                currentIndex: _this6.state.currentIndex,
-                snippets: _this6.state.snippets,
-                onFormChangeAddSnippet: _this6.onFormChangeAddSnippet,
-                onEditorChangeAddSnippet: _this6.onEditorChangeAddSnippet,
-                patchSnippets: _this6.patchSnippets
+              _react2.default.createElement(_Addsnippet2.default, _extends({}, _this7.state, {
+                addNewSnippetToStateAndDB: _this7.addNewSnippetToStateAndDB,
+                changeEditor: _this7.changeEditor,
+                currentIndex: _this7.state.currentIndex,
+                snippets: _this7.state.snippets,
+                onFormChangeAddSnippet: _this7.onFormChangeAddSnippet,
+                onEditorChangeAddSnippet: _this7.onEditorChangeAddSnippet,
+                patchSnippets: _this7.patchSnippets
               }))
             );
           } }),
@@ -555,20 +559,20 @@ var App = _react2.default.createClass({
             return _react2.default.createElement(
               'div',
               null,
-              _react2.default.createElement(_Header2.default, _extends({}, _this6.state, {
-                logIn: _this6.logIn,
-                logOut: _this6.logOut,
-                onSubmit: _this6.onSubmit,
-                onFormChange: _this6.onFormChange
+              _react2.default.createElement(_Header2.default, _extends({}, _this7.state, {
+                logIn: _this7.logIn,
+                logOut: _this7.logOut,
+                onSubmit: _this7.onSubmit,
+                onFormChange: _this7.onFormChange
               })),
-              _react2.default.createElement(_Editor2.default, _extends({}, _this6.state, {
-                changeEditor: _this6.changeEditor,
-                currentIndex: _this6.state.currentIndex,
-                snippets: _this6.state.snippets,
-                onFormChange: _this6.onFormChange,
-                onEditorChange: _this6.onEditorChange,
-                patchSnippets: _this6.patchSnippets,
-                deleteSnippet: _this6.deleteSnippet
+              _react2.default.createElement(_Editor2.default, _extends({}, _this7.state, {
+                changeEditor: _this7.changeEditor,
+                currentIndex: _this7.state.currentIndex,
+                snippets: _this7.state.snippets,
+                onFormChange: _this7.onFormChange,
+                onEditorChange: _this7.onEditorChange,
+                patchSnippets: _this7.patchSnippets,
+                deleteSnippet: _this7.deleteSnippet
               }))
             );
           } }),
@@ -576,22 +580,22 @@ var App = _react2.default.createClass({
             return _react2.default.createElement(
               'div',
               null,
-              _react2.default.createElement(_Header2.default, _extends({}, _this6.state, {
-                logIn: _this6.logIn,
-                logOut: _this6.logOut,
-                onSubmit: _this6.onSubmit,
-                onFormChange: _this6.onFormChange
+              _react2.default.createElement(_Header2.default, _extends({}, _this7.state, {
+                logIn: _this7.logIn,
+                logOut: _this7.logOut,
+                onSubmit: _this7.onSubmit,
+                onFormChange: _this7.onFormChange
               })),
-              _react2.default.createElement(_Main2.default, _extends({}, _this6.state, {
-                loggedIn: _this6.state.loggedIn,
-                currentUser: _this6.state.currentUser,
-                snippets: _this6.state.snippets,
-                currentIndex: _this6.state.currentIndex,
-                changeCurrentIndex: _this6.changeCurrentIndex,
-                addNewSnippetButton: _this6.addNewSnippetButton,
-                reRenderButton: _this6.reRenderButton,
-                onSortChange: _this6.onSortChange,
-                handleSort: _this6.handleSort
+              _react2.default.createElement(_Main2.default, _extends({}, _this7.state, {
+                loggedIn: _this7.state.loggedIn,
+                currentUser: _this7.state.currentUser,
+                snippets: _this7.state.snippets,
+                currentIndex: _this7.state.currentIndex,
+                changeCurrentIndex: _this7.changeCurrentIndex,
+                addNewSnippetButton: _this7.addNewSnippetButton,
+                reRenderButton: _this7.reRenderButton,
+                onSortChange: _this7.onSortChange,
+                handleSort: _this7.handleSort
               }))
             );
           } })
@@ -655,17 +659,16 @@ var Editor = _react2.default.createClass({
   // },
 
 
-  onChange: function onChange(newValue) {
-    console.log('change', newValue);
-
-    this.props.onEditorChange(newValue);
-    // const editor = ace.edit("codeSnippet");
-    // const code = editor.getValue();
-    // console.log(code);
-    // this.props.onFormChange(event);
-    // this.props.changeEditor(newValue);
-  },
-
+  // onChange(newValue) {
+  //   console.log('change',newValue);
+  //
+  //   this.props.onEditorChange(newValue);
+  //   // const editor = ace.edit("codeSnippet");
+  //   // const code = editor.getValue();
+  //   // console.log(code);
+  //   // this.props.onFormChange(event);
+  //   // this.props.changeEditor(newValue);
+  // },
 
   // formUpdate () {
   //   this.props.onFormChange()
@@ -1099,11 +1102,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var Sortby = _react2.default.createClass({
   displayName: 'Sortby',
   render: function render() {
+    // if (this.props.value === 'All Titles') {
+    //   return (
+    //     <option value={this.props.item} selected={this.props.sortValue}>
+    //       {this.props.item}
+    //     </option>
+    //   );
+    // } else {
     return _react2.default.createElement(
       'option',
       { value: this.props.item },
       this.props.item
     );
+    // }
   }
 });
 

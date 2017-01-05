@@ -84,7 +84,9 @@ router.get(`/api-snippets/:id`, authorize, (req, res, next) => {
         let snippet;
 
         return knex('snippets')
+          //make it so git keyword includes git??????????????
           .where('title', res.gistsTitles[i])
+          .where('keywords', 'gist')
           .first()
           .then((snippet) => {
             if (!snippet) {

@@ -24,16 +24,16 @@ const Editor = React.createClass({
 
 
 
-  onChange(newValue) {
-    console.log('change',newValue);
-
-    this.props.onEditorChange(newValue);
-    // const editor = ace.edit("codeSnippet");
-    // const code = editor.getValue();
-    // console.log(code);
-    // this.props.onFormChange(event);
-    // this.props.changeEditor(newValue);
-  },
+  // onChange(newValue) {
+  //   console.log('change',newValue);
+  //
+  //   this.props.onEditorChange(newValue);
+  //   // const editor = ace.edit("codeSnippet");
+  //   // const code = editor.getValue();
+  //   // console.log(code);
+  //   // this.props.onFormChange(event);
+  //   // this.props.changeEditor(newValue);
+  // },
 
   // formUpdate () {
   //   this.props.onFormChange()

@@ -19,6 +19,7 @@ const Sortbylist = React.createClass({
 
   render() {
 
+
     let languageMap = this.props.defaultSnippetArray.map((snippet, index) => {
       if (this.props.defaultSnippetArray[index].language === undefined) {return ''}
          else{ return this.props.defaultSnippetArray[index].language };

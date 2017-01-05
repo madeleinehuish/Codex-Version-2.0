@@ -13,7 +13,7 @@ import Addsnippet from './Addsnippet';
 
 const App = React.createClass({
 
-  getInitialState(){
+getInitialState(){
   return {
     value: '',
     sortValue: 'All Titles',
@@ -46,37 +46,27 @@ const App = React.createClass({
     loggedIn: false,
     currentUser: {},
     title: '',
-    testCode: `function fibonacci(indexNumber) {
-if (indexNumber === 0 || indexNumber === 1) {
-return 1;
-} else {
-return (fibonacci(indexNumber-1) + fibonacci(indexNumber-2));
-}
-}
+  }
+},
 
-fibonacci();`,
-    newTestCodeValue: ``
-    }
-  },
+addNewSnippetButton() {
+  const newIndex = this.state.snippetTitles.length;
+},
 
-  addNewSnippetButton() {
-    const newIndex = this.state.snippetTitles.length;
-  },
-
-  addNewSnippetToStateAndDB() {
-    axios.post('/api-snippets', this.state.addSnippet )
-    .then(res => {
-      const addSnippet = res.data;
-      this.setState({
-        snippets: this.state.snippets.concat([addSnippet]),
-        defaultSnippetArray: this.state.defaultSnippetArray.concat([addSnippet]),
-        addSnippet: this.state.defaultSnippet
-      });
-    })
-    .catch((error) => {
-      console.log(error);
+addNewSnippetToStateAndDB() {
+  axios.post('/api-snippets', this.state.addSnippet )
+  .then(res => {
+    const addSnippet = res.data;
+    this.setState({
+      snippets: this.state.snippets.concat([addSnippet]),
+      defaultSnippetArray: this.state.defaultSnippetArray.concat([addSnippet]),
+      addSnippet: this.state.defaultSnippet
     });
-  },
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+},
 
 changeCurrentIndex(newIndex) {
   this.setState({ currentIndex: newIndex }, ()=> {
@@ -128,7 +118,9 @@ deleteSnippet() {
     const delSnippet = res.data;
 
     this.setState({
-      defaultSnippetArray: this.state.defaultSnippetArray.splice(this.state.currentIndex, 0)
+      defaultSnippetArray: update(this.state.defaultSnippetArray, {$splice: [[this.state.currentIndex, 1]]}),
+      snippets: update(this.state.snippets, {$splice: [[this.state.currentIndex, 1]]}),
+
     });
   })
   .catch((error) => {
@@ -155,6 +147,7 @@ onEditorChangeAddSnippet(newValue) {
 
 onFormChange(event) {
   this.setState({ snippets: update(this.state.snippets, {[this.state.currentIndex]: {[event.target.name]: {$set: event.target.value}}}) });
+  this.setState({ defaultSnippetArray: update(this.state.defaultSnippetArray, {[this.state.currentIndex]: {[event.target.name]: {$set: event.target.value}}}) });
 },
 
 onFormChangeAddSnippet(event) {
@@ -194,7 +187,9 @@ patchSnippets() {
 
   axios.patch(`/api-snippets/${id}`, this.state.snippets[this.state.currentIndex])
     .then((res)=> {
-
+      // this.setState({ snippets: update(this.state.snippets, {name: {$set: current}} ) });
+      this.setState({ snippets: update(this.state.snippets, { [this.state.currentIndex]: { $set: current } }) });
+      this.setState({ defaultSnippetArray: update(this.state.defaultSnippetArray, { [this.state.currentIndex]: { $set: current } }) });
       console.log(res.data);
     })
     .catch((error) => {

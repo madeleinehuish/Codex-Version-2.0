@@ -28,6 +28,7 @@ export default {
     if (editor = atom.workspace.getActiveTextEditor()) {
       let selected = editor.getSelectedText()
       let language = editor.getGrammar().name
+      // let language = languageinit.split(" ").join(', ')
 
       self.post(selected, language)
         .then((res) => {
