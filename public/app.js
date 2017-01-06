@@ -490,13 +490,7 @@ var App = _react2.default.createClass({
     var _this5 = this;
 
     var sortValue = event.target.value;
-    this.setState({ sortValue: sortValue }
-    //   , ()=> {
-    //   if (this.state.sortValue === 'All Titles') {
-    //     this.setState({ sortValue: ''});
-    //   }
-    // }
-    );
+    this.setState({ sortValue: sortValue });
     var filteredSnippets = void 0;
     var sortThis = this.state.defaultSnippetArray;
     if (sortValue !== "All Titles" || sortValue === '') {
@@ -523,6 +517,7 @@ var App = _react2.default.createClass({
     var id = current.id;
 
     _axios2.default.patch('/api-snippets/' + id, this.state.snippets[this.state.currentIndex]).then(function (res) {
+      console.log(res);
       // this.setState({ snippets: update(this.state.snippets, {name: {$set: current}} ) });
       _this6.setState({ snippets: (0, _immutabilityHelper2.default)(_this6.state.snippets, _defineProperty({}, _this6.state.currentIndex, { $set: current })) });
       _this6.setState({ defaultSnippetArray: (0, _immutabilityHelper2.default)(_this6.state.defaultSnippetArray, _defineProperty({}, _this6.state.currentIndex, { $set: current })) });
@@ -662,19 +657,6 @@ var Editor = _react2.default.createClass({
   displayName: 'Editor',
 
 
-  // componentDidMount() {
-  //   axios.get('/api-snippets/1')
-  //     .then(res => {
-  //       console.log(res.data);
-  //       console.log(res.data.snippetsData[0].codeSnippet);
-  //       // this.setState({ products: res.data, defaultProducts: res.data, sortArray: res.data });
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // },
-
-
   // onChange(newValue) {
   //   console.log('change',newValue);
   //
@@ -685,7 +667,7 @@ var Editor = _react2.default.createClass({
   //   // this.props.onFormChange(event);
   //   // this.props.changeEditor(newValue);
   // },
-
+  //
   // formUpdate () {
   //   this.props.onFormChange()
   // },
@@ -695,11 +677,7 @@ var Editor = _react2.default.createClass({
       return _react2.default.createElement('section', null);
     }
     var newIndex = 1;
-    // const newIndex = this.props.currentIndex;
     var current = this.props.snippets[newIndex];
-    // console.log(current.codeSnippet);
-    //console.log(this.props.snippets[1].codeSnippet);
-    // const title = this.props.snippets[this.props.currentIndex].title;
 
     return _react2.default.createElement(
       'section',
@@ -729,7 +707,7 @@ var Editor = _react2.default.createClass({
                   theme: 'monokai'
                   // id="aceEditor"
                   // theme="github"
-                  , onChange: this.onChange,
+                  , onChange: this.props.onEditorChange,
                   name: 'codeSnippet',
                   value: this.props.snippets[this.props.currentIndex].codeSnippet,
                   editorProps: { $blockScrolling: true }

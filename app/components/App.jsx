@@ -176,11 +176,7 @@ handleSearch(event) {
 handleSort(event) {
   let sortValue = event.target.value;
   this.setState({ sortValue: sortValue }
-  //   , ()=> {
-  //   if (this.state.sortValue === 'All Titles') {
-  //     this.setState({ sortValue: ''});
-  //   }
-  // }
+
   );
   let filteredSnippets;
   let sortThis = this.state.defaultSnippetArray;
@@ -206,6 +202,7 @@ patchSnippets() {
 
   axios.patch(`/api-snippets/${id}`, this.state.snippets[this.state.currentIndex])
     .then((res)=> {
+      console.log(res);
       // this.setState({ snippets: update(this.state.snippets, {name: {$set: current}} ) });
       this.setState({ snippets: update(this.state.snippets, { [this.state.currentIndex]: { $set: current } }) });
       this.setState({ defaultSnippetArray: update(this.state.defaultSnippetArray, { [this.state.currentIndex]: { $set: current } }) });

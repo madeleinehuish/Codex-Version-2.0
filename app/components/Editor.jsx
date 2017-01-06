@@ -10,20 +10,6 @@ import 'brace/theme/monokai';
 
 const Editor = React.createClass({
 
-  // componentDidMount() {
-  //   axios.get('/api-snippets/1')
-  //     .then(res => {
-  //       console.log(res.data);
-  //       console.log(res.data.snippetsData[0].codeSnippet);
-  //       // this.setState({ products: res.data, defaultProducts: res.data, sortArray: res.data });
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // },
-
-
-
   // onChange(newValue) {
   //   console.log('change',newValue);
   //
@@ -34,7 +20,7 @@ const Editor = React.createClass({
   //   // this.props.onFormChange(event);
   //   // this.props.changeEditor(newValue);
   // },
-
+  //
   // formUpdate () {
   //   this.props.onFormChange()
   // },
@@ -44,11 +30,7 @@ const Editor = React.createClass({
       return <section></section>;
     }
     const newIndex = 1;
-    // const newIndex = this.props.currentIndex;
     const current = this.props.snippets[newIndex];
-    // console.log(current.codeSnippet);
-    //console.log(this.props.snippets[1].codeSnippet);
-    // const title = this.props.snippets[this.props.currentIndex].title;
 
     return (
       <section >
@@ -63,7 +45,7 @@ const Editor = React.createClass({
               theme="monokai"
               // id="aceEditor"
               // theme="github"
-              onChange={this.onChange}
+              onChange={this.props.onEditorChange}
               name="codeSnippet"
               value={this.props.snippets[this.props.currentIndex].codeSnippet}
               editorProps={{$blockScrolling: true}}
