@@ -7,7 +7,10 @@ const Sortbylist = React.createClass({
 
   handleChange(event) {
     console.log(event.target.value);
-    this.props.handleSort(event);
+    let e = event.target.value;
+    console.log(e);
+    let type = 'sort';
+    this.props.handleSearch(e, type);
     // this.setState({value: event.target.value});
   },
 
@@ -76,7 +79,7 @@ const Sortbylist = React.createClass({
     return (
       <form onSubmit={this.handleSubmit}>
           <label className="titleWord">Filter
-            <select className="u-full-width " value={this.props.value} onChange={this.handleChange}>
+            <select className="u-full-width " value={this.props.sortValue} onChange={this.props.handleSort}>
               {sortByArrayRender}
             </select>
           </label>

@@ -25,7 +25,7 @@ const Snippetslist = React.createClass({
     });
 
     return (
-      <div>
+      <div id="snippetBox">
         <p></p>
         <ul>
           { snippetmap }

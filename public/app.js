@@ -935,8 +935,9 @@ var Main = _react2.default.createClass({
               snippets: this.props.snippets,
               sortValue: this.props.sortValue,
               onSortChange: this.props.onSortChange,
-              handleSort: this.props.handleSort,
-              defaultSnippetArray: this.props.defaultSnippetArray
+              handleSort: this.props.handleSort
+              // handleSearch={this.props.handleSearch}
+              , defaultSnippetArray: this.props.defaultSnippetArray
             }),
             _react2.default.createElement(_SearchBox2.default, {
               handleSearch: this.props.handleSearch,
@@ -1007,34 +1008,40 @@ exports.default = Search;
 });
 
 require.register("components/SearchBox.jsx", function(exports, require, module) {
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _react = require("react");
+var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var SearchBox = _react2.default.createClass({
-  displayName: "SearchBox",
+  displayName: 'SearchBox',
+  handleChange: function handleChange(event) {
+    console.log(event.target.value);
+    var e = event.target.value;
+    var type = 'search';
+    this.props.handleSearch(e, type);
+  },
   render: function render() {
     return _react2.default.createElement(
-      "form",
-      { id: "search-box" },
+      'form',
+      { id: 'search-box' },
       _react2.default.createElement(
-        "div",
-        { className: "twelve columns titleWord", id: "search-options" },
-        "Search by Title",
-        _react2.default.createElement("input", {
+        'div',
+        { className: 'twelve columns titleWord', id: 'search-options' },
+        'Search by Title',
+        _react2.default.createElement('input', {
           onChange: this.props.handleSearch,
-          type: "text",
+          type: 'text',
           value: this.props.value
         }),
-        _react2.default.createElement("img", { id: "search-img", src: "assets/images/search-icon.png" })
+        _react2.default.createElement('img', { id: 'search-img', src: 'assets/images/search-icon.png' })
       )
     );
   }
@@ -1123,7 +1130,7 @@ var Snippetslist = _react2.default.createClass({
 
     return _react2.default.createElement(
       'div',
-      null,
+      { id: 'snippetBox' },
       _react2.default.createElement('p', null),
       _react2.default.createElement(
         'ul',
@@ -1199,7 +1206,10 @@ var Sortbylist = _react2.default.createClass({
   displayName: 'Sortbylist',
   handleChange: function handleChange(event) {
     console.log(event.target.value);
-    this.props.handleSort(event);
+    var e = event.target.value;
+    console.log(e);
+    var type = 'sort';
+    this.props.handleSearch(e, type);
     // this.setState({value: event.target.value});
   },
   handleSubmit: function handleSubmit(event) {
@@ -1278,7 +1288,7 @@ var Sortbylist = _react2.default.createClass({
         'Filter',
         _react2.default.createElement(
           'select',
-          { className: 'u-full-width ', value: this.props.value, onChange: this.handleChange },
+          { className: 'u-full-width ', value: this.props.sortValue, onChange: this.props.handleSort },
           sortByArrayRender
         )
       )

@@ -39,6 +39,7 @@ const Main = React.createClass({
                   sortValue={this.props.sortValue}
                   onSortChange={this.props.onSortChange}
                   handleSort={this.props.handleSort}
+                  // handleSearch={this.props.handleSearch}
                   defaultSnippetArray={this.props.defaultSnippetArray}
                 />
 

@@ -2,6 +2,13 @@ import React from 'react';
 
 const SearchBox = React.createClass({
 
+  handleChange(event) {
+    console.log(event.target.value);
+    let e = event.target.value;
+    let type = 'search';
+    this.props.handleSearch(e, type);
+  },
+
   render() {
     return (
       <form id="search-box">

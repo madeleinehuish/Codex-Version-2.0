@@ -21,7 +21,13 @@ ul {
 /*-------------- NAVIGATION -------------*/
 header {
   height: 50px;
-  background-color: #59656f;
+  /*background-color: #59656f;*/
+  /*background-color: #64718e;*/
+  /*background-color:#7caabe;*/
+  /*background-color:#4f879f;*/
+  /*background-color: #4f809f;*/
+  /*background-color: #3e6a7d;*/
+  background-color:#47798e;
 }
 
 header > div.container {
@@ -64,6 +70,10 @@ header > div.twelve.columns, nav.six.columns {
 
 .userNav {
   color: #fff;
+}
+
+.userNav:hover {
+  color:#afcbd7;
 }
 
 nav.six.columns > ul {
@@ -159,8 +169,9 @@ nav.six.columns > ul > li#login-icon {
   font-size: 8em;
 }
 
-#codeSnippet{
-  border: 1px solid; }
+/*#codeSnippet{
+  box-shadow: 10px 10px 5px #888888;
+}*/
 
 #searchBox {
    margin-top: 10px;
@@ -191,6 +202,25 @@ body {
   /*padding-top: px;*/
   padding-left: 8px;
   /*float: left;*/
+}
+
+.ace-editor {
+  border: 2px solid;
+
+}
+
+#snippetBox {
+  max-height: calc(100vh - 210px);
+  overflow-y: auto;
+}
+
+select:focus, input[type=text]:focus {
+  border: 1px solid #888;
+}
+
+a:hover {
+  /*color: #7caabe;*/
+  color:#afcbd7;
 }
 
 /*# sourceMappingURL=app.css.map*/
