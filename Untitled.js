@@ -837,3 +837,44 @@ sortedValues() {
 
   // this.setState({ snippets: render });
 },
+
+
+// handleSearch(event) {
+//   console.log(event.target.value);
+//     this.setState({ value: event.target.value });
+//
+//       let searchRender = this.state.snippets.filter((element, index) => {
+//
+//         if(element.title.toUpperCase().includes(event.target.value.toUpperCase())) {
+//           return true;
+//         }
+//         return false;
+//       });
+//
+//       if (!event.target.value) {
+//         this.setState({ snippets: this.state.defaultSnippetArray })
+//       } else {
+//           this.setState({ snippets : searchRender });
+//         }
+//   },
+//
+// handleSort(event) {
+//   let sortValue = event.target.value;
+//   this.setState({ sortValue: sortValue }
+//
+//   );
+//   let filteredSnippets;
+//   let sortThis = this.state.defaultSnippetArray;
+//   if (sortValue !== "All Titles" || sortValue === '') {
+//     filteredSnippets = sortThis.filter((element) => {
+//       if (element.language.includes(sortValue)) {
+//         return element.language.includes(sortValue)
+//       } else if (element.keywords.includes(sortValue)) {
+//       return element.keywords.includes(sortValue)
+//       }
+//     });
+//     this.setState({ snippets: filteredSnippets },()=>{console.log(this.state.snippets)})
+//   } else {
+//     this.setState({ snippets: this.state.defaultSnippetArray }, ()=>{console.log('default snippets')});
+//   }
+// },

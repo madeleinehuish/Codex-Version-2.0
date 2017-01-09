@@ -155,44 +155,69 @@ onFormChangeAddSnippet(event) {
 },
 
 handleSearch(event) {
-  console.log(event.target.value);
-    this.setState({ value: event.target.value });
-
-      let searchRender = this.state.snippets.filter((element, index) => {
-
-        if(element.title.toUpperCase().includes(event.target.value.toUpperCase())) {
-          return true;
-        }
-        return false;
-      });
-
-      if (!event.target.value) {
-        this.setState({ snippets: this.state.defaultSnippetArray })
-      } else {
-          this.setState({ snippets : searchRender });
-        }
-  },
+  let search = event.target.value;
+  this.setState({ value: search }, () =>
+    this.sortedValues()
+  );
+},
 
 handleSort(event) {
-  let sortValue = event.target.value;
-  this.setState({ sortValue: sortValue }
-
+  let sort = event.target.value
+  this.setState({ sortValue: sort }, () =>
+    this.sortedValues()
   );
-  let filteredSnippets;
-  let sortThis = this.state.defaultSnippetArray;
-  if (sortValue !== "All Titles" || sortValue === '') {
-    filteredSnippets = sortThis.filter((element) => {
+},
+
+sortedValues() {
+  let sortValue = this.state.sortValue;
+  let searchValue = this.state.value;
+  let render;
+  console.log('sortValue =' + sortValue);
+  console.log('searchValue =' + searchValue);
+
+  //if searchValue empty and sortValue empty
+  if (searchValue === '' && sortValue === 'All Titles') {
+    render = this.state.defaultSnippetArray;
+    return this.setState({ snippets: render });
+  } else
+  //if searchValue empty and sortValue filled
+  if (searchValue === '' && sortValue !== 'All Titles') {
+    render = this.state.defaultSnippetArray.filter((element, index) => {
       if (element.language.includes(sortValue)) {
-        return element.language.includes(sortValue)
+        return element.language.includes(sortValue);
       } else if (element.keywords.includes(sortValue)) {
-      return element.keywords.includes(sortValue)
+        return element.keywords.includes(sortValue);
       }
     });
-    this.setState({ snippets: filteredSnippets },()=>{console.log(this.state.snippets)})
-  } else {
-    this.setState({ snippets: this.state.defaultSnippetArray }, ()=>{console.log('default snippets')});
+    return this.setState({ snippets: render });
+  } else
+  //if searchValue filled and sortValue empty
+  if (searchValue !== '' && sortValue === 'All Titles') {
+    render = this.state.defaultSnippetArray.filter((element, index) => {
+      if(element.title.toUpperCase().includes(searchValue.toUpperCase())) {
+        return true;
+      }
+    });
+    return this.setState({ snippets: render });
+  } else
+  //if searchValue filled and sortValue filled
+  if (searchValue !== '' && sortValue !== 'All Titles') {
+    render = this.state.defaultSnippetArray.filter((element, index) => {
+      if(element.title.toUpperCase().includes(searchValue.toUpperCase())){
+        if (element.language.includes(sortValue)) {
+          return true
+        }
+        if (element.keywords.includes(sortValue)) {
+          return true
+        }
+      }
+
+      return false;
+    });
+    return this.setState({ snippets: render });
   }
 },
+
 
 patchSnippets() {
 
