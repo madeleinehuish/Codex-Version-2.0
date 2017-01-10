@@ -386,7 +386,7 @@ var App = _react2.default.createClass({
     _axios2.default.post('/api-snippets', this.state.addSnippet).then(function (res) {
       var addSnippet = res.data;
       _this.setState({
-        snippets: _this.state.snippets.concat([addSnippet]),
+        // snippets: this.state.snippets.concat([addSnippet]),
         defaultSnippetArray: _this.state.defaultSnippetArray.concat([addSnippet]),
         addSnippet: _this.state.defaultSnippet
       });
@@ -511,6 +511,7 @@ var App = _react2.default.createClass({
         if (searchValue !== '' && sortValue === 'All Titles') {
           render = this.state.defaultSnippetArray.filter(function (element, index) {
             if (element.title.toUpperCase().includes(searchValue.toUpperCase())) {
+
               return true;
             }
           });

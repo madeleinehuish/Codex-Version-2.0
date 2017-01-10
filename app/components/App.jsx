@@ -58,7 +58,7 @@ addNewSnippetToStateAndDB() {
   .then(res => {
     const addSnippet = res.data;
     this.setState({
-      snippets: this.state.snippets.concat([addSnippet]),
+      // snippets: this.state.snippets.concat([addSnippet]),
       defaultSnippetArray: this.state.defaultSnippetArray.concat([addSnippet]),
       addSnippet: this.state.defaultSnippet
     });
@@ -195,7 +195,8 @@ sortedValues() {
   if (searchValue !== '' && sortValue === 'All Titles') {
     render = this.state.defaultSnippetArray.filter((element, index) => {
       if(element.title.toUpperCase().includes(searchValue.toUpperCase())) {
-        return true;
+
+          return true;
       }
     });
     return this.setState({ snippets: render });
@@ -205,8 +206,8 @@ sortedValues() {
     render = this.state.defaultSnippetArray.filter((element, index) => {
       if(element.title.toUpperCase().includes(searchValue.toUpperCase())){
         if (element.language.includes(sortValue)) {
-          return true
-        }
+            return true;
+          }
         if (element.keywords.includes(sortValue)) {
           return true
         }
