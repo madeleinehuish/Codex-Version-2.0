@@ -58,7 +58,7 @@ addNewSnippetToStateAndDB() {
   .then(res => {
     const addSnippet = res.data;
     this.setState({
-      // snippets: this.state.snippets.concat([addSnippet]),
+      snippets: this.state.snippets.concat([addSnippet]),
       defaultSnippetArray: this.state.defaultSnippetArray.concat([addSnippet]),
       addSnippet: this.state.defaultSnippet
     });
