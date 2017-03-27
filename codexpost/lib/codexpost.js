@@ -50,7 +50,7 @@ export default {
     }
 
     return new Promise((resolve, reject) => {
-      axios.post('http://localhost:8000/api-snippets/atom', snippetData )
+      axios.post('https://madeleinehuish-codex.herokuapp.com/api-snippets', snippetData )
         .then((res) => {
           atom.notifications.addSuccess('Status : ' + res.status)
           if(res.status === 200) {
