@@ -8,24 +8,8 @@ import 'brace/mode/javascript';
 import 'brace/theme/github';
 import 'brace/theme/monokai';
 
-const Editor = React.createClass({
+const Editor = (props) => {
 
-  // onChange(newValue) {
-  //   console.log('change',newValue);
-  //
-  //   this.props.onEditorChange(newValue);
-  //   // const editor = ace.edit("codeSnippet");
-  //   // const code = editor.getValue();
-  //   // console.log(code);
-  //   // this.props.onFormChange(event);
-  //   // this.props.changeEditor(newValue);
-  // },
-  //
-  // formUpdate () {
-  //   this.props.onFormChange()
-  // },
-
-  render() {
     if (this.props.snippets.length === 0) {
       return <section></section>;
     }
@@ -85,8 +69,8 @@ const Editor = React.createClass({
           </div>
         </div>
       </section>
-    );
-  }
-});
+
+  )
+};
 
 export default Editor;

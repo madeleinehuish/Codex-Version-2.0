@@ -1,13 +1,13 @@
 (function() {
   'use strict';
 
-  var globals = typeof window === 'undefined' ? global : window;
+  var globals = typeof global === 'undefined' ? self : global;
   if (typeof globals.require === 'function') return;
 
   var modules = {};
   var cache = {};
   var aliases = {};
-  var has = ({}).hasOwnProperty;
+  var has = {}.hasOwnProperty;
 
   var expRe = /^\.\.?(\/|$)/;
   var expand = function(root, name) {
@@ -36,8 +36,7 @@
   };
 
   var initModule = function(name, definition) {
-    var hot = null;
-    hot = hmr && hmr.createHot(name);
+    var hot = hmr && hmr.createHot(name);
     var module = {id: name, exports: {}, hot: hot};
     cache[name] = module;
     definition(module.exports, localRequire(name), module);
@@ -85,7 +84,7 @@
   };
 
   require.register = require.define = function(bundle, fn) {
-    if (typeof bundle === 'object') {
+    if (bundle && typeof bundle === 'object') {
       for (var key in bundle) {
         if (has.call(bundle, key)) {
           require.register(key, bundle[key]);
@@ -116,7 +115,7 @@
 })();
 
 (function() {
-var global = window;
+var global = typeof window === 'undefined' ? this : window;
 var process;
 var __makeRelativeRequire = function(require, mappings, pref) {
   var none = {};
@@ -149,7 +148,7 @@ var __makeRelativeRequire = function(require, mappings, pref) {
     return require(name);
   }
 };
-require.register("components/Addsnippet.jsx", function(exports, require, module) {
+require.register("components/Addsnippet.js", function(exports, require, module) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -287,9 +286,10 @@ var Addsnippet = _react2.default.createClass({
 });
 
 exports.default = Addsnippet;
+
 });
 
-require.register("components/App.jsx", function(exports, require, module) {
+require.register("components/App.js", function(exports, require, module) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -297,6 +297,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _axios = require('axios');
 
@@ -340,10 +342,21 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var App = _react2.default.createClass({
-  displayName: 'App',
-  getInitialState: function getInitialState() {
-    return {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var App = function (_Component) {
+  _inherits(App, _Component);
+
+  function App(props) {
+    _classCallCheck(this, App);
+
+    var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
+
+    _this.state = {
       value: '',
       sortValue: 'All Titles',
       inputValue: '',
@@ -376,273 +389,313 @@ var App = _react2.default.createClass({
       currentUser: {},
       title: ''
     };
-  },
-  addNewSnippetButton: function addNewSnippetButton() {
-    var newIndex = this.state.snippetTitles.length;
-  },
-  addNewSnippetToStateAndDB: function addNewSnippetToStateAndDB() {
-    var _this = this;
+    return _this;
+  }
 
-    _axios2.default.post('/api-snippets', this.state.addSnippet).then(function (res) {
-      var addSnippet = res.data;
-      _this.setState({
-        snippets: _this.state.snippets.concat([addSnippet]),
-        defaultSnippetArray: _this.state.defaultSnippetArray.concat([addSnippet]),
-        addSnippet: _this.state.defaultSnippet
-      });
-    }).catch(function (error) {
-      console.log(error);
-    });
-  },
-  changeCurrentIndex: function changeCurrentIndex(newIndex) {
-    var _this2 = this;
+  _createClass(App, [{
+    key: 'addNewSnippetButton',
+    value: function addNewSnippetButton() {
+      var newIndex = this.state.snippetTitles.length;
+    }
+  }, {
+    key: 'addNewSnippetToStateAndDB',
+    value: function addNewSnippetToStateAndDB() {
+      var _this2 = this;
 
-    this.setState({ currentIndex: newIndex }, function () {
-      console.log(_this2.state.currentIndex);
-    });
-  },
-  changeEditor: function changeEditor(newValue) {
-    this.setState({ newTestCodeValue: newValue });
-    console.log(this.state.newTestCodeValue);
-  },
-  componentDidMount: function componentDidMount() {
-    var _this3 = this;
-
-    _axios2.default.get('/api-token').then(function (res) {
-      _this3.setState({ loggedIn: true });
-    }).then(function () {
-
-      return _axios2.default.get('/api-users');
-    }).then(function (res) {
-      _this3.setState({ currentUser: res.data });
-
-      return res;
-    }).then(function (res) {
-      var id = res.data.id;
-
-      return _axios2.default.get('/api-snippets/' + id + '?gistUrl=' + _this3.state.currentUser.gistUrl + '&githubToken=' + _this3.state.currentUser.githubToken);
-    }).then(function (res) {
-      var snippetData = res.data.snippetsData;
-
-      _this3.setState({ snippets: snippetData, defaultSnippetArray: snippetData });
-    }).catch(function (error) {
-      console.log(error);
-    });
-  },
-  deleteSnippet: function deleteSnippet() {
-    var _this4 = this;
-
-    var current = this.state.snippets[this.state.currentIndex];
-    var id = current.id;
-
-    _axios2.default.delete('/api-snippets/' + id).then(function (res) {
-      var delSnippet = res.data;
-
-      _this4.setState({
-        defaultSnippetArray: (0, _immutabilityHelper2.default)(_this4.state.defaultSnippetArray, { $splice: [[_this4.state.currentIndex, 1]] }),
-        snippets: (0, _immutabilityHelper2.default)(_this4.state.snippets, { $splice: [[_this4.state.currentIndex, 1]] })
-
-      });
-    }).catch(function (error) {
-      console.log(error);
-    });
-  },
-  logOut: function logOut() {
-    this.setState({
-      loggedIn: false,
-      currentUser: {},
-      previousOrders: {}
-    });
-  },
-  onEditorChange: function onEditorChange(newValue) {
-    this.setState({ snippets: (0, _immutabilityHelper2.default)(this.state.snippets, _defineProperty({}, this.state.currentIndex, { codeSnippet: { $set: newValue } })) });
-  },
-  onEditorChangeAddSnippet: function onEditorChangeAddSnippet(newValue) {
-    this.setState({ addSnippet: (0, _immutabilityHelper2.default)(this.state.addSnippet, { codeSnippet: { $set: newValue } }) });
-    this.setState({ addSnippet: (0, _immutabilityHelper2.default)(this.state.addSnippet, { userId: { $set: this.state.currentUser.id } }) });
-  },
-  onFormChange: function onFormChange(event) {
-    this.setState({ snippets: (0, _immutabilityHelper2.default)(this.state.snippets, _defineProperty({}, this.state.currentIndex, _defineProperty({}, event.target.name, { $set: event.target.value }))) });
-    this.setState({ defaultSnippetArray: (0, _immutabilityHelper2.default)(this.state.defaultSnippetArray, _defineProperty({}, this.state.currentIndex, _defineProperty({}, event.target.name, { $set: event.target.value }))) });
-  },
-  onFormChangeAddSnippet: function onFormChangeAddSnippet(event) {
-    this.setState({ addSnippet: (0, _immutabilityHelper2.default)(this.state.addSnippet, _defineProperty({}, event.target.name, { $set: event.target.value })) });
-  },
-  handleSearch: function handleSearch(event) {
-    var _this5 = this;
-
-    var search = event.target.value;
-    this.setState({ value: search }, function () {
-      return _this5.sortedValues();
-    });
-  },
-  handleSort: function handleSort(event) {
-    var _this6 = this;
-
-    var sort = event.target.value;
-    this.setState({ sortValue: sort }, function () {
-      return _this6.sortedValues();
-    });
-  },
-  sortedValues: function sortedValues() {
-    var sortValue = this.state.sortValue;
-    var searchValue = this.state.value;
-    var render = void 0;
-    console.log('sortValue =' + sortValue);
-    console.log('searchValue =' + searchValue);
-
-    //if searchValue empty and sortValue empty
-    if (searchValue === '' && sortValue === 'All Titles') {
-      render = this.state.defaultSnippetArray;
-      return this.setState({ snippets: render });
-    } else
-      //if searchValue empty and sortValue filled
-      if (searchValue === '' && sortValue !== 'All Titles') {
-        render = this.state.defaultSnippetArray.filter(function (element, index) {
-          if (element.language.includes(sortValue)) {
-            return element.language.includes(sortValue);
-          } else if (element.keywords.includes(sortValue)) {
-            return element.keywords.includes(sortValue);
-          }
+      _axios2.default.post('/api-snippets', this.state.addSnippet).then(function (res) {
+        var addSnippet = res.data;
+        _this2.setState({
+          snippets: _this2.state.snippets.concat([addSnippet]),
+          defaultSnippetArray: _this2.state.defaultSnippetArray.concat([addSnippet]),
+          addSnippet: _this2.state.defaultSnippet
         });
+      }).catch(function (error) {
+        console.log(error);
+      });
+    }
+  }, {
+    key: 'changeCurrentIndex',
+    value: function changeCurrentIndex(newIndex) {
+      var _this3 = this;
+
+      this.setState({ currentIndex: newIndex }, function () {
+        console.log(_this3.state.currentIndex);
+      });
+    }
+  }, {
+    key: 'changeEditor',
+    value: function changeEditor(newValue) {
+      this.setState({ newTestCodeValue: newValue });
+      console.log(this.state.newTestCodeValue);
+    }
+  }, {
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      var _this4 = this;
+
+      _axios2.default.get('/api-token').then(function (res) {
+        _this4.setState({ loggedIn: true });
+      }).then(function () {
+
+        return _axios2.default.get('/api-users');
+      }).then(function (res) {
+        _this4.setState({ currentUser: res.data });
+
+        return res;
+      }).then(function (res) {
+        var id = res.data.id;
+
+        return _axios2.default.get('/api-snippets/' + id + '?gistUrl=' + _this4.state.currentUser.gistUrl + '&githubToken=' + _this4.state.currentUser.githubToken);
+      }).then(function (res) {
+        var snippetData = res.data.snippetsData;
+
+        _this4.setState({ snippets: snippetData, defaultSnippetArray: snippetData });
+      }).catch(function (error) {
+        console.log(error);
+      });
+    }
+  }, {
+    key: 'deleteSnippet',
+    value: function deleteSnippet() {
+      var _this5 = this;
+
+      var current = this.state.snippets[this.state.currentIndex];
+      var id = current.id;
+
+      _axios2.default.delete('/api-snippets/' + id).then(function (res) {
+        var delSnippet = res.data;
+
+        _this5.setState({
+          defaultSnippetArray: (0, _immutabilityHelper2.default)(_this5.state.defaultSnippetArray, { $splice: [[_this5.state.currentIndex, 1]] }),
+          snippets: (0, _immutabilityHelper2.default)(_this5.state.snippets, { $splice: [[_this5.state.currentIndex, 1]] })
+
+        });
+      }).catch(function (error) {
+        console.log(error);
+      });
+    }
+  }, {
+    key: 'logOut',
+    value: function logOut() {
+      this.setState({
+        loggedIn: false,
+        currentUser: {},
+        previousOrders: {}
+      });
+    }
+  }, {
+    key: 'onEditorChange',
+    value: function onEditorChange(newValue) {
+      this.setState({ snippets: (0, _immutabilityHelper2.default)(this.state.snippets, _defineProperty({}, this.state.currentIndex, { codeSnippet: { $set: newValue } })) });
+    }
+  }, {
+    key: 'onEditorChangeAddSnippet',
+    value: function onEditorChangeAddSnippet(newValue) {
+      this.setState({ addSnippet: (0, _immutabilityHelper2.default)(this.state.addSnippet, { codeSnippet: { $set: newValue } }) });
+      this.setState({ addSnippet: (0, _immutabilityHelper2.default)(this.state.addSnippet, { userId: { $set: this.state.currentUser.id } }) });
+    }
+  }, {
+    key: 'onFormChange',
+    value: function onFormChange(event) {
+      this.setState({ snippets: (0, _immutabilityHelper2.default)(this.state.snippets, _defineProperty({}, this.state.currentIndex, _defineProperty({}, event.target.name, { $set: event.target.value }))) });
+      this.setState({ defaultSnippetArray: (0, _immutabilityHelper2.default)(this.state.defaultSnippetArray, _defineProperty({}, this.state.currentIndex, _defineProperty({}, event.target.name, { $set: event.target.value }))) });
+    }
+  }, {
+    key: 'onFormChangeAddSnippet',
+    value: function onFormChangeAddSnippet(event) {
+      this.setState({ addSnippet: (0, _immutabilityHelper2.default)(this.state.addSnippet, _defineProperty({}, event.target.name, { $set: event.target.value })) });
+    }
+  }, {
+    key: 'handleSearch',
+    value: function handleSearch(event) {
+      var _this6 = this;
+
+      var search = event.target.value;
+      this.setState({ value: search }, function () {
+        return _this6.sortedValues();
+      });
+    }
+  }, {
+    key: 'handleSort',
+    value: function handleSort(event) {
+      var _this7 = this;
+
+      var sort = event.target.value;
+      this.setState({ sortValue: sort }, function () {
+        return _this7.sortedValues();
+      });
+    }
+  }, {
+    key: 'sortedValues',
+    value: function sortedValues() {
+      var sortValue = this.state.sortValue;
+      var searchValue = this.state.value;
+      var render = void 0;
+      console.log('sortValue =' + sortValue);
+      console.log('searchValue =' + searchValue);
+
+      //if searchValue empty and sortValue empty
+      if (searchValue === '' && sortValue === 'All Titles') {
+        render = this.state.defaultSnippetArray;
         return this.setState({ snippets: render });
       } else
-        //if searchValue filled and sortValue empty
-        if (searchValue !== '' && sortValue === 'All Titles') {
+        //if searchValue empty and sortValue filled
+        if (searchValue === '' && sortValue !== 'All Titles') {
           render = this.state.defaultSnippetArray.filter(function (element, index) {
-            if (element.title.toUpperCase().includes(searchValue.toUpperCase())) {
-
-              return true;
+            if (element.language.includes(sortValue)) {
+              return element.language.includes(sortValue);
+            } else if (element.keywords.includes(sortValue)) {
+              return element.keywords.includes(sortValue);
             }
           });
           return this.setState({ snippets: render });
         } else
-          //if searchValue filled and sortValue filled
-          if (searchValue !== '' && sortValue !== 'All Titles') {
+          //if searchValue filled and sortValue empty
+          if (searchValue !== '' && sortValue === 'All Titles') {
             render = this.state.defaultSnippetArray.filter(function (element, index) {
               if (element.title.toUpperCase().includes(searchValue.toUpperCase())) {
-                if (element.language.includes(sortValue)) {
-                  return true;
-                }
-                if (element.keywords.includes(sortValue)) {
-                  return true;
-                }
-              }
 
-              return false;
+                return true;
+              }
             });
             return this.setState({ snippets: render });
-          }
-  },
-  patchSnippets: function patchSnippets() {
-    var _this7 = this;
+          } else
+            //if searchValue filled and sortValue filled
+            if (searchValue !== '' && sortValue !== 'All Titles') {
+              render = this.state.defaultSnippetArray.filter(function (element, index) {
+                if (element.title.toUpperCase().includes(searchValue.toUpperCase())) {
+                  if (element.language.includes(sortValue)) {
+                    return true;
+                  }
+                  if (element.keywords.includes(sortValue)) {
+                    return true;
+                  }
+                }
 
-    var current = this.state.snippets[this.state.currentIndex];
-    var id = current.id;
+                return false;
+              });
+              return this.setState({ snippets: render });
+            }
+    }
+  }, {
+    key: 'patchSnippets',
+    value: function patchSnippets() {
+      var _this8 = this;
 
-    _axios2.default.patch('/api-snippets/' + id, this.state.snippets[this.state.currentIndex]).then(function (res) {
-      console.log(res);
-      // this.setState({ snippets: update(this.state.snippets, {name: {$set: current}} ) });
-      _this7.setState({ snippets: (0, _immutabilityHelper2.default)(_this7.state.snippets, _defineProperty({}, _this7.state.currentIndex, { $set: current })) });
-      _this7.setState({ defaultSnippetArray: (0, _immutabilityHelper2.default)(_this7.state.defaultSnippetArray, _defineProperty({}, _this7.state.currentIndex, { $set: current })) });
-      console.log(res.data);
-    }).catch(function (error) {
-      console.log(error);
-    });
-  },
-  reRenderButton: function reRenderButton() {
-    console.log('rerender');
-    this.setState({ renderByLanguage: true });
-  },
-  render: function render() {
-    var _this8 = this;
+      var current = this.state.snippets[this.state.currentIndex];
+      var id = current.id;
 
-    return _react2.default.createElement(
-      _reactRouter.BrowserRouter,
-      null,
-      _react2.default.createElement(
-        'main',
+      _axios2.default.patch('/api-snippets/' + id, this.state.snippets[this.state.currentIndex]).then(function (res) {
+        console.log(res);
+        // this.setState({ snippets: update(this.state.snippets, {name: {$set: current}} ) });
+        _this8.setState({ snippets: (0, _immutabilityHelper2.default)(_this8.state.snippets, _defineProperty({}, _this8.state.currentIndex, { $set: current })) });
+        _this8.setState({ defaultSnippetArray: (0, _immutabilityHelper2.default)(_this8.state.defaultSnippetArray, _defineProperty({}, _this8.state.currentIndex, { $set: current })) });
+        console.log(res.data);
+      }).catch(function (error) {
+        console.log(error);
+      });
+    }
+  }, {
+    key: 'reRenderButton',
+    value: function reRenderButton() {
+      console.log('rerender');
+      this.setState({ renderByLanguage: true });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this9 = this;
+
+      return _react2.default.createElement(
+        _reactRouter.BrowserRouter,
         null,
-        _react2.default.createElement(_reactRouter.Match, { pattern: '/', exactly: true, render: function render() {
-            return _react2.default.createElement(_Home2.default, _extends({}, _this8.state, {
-              onSubmitGitHubLogIn: _this8.onSubmitGitHubLogIn
-            }));
-          } }),
-        _react2.default.createElement(_reactRouter.Match, { pattern: '/addsnippet', exactly: true, render: function render() {
-            return _react2.default.createElement(
-              'div',
-              null,
-              _react2.default.createElement(_Header2.default, _extends({}, _this8.state, {
-                logIn: _this8.logIn,
-                logOut: _this8.logOut,
-                onSubmit: _this8.onSubmit,
-                onFormChange: _this8.onFormChange
-              })),
-              _react2.default.createElement(_Addsnippet2.default, _extends({}, _this8.state, {
-                addNewSnippetToStateAndDB: _this8.addNewSnippetToStateAndDB,
-                changeEditor: _this8.changeEditor,
-                currentIndex: _this8.state.currentIndex,
-                snippets: _this8.state.snippets,
-                onFormChangeAddSnippet: _this8.onFormChangeAddSnippet,
-                onEditorChangeAddSnippet: _this8.onEditorChangeAddSnippet,
-                patchSnippets: _this8.patchSnippets
-              }))
-            );
-          } }),
-        _react2.default.createElement(_reactRouter.Match, { pattern: '/editor', exactly: true, render: function render() {
-            return _react2.default.createElement(
-              'div',
-              null,
-              _react2.default.createElement(_Header2.default, _extends({}, _this8.state, {
-                logIn: _this8.logIn,
-                logOut: _this8.logOut,
-                onSubmit: _this8.onSubmit,
-                onFormChange: _this8.onFormChange
-              })),
-              _react2.default.createElement(_Editor2.default, _extends({}, _this8.state, {
-                changeEditor: _this8.changeEditor,
-                currentIndex: _this8.state.currentIndex,
-                snippets: _this8.state.snippets,
-                onFormChange: _this8.onFormChange,
-                onEditorChange: _this8.onEditorChange,
-                patchSnippets: _this8.patchSnippets,
-                deleteSnippet: _this8.deleteSnippet
-              }))
-            );
-          } }),
-        _react2.default.createElement(_reactRouter.Match, { pattern: '/main', exactly: true, render: function render() {
-            return _react2.default.createElement(
-              'div',
-              null,
-              _react2.default.createElement(_Header2.default, _extends({}, _this8.state, {
-                logIn: _this8.logIn,
-                logOut: _this8.logOut,
-                onSubmit: _this8.onSubmit,
-                onFormChange: _this8.onFormChange
-              })),
-              _react2.default.createElement(_Main2.default, _extends({}, _this8.state, {
-                loggedIn: _this8.state.loggedIn,
-                currentUser: _this8.state.currentUser,
-                snippets: _this8.state.snippets,
-                currentIndex: _this8.state.currentIndex,
-                changeCurrentIndex: _this8.changeCurrentIndex,
-                addNewSnippetButton: _this8.addNewSnippetButton,
-                reRenderButton: _this8.reRenderButton,
-                onSortChange: _this8.onSortChange,
-                handleSort: _this8.handleSort,
-                handleSearch: _this8.handleSearch
-              }))
-            );
-          } })
-      )
-    );
-  }
-});
+        _react2.default.createElement(
+          'main',
+          null,
+          _react2.default.createElement(_reactRouter.Match, { pattern: '/', exactly: true, render: function render() {
+              return _react2.default.createElement(_Home2.default, _extends({}, _this9.state, {
+                onSubmitGitHubLogIn: _this9.onSubmitGitHubLogIn
+              }));
+            } }),
+          _react2.default.createElement(_reactRouter.Match, { pattern: '/addsnippet', exactly: true, render: function render() {
+              return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(_Header2.default, _extends({}, _this9.state, {
+                  logIn: _this9.logIn,
+                  logOut: _this9.logOut,
+                  onSubmit: _this9.onSubmit,
+                  onFormChange: _this9.onFormChange
+                })),
+                _react2.default.createElement(_Addsnippet2.default, _extends({}, _this9.state, {
+                  addNewSnippetToStateAndDB: _this9.addNewSnippetToStateAndDB,
+                  changeEditor: _this9.changeEditor,
+                  currentIndex: _this9.state.currentIndex,
+                  snippets: _this9.state.snippets,
+                  onFormChangeAddSnippet: _this9.onFormChangeAddSnippet,
+                  onEditorChangeAddSnippet: _this9.onEditorChangeAddSnippet,
+                  patchSnippets: _this9.patchSnippets
+                }))
+              );
+            } }),
+          _react2.default.createElement(_reactRouter.Match, { pattern: '/editor', exactly: true, render: function render() {
+              return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(_Header2.default, _extends({}, _this9.state, {
+                  logIn: _this9.logIn,
+                  logOut: _this9.logOut,
+                  onSubmit: _this9.onSubmit,
+                  onFormChange: _this9.onFormChange
+                })),
+                _react2.default.createElement(_Editor2.default, _extends({}, _this9.state, {
+                  changeEditor: _this9.changeEditor,
+                  currentIndex: _this9.state.currentIndex,
+                  snippets: _this9.state.snippets,
+                  onFormChange: _this9.onFormChange,
+                  onEditorChange: _this9.onEditorChange,
+                  patchSnippets: _this9.patchSnippets,
+                  deleteSnippet: _this9.deleteSnippet
+                }))
+              );
+            } }),
+          _react2.default.createElement(_reactRouter.Match, { pattern: '/main', exactly: true, render: function render() {
+              return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(_Header2.default, _extends({}, _this9.state, {
+                  logIn: _this9.logIn,
+                  logOut: _this9.logOut,
+                  onSubmit: _this9.onSubmit,
+                  onFormChange: _this9.onFormChange
+                })),
+                _react2.default.createElement(_Main2.default, _extends({}, _this9.state, {
+                  loggedIn: _this9.state.loggedIn,
+                  currentUser: _this9.state.currentUser,
+                  snippets: _this9.state.snippets,
+                  currentIndex: _this9.state.currentIndex,
+                  changeCurrentIndex: _this9.changeCurrentIndex,
+                  addNewSnippetButton: _this9.addNewSnippetButton,
+                  reRenderButton: _this9.reRenderButton,
+                  onSortChange: _this9.onSortChange,
+                  handleSort: _this9.handleSort,
+                  handleSearch: _this9.handleSearch
+                }))
+              );
+            } })
+        )
+      );
+    }
+  }]);
+
+  return App;
+}(_react.Component);
 
 exports.default = App;
+
 });
 
-require.register("components/Editor.jsx", function(exports, require, module) {
+require.register("components/Editor.js", function(exports, require, module) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -677,134 +730,116 @@ require('brace/theme/monokai');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Editor = _react2.default.createClass({
-  displayName: 'Editor',
+var Editor = function Editor(props) {
 
+  if (undefined.props.snippets.length === 0) {
+    return _react2.default.createElement('section', null);
+  }
+  var newIndex = 1;
+  var current = undefined.props.snippets[newIndex];
 
-  // onChange(newValue) {
-  //   console.log('change',newValue);
-  //
-  //   this.props.onEditorChange(newValue);
-  //   // const editor = ace.edit("codeSnippet");
-  //   // const code = editor.getValue();
-  //   // console.log(code);
-  //   // this.props.onFormChange(event);
-  //   // this.props.changeEditor(newValue);
-  // },
-  //
-  // formUpdate () {
-  //   this.props.onFormChange()
-  // },
-
-  render: function render() {
-    if (this.props.snippets.length === 0) {
-      return _react2.default.createElement('section', null);
-    }
-    var newIndex = 1;
-    var current = this.props.snippets[newIndex];
-
-    return _react2.default.createElement(
-      'section',
-      null,
+  return _react2.default.createElement(
+    'section',
+    null,
+    _react2.default.createElement(
+      'div',
+      { className: 'container' },
       _react2.default.createElement(
         'div',
-        { className: 'container' },
+        { className: 'row' },
         _react2.default.createElement(
-          'div',
-          { className: 'row' },
+          'form',
+          null,
           _react2.default.createElement(
-            'form',
-            null,
+            'div',
+            { className: 'four columns' },
             _react2.default.createElement(
-              'div',
-              { className: 'four columns' },
-              _react2.default.createElement(
-                'h5',
-                { className: 'titleWord' },
-                this.props.snippets[this.props.currentIndex].title
-              ),
-              _react2.default.createElement(
-                'div',
-                { id: 'codeSnippet' },
-                _react2.default.createElement(_reactAce2.default, {
-                  mode: 'javascript',
-                  theme: 'monokai'
-                  // id="aceEditor"
-                  // theme="github"
-                  , onChange: this.props.onEditorChange,
-                  name: 'codeSnippet',
-                  value: this.props.snippets[this.props.currentIndex].codeSnippet,
-                  editorProps: { $blockScrolling: true }
-                })
-              )
+              'h5',
+              { className: 'titleWord' },
+              undefined.props.snippets[undefined.props.currentIndex].title
             ),
             _react2.default.createElement(
               'div',
-              { className: 'offset-by-four four columns titleWord2' },
-              _react2.default.createElement(
-                'div',
-                null,
-                'Title:',
-                _react2.default.createElement('br', null),
-                _react2.default.createElement('input', { id: 'title', name: 'title', type: 'text', onChange: this.props.onFormChange, value: this.props.snippets[this.props.currentIndex].title, className: 'validate' })
-              ),
+              { id: 'codeSnippet' },
+              _react2.default.createElement(_reactAce2.default, {
+                mode: 'javascript',
+                theme: 'monokai'
+                // id="aceEditor"
+                // theme="github"
+                , onChange: undefined.props.onEditorChange,
+                name: 'codeSnippet',
+                value: undefined.props.snippets[undefined.props.currentIndex].codeSnippet,
+                editorProps: { $blockScrolling: true }
+              })
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'offset-by-four four columns titleWord2' },
+            _react2.default.createElement(
+              'div',
+              null,
+              'Title:',
               _react2.default.createElement('br', null),
-              _react2.default.createElement(
-                'div',
-                null,
-                'Language:',
-                _react2.default.createElement('br', null),
-                _react2.default.createElement('input', { id: 'language', name: 'language', type: 'text', onChange: this.props.onFormChange, value: this.props.snippets[this.props.currentIndex].language, className: 'validate' })
-              ),
+              _react2.default.createElement('input', { id: 'title', name: 'title', type: 'text', onChange: undefined.props.onFormChange, value: undefined.props.snippets[undefined.props.currentIndex].title, className: 'validate' })
+            ),
+            _react2.default.createElement('br', null),
+            _react2.default.createElement(
+              'div',
+              null,
+              'Language:',
               _react2.default.createElement('br', null),
-              _react2.default.createElement(
-                'div',
-                null,
-                'Keywords:',
-                _react2.default.createElement('br', null),
-                _react2.default.createElement('input', { id: 'keywords', name: 'keywords', type: 'text', onChange: this.props.onFormChange, value: this.props.snippets[this.props.currentIndex].keywords, className: 'validate' })
-              ),
+              _react2.default.createElement('input', { id: 'language', name: 'language', type: 'text', onChange: undefined.props.onFormChange, value: undefined.props.snippets[undefined.props.currentIndex].language, className: 'validate' })
+            ),
+            _react2.default.createElement('br', null),
+            _react2.default.createElement(
+              'div',
+              null,
+              'Keywords:',
               _react2.default.createElement('br', null),
-              _react2.default.createElement(
-                'div',
-                null,
-                'Notes:',
-                _react2.default.createElement('br', null),
-                _react2.default.createElement('input', { id: 'notes', name: 'notes', type: 'text', onChange: this.props.onFormChange, value: this.props.snippets[this.props.currentIndex].notes, className: 'validate' })
-              ),
+              _react2.default.createElement('input', { id: 'keywords', name: 'keywords', type: 'text', onChange: undefined.props.onFormChange, value: undefined.props.snippets[undefined.props.currentIndex].keywords, className: 'validate' })
+            ),
+            _react2.default.createElement('br', null),
+            _react2.default.createElement(
+              'div',
+              null,
+              'Notes:',
               _react2.default.createElement('br', null),
+              _react2.default.createElement('input', { id: 'notes', name: 'notes', type: 'text', onChange: undefined.props.onFormChange, value: undefined.props.snippets[undefined.props.currentIndex].notes, className: 'validate' })
+            ),
+            _react2.default.createElement('br', null),
+            _react2.default.createElement(
+              _reactRouter.Link,
+              { to: '/main' },
               _react2.default.createElement(
-                _reactRouter.Link,
-                { to: '/main' },
-                _react2.default.createElement(
-                  'button',
-                  { onClick: this.props.patchSnippets },
-                  'Save To Codex'
-                )
-              ),
-              _react2.default.createElement('br', null),
-              _react2.default.createElement('br', null),
+                'button',
+                { onClick: undefined.props.patchSnippets },
+                'Save To Codex'
+              )
+            ),
+            _react2.default.createElement('br', null),
+            _react2.default.createElement('br', null),
+            _react2.default.createElement(
+              _reactRouter.Link,
+              { to: '/main' },
               _react2.default.createElement(
-                _reactRouter.Link,
-                { to: '/main' },
-                _react2.default.createElement(
-                  'button',
-                  { onClick: this.props.deleteSnippet },
-                  'Delete'
-                )
+                'button',
+                { onClick: undefined.props.deleteSnippet },
+                'Delete'
               )
             )
           )
         )
       )
-    );
-  }
-});
+    )
+  );
+};
 
 exports.default = Editor;
+
 });
 
-require.register("components/Home.jsx", function(exports, require, module) {
+require.register("components/Home.js", function(exports, require, module) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -819,37 +854,37 @@ var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Home = _react2.default.createClass({
-  displayName: 'Home',
-  onClickSubmit: function onClickSubmit(event) {
-    this.props.onSubmitGitHubLogIn();
-  },
-  render: function render() {
-    return _react2.default.createElement(
-      'section',
-      { id: 'home' },
+var onClickSubmit = function onClickSubmit(event) {
+  undefined.props.onSubmitGitHubLogIn();
+};
+
+var Home = function Home(props) {
+
+  return _react2.default.createElement(
+    'section',
+    { id: 'home' },
+    _react2.default.createElement(
+      'div',
+      { id: 'hero' },
       _react2.default.createElement(
-        'div',
-        { id: 'hero' },
-        _react2.default.createElement(
-          'h1',
-          { className: 'mainTitleWord' },
-          'Codex'
-        ),
-        _react2.default.createElement(
-          'a',
-          { className: 'mainTitle', href: '/api-oauth/github' },
-          'Sign in with GitHub'
-        )
+        'h1',
+        { className: 'mainTitleWord' },
+        'Codex'
+      ),
+      _react2.default.createElement(
+        'a',
+        { className: 'mainTitle', href: '/api-oauth/github' },
+        'Sign in with GitHub'
       )
-    );
-  }
-});
+    )
+  );
+};
 
 exports.default = Home;
+
 });
 
-require.register("components/Main.jsx", function(exports, require, module) {
+require.register("components/Main.js", function(exports, require, module) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -865,8 +900,6 @@ var _reactRouter = require('react-router');
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
-
-var _reactDom = require('react-dom');
 
 var _Snippetslist = require('./Snippetslist');
 
@@ -886,76 +919,69 @@ var _SearchBox2 = _interopRequireDefault(_SearchBox);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// import {InstantSearch, Hits, SearchBox, Highlight} from 'react-instantsearch/dom';
-// import setimmediate from 'setimmediate';
+var Main = function Main(props) {
 
-
-var Main = _react2.default.createClass({
-  displayName: 'Main',
-  render: function render() {
-
-    return _react2.default.createElement(
-      'section',
-      null,
+  return _react2.default.createElement(
+    'section',
+    null,
+    _react2.default.createElement(
+      'div',
+      { className: 'container' },
       _react2.default.createElement(
         'div',
-        { className: 'container' },
+        { className: 'row' },
         _react2.default.createElement(
           'div',
-          { className: 'row' },
+          { className: 'offset-by-one seven columns' },
           _react2.default.createElement(
-            'div',
-            { className: 'offset-by-one seven columns' },
-            _react2.default.createElement(
-              'h5',
-              { className: 'titleWord' },
-              this.props.sortValue
-            ),
-            _react2.default.createElement(_Snippetslist2.default, {
-              snippets: this.props.snippets,
-              snippetTitles: this.props.snippetTitles,
-              currentIndex: this.props.currentIndex,
-              changeCurrentIndex: this.props.changeCurrentIndex
-            }),
-            _react2.default.createElement('p', null)
+            'h5',
+            { className: 'titleWord' },
+            undefined.props.sortValue
           ),
+          _react2.default.createElement(_Snippetslist2.default, {
+            snippets: undefined.props.snippets,
+            snippetTitles: undefined.props.snippetTitles,
+            currentIndex: undefined.props.currentIndex,
+            changeCurrentIndex: undefined.props.changeCurrentIndex
+          }),
+          _react2.default.createElement('p', null)
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'four columns' },
           _react2.default.createElement(
-            'div',
-            { className: 'four columns' },
+            _reactRouter.Link,
+            { to: '/addsnippet' },
             _react2.default.createElement(
-              _reactRouter.Link,
-              { to: '/addsnippet' },
-              _react2.default.createElement(
-                'button',
-                { className: 'titleWord', id: 'addSnippetButton', onClick: this.props.addNewSnippetButton },
-                'Add New Snippet'
-              )
-            ),
-            _react2.default.createElement('br', null),
-            _react2.default.createElement('br', null),
-            _react2.default.createElement(_Sortbylist2.default, {
-              snippets: this.props.snippets,
-              sortValue: this.props.sortValue,
-              onSortChange: this.props.onSortChange,
-              handleSort: this.props.handleSort
-              // handleSearch={this.props.handleSearch}
-              , defaultSnippetArray: this.props.defaultSnippetArray
-            }),
-            _react2.default.createElement(_SearchBox2.default, {
-              handleSearch: this.props.handleSearch,
-              value: this.props.value
-            })
-          )
+              'button',
+              { className: 'titleWord', id: 'addSnippetButton', onClick: undefined.props.addNewSnippetButton },
+              'Add New Snippet'
+            )
+          ),
+          _react2.default.createElement('br', null),
+          _react2.default.createElement('br', null),
+          _react2.default.createElement(_Sortbylist2.default, {
+            snippets: undefined.props.snippets,
+            sortValue: undefined.props.sortValue,
+            onSortChange: undefined.props.onSortChange,
+            handleSort: undefined.props.handleSort,
+            defaultSnippetArray: undefined.props.defaultSnippetArray
+          }),
+          _react2.default.createElement(_SearchBox2.default, {
+            handleSearch: undefined.props.handleSearch,
+            value: undefined.props.value
+          })
         )
       )
-    );
-  }
-});
-// import Search from './Search';
+    )
+  );
+};
+
 exports.default = Main;
+
 });
 
-require.register("components/Search.jsx", function(exports, require, module) {
+require.register("components/Search.js", function(exports, require, module) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1007,9 +1033,10 @@ var Search = _react2.default.createClass({
 });
 
 exports.default = Search;
+
 });
 
-require.register("components/SearchBox.jsx", function(exports, require, module) {
+require.register("components/SearchBox.js", function(exports, require, module) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1050,9 +1077,10 @@ var SearchBox = _react2.default.createClass({
 });
 
 exports.default = SearchBox;
+
 });
 
-require.register("components/Snippets.jsx", function(exports, require, module) {
+require.register("components/Snippets.js", function(exports, require, module) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1088,9 +1116,10 @@ var Snippets = _react2.default.createClass({
 });
 
 exports.default = Snippets;
+
 });
 
-require.register("components/Snippetslist.jsx", function(exports, require, module) {
+require.register("components/Snippetslist.js", function(exports, require, module) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1144,9 +1173,10 @@ var Snippetslist = _react2.default.createClass({
 });
 
 exports.default = Snippetslist;
+
 });
 
-require.register("components/Sortby.jsx", function(exports, require, module) {
+require.register("components/Sortby.js", function(exports, require, module) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1181,9 +1211,10 @@ var Sortby = _react2.default.createClass({
 });
 
 exports.default = Sortby;
+
 });
 
-require.register("components/Sortbylist.jsx", function(exports, require, module) {
+require.register("components/Sortbylist.js", function(exports, require, module) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1299,9 +1330,10 @@ var Sortbylist = _react2.default.createClass({
 });
 
 exports.default = Sortbylist;
+
 });
 
-require.register("components/layouts/Header.jsx", function(exports, require, module) {
+require.register("components/layouts/Header.js", function(exports, require, module) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1373,9 +1405,10 @@ var Header = _react2.default.createClass({
 });
 
 exports.default = Header;
+
 });
 
-require.register("index.jsx", function(exports, require, module) {
+require.register("index.js", function(exports, require, module) {
 'use strict';
 
 var _App = require('./components/App');
@@ -1393,11 +1426,12 @@ var _reactDom2 = _interopRequireDefault(_reactDom);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 _reactDom2.default.render(_react2.default.createElement(_App2.default, null), document.getElementById('app'));
+
 });
 
 require.alias("buffer/index.js", "buffer");
 require.alias("events/events.js", "events");
-require.alias("process/browser.js", "process");
+require.alias("node-browser-modules/node_modules/process/browser.js", "process");
 require.alias("util/util.js", "sys");process = require('process');require.register("___globals___", function(exports, require, module) {
   
 });})();require('___globals___');

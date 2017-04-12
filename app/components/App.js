@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React from 'react';
+import React, { Component } from 'react';
 import { BrowserRouter, Match, Miss } from 'react-router';
 import expect, { createSpy, spyOn, isSpy } from 'expect';
 import update from 'immutability-helper';
@@ -10,11 +10,12 @@ import Home from './Home';
 import Main from './Main';
 import Addsnippet from './Addsnippet';
 
+class App extends Component {
 
-const App = React.createClass({
+constructor(props) {
+  super(props);
 
-getInitialState(){
-  return {
+  this.state = {
     value: '',
     sortValue: 'All Titles',
     inputValue: '',
@@ -47,11 +48,11 @@ getInitialState(){
     currentUser: {},
     title: '',
   }
-},
+}
 
 addNewSnippetButton() {
   const newIndex = this.state.snippetTitles.length;
-},
+}
 
 addNewSnippetToStateAndDB() {
   axios.post('/api-snippets', this.state.addSnippet )
@@ -66,18 +67,18 @@ addNewSnippetToStateAndDB() {
   .catch((error) => {
     console.log(error);
   });
-},
+}
 
 changeCurrentIndex(newIndex) {
   this.setState({ currentIndex: newIndex }, ()=> {
     console.log(this.state.currentIndex);
   });
-},
+}
 
 changeEditor(newValue) {
   this.setState({ newTestCodeValue: newValue });
   console.log(this.state.newTestCodeValue);
-},
+}
 
 componentDidMount() {
   axios.get('/api-token')
@@ -106,7 +107,7 @@ componentDidMount() {
   .catch((error) => {
     console.log(error);
   });
-},
+}
 
 
 deleteSnippet() {
@@ -126,7 +127,7 @@ deleteSnippet() {
   .catch((error) => {
     console.log(error);
   });
-},
+}
 
 logOut() {
   this.setState({
@@ -134,39 +135,39 @@ logOut() {
     currentUser: {},
     previousOrders: {}
   });
-},
+}
 
 onEditorChange(newValue) {
   this.setState({ snippets: update(this.state.snippets, {[this.state.currentIndex]: { codeSnippet: {$set: newValue}}})})
-},
+}
 
 onEditorChangeAddSnippet(newValue) {
   this.setState({ addSnippet: update(this.state.addSnippet, { codeSnippet: {$set: newValue}}) });
   this.setState({ addSnippet: update(this.state.addSnippet, { userId: {$set: this.state.currentUser.id }}) });
-},
+}
 
 onFormChange(event) {
   this.setState({ snippets: update(this.state.snippets, {[this.state.currentIndex]: {[event.target.name]: {$set: event.target.value}}}) });
   this.setState({ defaultSnippetArray: update(this.state.defaultSnippetArray, {[this.state.currentIndex]: {[event.target.name]: {$set: event.target.value}}}) });
-},
+}
 
 onFormChangeAddSnippet(event) {
   this.setState({ addSnippet: update(this.state.addSnippet, {[event.target.name]: {$set: event.target.value}}) });
-},
+}
 
 handleSearch(event) {
   let search = event.target.value;
   this.setState({ value: search }, () =>
     this.sortedValues()
   );
-},
+}
 
 handleSort(event) {
   let sort = event.target.value
   this.setState({ sortValue: sort }, () =>
     this.sortedValues()
   );
-},
+}
 
 sortedValues() {
   let sortValue = this.state.sortValue;
@@ -217,7 +218,7 @@ sortedValues() {
     });
     return this.setState({ snippets: render });
   }
-},
+}
 
 
 patchSnippets() {
@@ -237,12 +238,12 @@ patchSnippets() {
     .catch((error) => {
       console.log(error);
     });
-},
+}
 
 reRenderButton() {
   console.log('rerender');
   this.setState({ renderByLanguage: true });
-},
+}
 
 render() {
   return (
@@ -326,8 +327,8 @@ render() {
         }/>
 			</main>
 		</BrowserRouter>
-	)
+	);
 }
-});
+}
 
 export default App;
