@@ -1,30 +1,26 @@
 import React from 'react';
 
-const SearchBox = React.createClass({
+const handleChange = (event) => {
+  console.log(event.target.value);
+  let e = event.target.value;
+  let type = 'search';
+  this.props.handleSearch(e, type);
+}
 
-  handleChange(event) {
-    console.log(event.target.value);
-    let e = event.target.value;
-    let type = 'search';
-    this.props.handleSearch(e, type);
-  },
+const SearchBox = (props) => {
 
-  render() {
-    return (
-      <form id="search-box">
-        <div className="twelve columns titleWord" id="search-options">Search by Title
-          <input
-            onChange={this.props.handleSearch}
-            type='text'
-            value={this.props.value}
-          />
-          {/* <div id="search-img"> */}
-            <img id="search-img" src="assets/images/search-icon.png"/>
-          {/* </div> */}
-        </div>
-      </form>
-    );
-  }
-});
+  return (
+    <form id="search-box">
+      <div className="twelve columns titleWord" id="search-options">Search by Title
+        <input
+          onChange={this.props.handleSearch}
+          type='text'
+          value={this.props.value}
+        />
+          <img id="search-img" src="assets/images/search-icon.png"/>
+      </div>
+    </form>
+  );
+}
 
 export default SearchBox;

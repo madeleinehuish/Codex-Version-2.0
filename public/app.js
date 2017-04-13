@@ -183,107 +183,103 @@ require('brace/theme/monokai');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Addsnippet = _react2.default.createClass({
-  displayName: 'Addsnippet',
-  onChange: function onChange(newValue) {
-    console.log('change', newValue);
+var onChange = function onChange(newValue) {
+  console.log('change', newValue);
+  undefined.props.onEditorChangeAddSnippet(newValue);
+};
 
-    this.props.onEditorChangeAddSnippet(newValue);
-  },
-  render: function render() {
-    if (this.props.snippets.length === 0) {
-      return _react2.default.createElement('section', null);
-    }
-    // const newIndex = 1;
-    var newIndex = this.props.currentIndex;
-    var current = this.props.snippets[newIndex];
+var Addsnippet = function Addsnippet(props) {
 
-    return _react2.default.createElement(
-      'section',
-      null,
+  if (undefined.props.snippets.length === 0) {
+    return _react2.default.createElement('section', null);
+  }
+
+  var newIndex = undefined.props.currentIndex;
+  var current = undefined.props.snippets[newIndex];
+
+  return _react2.default.createElement(
+    'section',
+    null,
+    _react2.default.createElement(
+      'div',
+      { className: 'container' },
       _react2.default.createElement(
         'div',
-        { className: 'container' },
+        { className: 'row' },
         _react2.default.createElement(
-          'div',
-          { className: 'row' },
+          'form',
+          null,
           _react2.default.createElement(
-            'form',
-            null,
+            'div',
+            { className: 'four columns' },
             _react2.default.createElement(
-              'div',
-              { className: 'four columns' },
-              _react2.default.createElement(
-                'h4',
-                { className: 'titleWord' },
-                'Add New Snippet'
-              ),
-              _react2.default.createElement(
-                'div',
-                { id: 'codeSnippet' },
-                _react2.default.createElement(_reactAce2.default, {
-                  mode: 'javascript',
-                  theme: 'monokai'
-                  // id="aceEditor"
-                  // theme="github"
-                  , onChange: this.onChange,
-                  name: 'codeSnippet',
-                  value: this.props.addSnippet.codeSnippet,
-                  editorProps: { $blockScrolling: true }
-                })
-              )
+              'h4',
+              { className: 'titleWord' },
+              'Add New Snippet'
             ),
             _react2.default.createElement(
               'div',
-              { className: 'offset-by-four four columns titleWord2' },
-              _react2.default.createElement(
-                'div',
-                null,
-                'Title:',
-                _react2.default.createElement('br', null),
-                _react2.default.createElement('input', { id: 'title', name: 'title', type: 'text', onChange: this.props.onFormChangeAddSnippet, value: this.props.addSnippet.title, className: 'validate' })
-              ),
+              { id: 'codeSnippet' },
+              _react2.default.createElement(_reactAce2.default, {
+                mode: 'javascript',
+                theme: 'monokai',
+                onChange: undefined.onChange,
+                name: 'codeSnippet',
+                value: undefined.props.addSnippet.codeSnippet,
+                editorProps: { $blockScrolling: true }
+              })
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'offset-by-four four columns titleWord2' },
+            _react2.default.createElement(
+              'div',
+              null,
+              'Title:',
               _react2.default.createElement('br', null),
-              _react2.default.createElement(
-                'div',
-                null,
-                'Language:',
-                _react2.default.createElement('br', null),
-                _react2.default.createElement('input', { id: 'language', name: 'language', type: 'text', onChange: this.props.onFormChangeAddSnippet, value: this.props.addSnippet.language, className: 'validate' })
-              ),
+              _react2.default.createElement('input', { id: 'title', name: 'title', type: 'text', onChange: undefined.props.onFormChangeAddSnippet, value: undefined.props.addSnippet.title, className: 'validate' })
+            ),
+            _react2.default.createElement('br', null),
+            _react2.default.createElement(
+              'div',
+              null,
+              'Language:',
               _react2.default.createElement('br', null),
-              _react2.default.createElement(
-                'div',
-                null,
-                'Keywords:',
-                _react2.default.createElement('br', null),
-                _react2.default.createElement('input', { id: 'keywords', name: 'keywords', type: 'text', onChange: this.props.onFormChangeAddSnippet, value: this.props.addSnippet.keywords, className: 'validate' })
-              ),
+              _react2.default.createElement('input', { id: 'language', name: 'language', type: 'text', onChange: undefined.props.onFormChangeAddSnippet, value: undefined.props.addSnippet.language, className: 'validate' })
+            ),
+            _react2.default.createElement('br', null),
+            _react2.default.createElement(
+              'div',
+              null,
+              'Keywords:',
               _react2.default.createElement('br', null),
-              _react2.default.createElement(
-                'div',
-                null,
-                'Notes:',
-                _react2.default.createElement('br', null),
-                _react2.default.createElement('input', { id: 'notes', name: 'notes', type: 'text', onChange: this.props.onFormChangeAddSnippet, value: this.props.addSnippet.notes, className: 'validate' })
-              ),
+              _react2.default.createElement('input', { id: 'keywords', name: 'keywords', type: 'text', onChange: undefined.props.onFormChangeAddSnippet, value: undefined.props.addSnippet.keywords, className: 'validate' })
+            ),
+            _react2.default.createElement('br', null),
+            _react2.default.createElement(
+              'div',
+              null,
+              'Notes:',
               _react2.default.createElement('br', null),
+              _react2.default.createElement('input', { id: 'notes', name: 'notes', type: 'text', onChange: undefined.props.onFormChangeAddSnippet, value: undefined.props.addSnippet.notes, className: 'validate' })
+            ),
+            _react2.default.createElement('br', null),
+            _react2.default.createElement(
+              _reactRouter.Link,
+              { to: '/main' },
               _react2.default.createElement(
-                _reactRouter.Link,
-                { to: '/main' },
-                _react2.default.createElement(
-                  'button',
-                  { onClick: this.props.addNewSnippetToStateAndDB },
-                  'Save Snippet'
-                )
+                'button',
+                { onClick: undefined.props.addNewSnippetToStateAndDB },
+                'Save Snippet'
               )
             )
           )
         )
       )
-    );
-  }
-});
+    )
+  );
+};
 
 exports.default = Addsnippet;
 
@@ -604,86 +600,87 @@ var App = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _this9 = this;
+      return (
+        // <BrowserRouter>
+        // 	<main>
+        //     <Match pattern="/" exactly render={
+        //       () =>
+        _react2.default.createElement(_Home2.default, _extends({}, this.state, {
+          onSubmitGitHubLogIn: this.onSubmitGitHubLogIn
+        }))
+        //     }/>
+        //     <Match pattern="/addsnippet" exactly render={
+        //       () =>
+        //       <div>
+        //         <Header
+        //           { ...this.state }
+        //           logIn={this.logIn}
+        //           logOut={this.logOut}
+        //           onSubmit={this.onSubmit}
+        //           onFormChange={this.onFormChange}
+        //         />
+        //         <Addsnippet
+        //           { ...this.state }
+        //           addNewSnippetToStateAndDB={this.addNewSnippetToStateAndDB}
+        //           changeEditor={this.changeEditor}
+        //           currentIndex={this.state.currentIndex}
+        //           snippets={this.state.snippets}
+        //           onFormChangeAddSnippet={this.onFormChangeAddSnippet}
+        //           onEditorChangeAddSnippet={this.onEditorChangeAddSnippet}
+        //           patchSnippets={this.patchSnippets}
+        //         />
+        //       </div>
+        //     }/>
+        //     <Match pattern="/editor" exactly render={
+        //       () =>
+        //       <div>
+        //         <Header
+        //           { ...this.state }
+        //           logIn={this.logIn}
+        //           logOut={this.logOut}
+        //           onSubmit={this.onSubmit}
+        //           onFormChange={this.onFormChange}
+        //         />
+        //         <Editor
+        //           { ...this.state }
+        //           changeEditor={this.changeEditor}
+        //           currentIndex={this.state.currentIndex}
+        //           snippets={this.state.snippets}
+        //           onFormChange={this.onFormChange}
+        //           onEditorChange={this.onEditorChange}
+        //           patchSnippets={this.patchSnippets}
+        //           deleteSnippet={this.deleteSnippet}
+        //         />
+        //       </div>
+        //     }/>
+        //     <Match pattern="/main" exactly render={
+        //       () =>
+        //       <div>
+        //         <Header
+        //           { ...this.state }
+        //           logIn={this.logIn}
+        //           logOut={this.logOut}
+        //           onSubmit={this.onSubmit}
+        //           onFormChange={this.onFormChange}
+        //         />
+        //         <Main
+        //           { ...this.state }
+        //           loggedIn={this.state.loggedIn}
+        //           currentUser={this.state.currentUser}
+        //           snippets={this.state.snippets}
+        //           currentIndex={this.state.currentIndex}
+        //           changeCurrentIndex={this.changeCurrentIndex}
+        //           addNewSnippetButton={this.addNewSnippetButton}
+        //           reRenderButton={this.reRenderButton}
+        //           onSortChange={this.onSortChange}
+        //           handleSort={this.handleSort}
+        //           handleSearch={this.handleSearch}
+        //         />
+        //       </div>
+        //     }/>
+        // 	</main>
+        // </BrowserRouter>
 
-      return _react2.default.createElement(
-        _reactRouter.BrowserRouter,
-        null,
-        _react2.default.createElement(
-          'main',
-          null,
-          _react2.default.createElement(_reactRouter.Match, { pattern: '/', exactly: true, render: function render() {
-              return _react2.default.createElement(_Home2.default, _extends({}, _this9.state, {
-                onSubmitGitHubLogIn: _this9.onSubmitGitHubLogIn
-              }));
-            } }),
-          _react2.default.createElement(_reactRouter.Match, { pattern: '/addsnippet', exactly: true, render: function render() {
-              return _react2.default.createElement(
-                'div',
-                null,
-                _react2.default.createElement(_Header2.default, _extends({}, _this9.state, {
-                  logIn: _this9.logIn,
-                  logOut: _this9.logOut,
-                  onSubmit: _this9.onSubmit,
-                  onFormChange: _this9.onFormChange
-                })),
-                _react2.default.createElement(_Addsnippet2.default, _extends({}, _this9.state, {
-                  addNewSnippetToStateAndDB: _this9.addNewSnippetToStateAndDB,
-                  changeEditor: _this9.changeEditor,
-                  currentIndex: _this9.state.currentIndex,
-                  snippets: _this9.state.snippets,
-                  onFormChangeAddSnippet: _this9.onFormChangeAddSnippet,
-                  onEditorChangeAddSnippet: _this9.onEditorChangeAddSnippet,
-                  patchSnippets: _this9.patchSnippets
-                }))
-              );
-            } }),
-          _react2.default.createElement(_reactRouter.Match, { pattern: '/editor', exactly: true, render: function render() {
-              return _react2.default.createElement(
-                'div',
-                null,
-                _react2.default.createElement(_Header2.default, _extends({}, _this9.state, {
-                  logIn: _this9.logIn,
-                  logOut: _this9.logOut,
-                  onSubmit: _this9.onSubmit,
-                  onFormChange: _this9.onFormChange
-                })),
-                _react2.default.createElement(_Editor2.default, _extends({}, _this9.state, {
-                  changeEditor: _this9.changeEditor,
-                  currentIndex: _this9.state.currentIndex,
-                  snippets: _this9.state.snippets,
-                  onFormChange: _this9.onFormChange,
-                  onEditorChange: _this9.onEditorChange,
-                  patchSnippets: _this9.patchSnippets,
-                  deleteSnippet: _this9.deleteSnippet
-                }))
-              );
-            } }),
-          _react2.default.createElement(_reactRouter.Match, { pattern: '/main', exactly: true, render: function render() {
-              return _react2.default.createElement(
-                'div',
-                null,
-                _react2.default.createElement(_Header2.default, _extends({}, _this9.state, {
-                  logIn: _this9.logIn,
-                  logOut: _this9.logOut,
-                  onSubmit: _this9.onSubmit,
-                  onFormChange: _this9.onFormChange
-                })),
-                _react2.default.createElement(_Main2.default, _extends({}, _this9.state, {
-                  loggedIn: _this9.state.loggedIn,
-                  currentUser: _this9.state.currentUser,
-                  snippets: _this9.state.snippets,
-                  currentIndex: _this9.state.currentIndex,
-                  changeCurrentIndex: _this9.changeCurrentIndex,
-                  addNewSnippetButton: _this9.addNewSnippetButton,
-                  reRenderButton: _this9.reRenderButton,
-                  onSortChange: _this9.onSortChange,
-                  handleSort: _this9.handleSort,
-                  handleSearch: _this9.handleSearch
-                }))
-              );
-            } })
-        )
       );
     }
   }]);
@@ -1002,35 +999,35 @@ var _setimmediate2 = _interopRequireDefault(_setimmediate);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Search = _react2.default.createClass({
-  displayName: 'Search',
-  searchproduct: function searchproduct(_ref) {
-    var hit = _ref.hit;
+var searchproduct = function searchproduct(_ref) {
+  var hit = _ref.hit;
 
-    return _react2.default.createElement(
-      'div',
-      { id: 'searchBox' },
-      _react2.default.createElement(
-        'span',
-        { className: 'hit-name' },
-        _react2.default.createElement(_dom.Highlight, { attributeName: 'title', hit: hit })
-      )
-    );
-    console.log(hit);
-  },
-  render: function render() {
-    return _react2.default.createElement(
-      'div',
-      { className: 'container' },
-      _react2.default.createElement(_dom.CurrentRefinements, null),
-      _react2.default.createElement(_dom.ClearAll, null),
-      _react2.default.createElement(_dom.SearchBox, null),
-      _react2.default.createElement(_dom.RefinementList, { attributeName: 'category' }),
-      _react2.default.createElement(_dom.Hits, { hitComponent: this.searchproduct }),
-      _react2.default.createElement(_dom.Pagination, null)
-    );
-  }
-});
+
+  return _react2.default.createElement(
+    'div',
+    { id: 'searchBox' },
+    _react2.default.createElement(
+      'span',
+      { className: 'hit-name' },
+      _react2.default.createElement(_dom.Highlight, { attributeName: 'title', hit: hit })
+    )
+  );
+  console.log(hit);
+};
+
+var Search = function Search(props) {
+
+  return _react2.default.createElement(
+    'div',
+    { className: 'container' },
+    _react2.default.createElement(_dom.CurrentRefinements, null),
+    _react2.default.createElement(_dom.ClearAll, null),
+    _react2.default.createElement(_dom.SearchBox, null),
+    _react2.default.createElement(_dom.RefinementList, { attributeName: 'category' }),
+    _react2.default.createElement(_dom.Hits, { hitComponent: undefined.searchproduct }),
+    _react2.default.createElement(_dom.Pagination, null)
+  );
+};
 
 exports.default = Search;
 
@@ -1049,32 +1046,31 @@ var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var SearchBox = _react2.default.createClass({
-  displayName: 'SearchBox',
-  handleChange: function handleChange(event) {
-    console.log(event.target.value);
-    var e = event.target.value;
-    var type = 'search';
-    this.props.handleSearch(e, type);
-  },
-  render: function render() {
-    return _react2.default.createElement(
-      'form',
-      { id: 'search-box' },
-      _react2.default.createElement(
-        'div',
-        { className: 'twelve columns titleWord', id: 'search-options' },
-        'Search by Title',
-        _react2.default.createElement('input', {
-          onChange: this.props.handleSearch,
-          type: 'text',
-          value: this.props.value
-        }),
-        _react2.default.createElement('img', { id: 'search-img', src: 'assets/images/search-icon.png' })
-      )
-    );
-  }
-});
+var handleChange = function handleChange(event) {
+  console.log(event.target.value);
+  var e = event.target.value;
+  var type = 'search';
+  undefined.props.handleSearch(e, type);
+};
+
+var SearchBox = function SearchBox(props) {
+
+  return _react2.default.createElement(
+    'form',
+    { id: 'search-box' },
+    _react2.default.createElement(
+      'div',
+      { className: 'twelve columns titleWord', id: 'search-options' },
+      'Search by Title',
+      _react2.default.createElement('input', {
+        onChange: undefined.props.handleSearch,
+        type: 'text',
+        value: undefined.props.value
+      }),
+      _react2.default.createElement('img', { id: 'search-img', src: 'assets/images/search-icon.png' })
+    )
+  );
+};
 
 exports.default = SearchBox;
 
@@ -1095,25 +1091,29 @@ var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Snippets = _react2.default.createClass({
-  displayName: 'Snippets',
-  changeCurrentKey: function changeCurrentKey(event) {
-    var newIndex = event.target.name;
-    console.log(newIndex);
-    this.props.changeCurrentIndex(newIndex);
-  },
-  render: function render() {
-    return _react2.default.createElement(
-      'li',
-      null,
-      _react2.default.createElement(
-        _reactRouter.Link,
-        { to: '/editor', onClick: this.changeCurrentKey, value: this.props.value, name: this.props.value, className: 'snippetTitles' },
-        this.props.snippetTitle
-      )
-    );
-  }
-});
+var changeCurrentKey = function changeCurrentKey(event) {
+  var newIndex = event.target.name;
+  console.log(newIndex);
+  undefined.props.changeCurrentIndex(newIndex);
+};
+
+var Snippets = function Snippets(props) {
+
+  return _react2.default.createElement(
+    'li',
+    null,
+    _react2.default.createElement(
+      _reactRouter.Link,
+      {
+        to: '/editor',
+        onClick: undefined.changeCurrentKey,
+        value: undefined.props.value,
+        name: undefined.props.value,
+        className: 'snippetTitles' },
+      undefined.props.snippetTitle
+    )
+  );
+};
 
 exports.default = Snippets;
 
@@ -1126,51 +1126,49 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _Snippets = require('./Snippets');
-
-var _Snippets2 = _interopRequireDefault(_Snippets);
-
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _Snippets = require('./Snippets');
+
+var _Snippets2 = _interopRequireDefault(_Snippets);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Snippetslist = _react2.default.createClass({
-  displayName: 'Snippetslist',
-  handleClick: function handleClick() {
-    this.props.displaySearch();
-  },
-  handleSortType: function handleSortType(event) {
-    var sortValue = event.target.name;
+var handleClick = function handleClick() {
+  undefined.props.displaySearch();
+};
 
-    this.props.handleSort(sortValue);
-  },
-  render: function render() {
-    var _this = this;
+var handleSortType = function handleSortType(event) {
+  var sortValue = event.target.name;
 
-    var snippetmap = this.props.snippets.map(function (snippetTitle, index) {
-      return _react2.default.createElement(_Snippets2.default, {
-        key: index,
-        value: index,
-        snippetTitle: _this.props.snippets[index].title,
-        currentIndex: _this.props.currentIndex,
-        changeCurrentIndex: _this.props.changeCurrentIndex
-      });
+  undefined.props.handleSort(sortValue);
+};
+
+var Snippetslist = function Snippetslist(props) {
+
+  var snippetmap = undefined.props.snippets.map(function (snippetTitle, index) {
+    return _react2.default.createElement(_Snippets2.default, {
+      key: index,
+      value: index,
+      snippetTitle: undefined.props.snippets[index].title,
+      currentIndex: undefined.props.currentIndex,
+      changeCurrentIndex: undefined.props.changeCurrentIndex
     });
+  });
 
-    return _react2.default.createElement(
-      'div',
-      { id: 'snippetBox' },
-      _react2.default.createElement('p', null),
-      _react2.default.createElement(
-        'ul',
-        null,
-        snippetmap
-      )
-    );
-  }
-});
+  return _react2.default.createElement(
+    'div',
+    { id: 'snippetBox' },
+    _react2.default.createElement('p', null),
+    _react2.default.createElement(
+      'ul',
+      null,
+      snippetmap
+    )
+  );
+};
 
 exports.default = Snippetslist;
 
@@ -1183,32 +1181,22 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactRouter = require('react-router');
-
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactRouter = require('react-router');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Sortby = _react2.default.createClass({
-  displayName: 'Sortby',
-  render: function render() {
-    // if (this.props.value === 'All Titles') {
-    //   return (
-    //     <option value={this.props.item} selected={this.props.sortValue}>
-    //       {this.props.item}
-    //     </option>
-    //   );
-    // } else {
-    return _react2.default.createElement(
-      'option',
-      { value: this.props.item },
-      this.props.item
-    );
-    // }
-  }
-});
+var Sortby = function Sortby(props) {
+
+  return _react2.default.createElement(
+    'option',
+    { value: undefined.props.item },
+    undefined.props.item
+  );
+};
 
 exports.default = Sortby;
 
@@ -1235,99 +1223,95 @@ var _reactDom = require('react-dom');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Sortbylist = _react2.default.createClass({
-  displayName: 'Sortbylist',
-  handleChange: function handleChange(event) {
-    console.log(event.target.value);
-    var e = event.target.value;
-    console.log(e);
-    var type = 'sort';
-    this.props.handleSearch(e, type);
-    // this.setState({value: event.target.value});
-  },
-  handleSubmit: function handleSubmit(event) {
-    console.log('test');
-    // alert('You picked :  ' + this.state.value);
-    event.preventDefault();
-  },
-  render: function render() {
-    var _this = this;
+var handleChange = function handleChange(event) {
+  console.log(event.target.value);
+  var e = event.target.value;
+  console.log(e);
+  var type = 'sort';
+  undefined.props.handleSearch(e, type);
+};
 
-    var languageMap = this.props.defaultSnippetArray.map(function (snippet, index) {
-      if (_this.props.defaultSnippetArray[index].language === undefined) {
-        return '';
-      } else {
-        return _this.props.defaultSnippetArray[index].language;
-      };
-    });
+var handleSubmit = function handleSubmit(event) {
+  console.log('test');
+  event.preventDefault();
+};
 
-    var uniqueLanguageMap = languageMap.filter(function (item, pos, self) {
-      if (item === '') {
-        return;
-      } else {
-        return self.indexOf(item) == pos;
-      }
-    });
+var Sortbylist = function Sortbylist(props) {
 
-    var keywordMap = this.props.defaultSnippetArray.map(function (snippet, index) {
-      if (_typeof(_this.props.defaultSnippetArray[index].keywords) === undefined) {
-        return '';
-      } else {
-        return _this.props.defaultSnippetArray[index].keywords;
-      };
-    });
-
-    var filteredkeyWordMap = keywordMap.filter(function (item, pos) {
-      return item !== '';
-    });
-
-    var newkeywordArray = [];
-    for (var i = 0; i < filteredkeyWordMap.length; i++) {
-      newkeywordArray[i] = filteredkeyWordMap[i].split(',');
+  var languageMap = undefined.props.defaultSnippetArray.map(function (snippet, index) {
+    if (undefined.props.defaultSnippetArray[index].language === undefined) {
+      return '';
+    } else {
+      return undefined.props.defaultSnippetArray[index].language;
     };
+  });
 
-    var keywordArrayMerged = [].concat.apply([], newkeywordArray);
-
-    var trimmedKeywordArray = keywordArrayMerged.map(function (item, index) {
-      return item.trim();
-    });
-
-    var initialsortByArray = uniqueLanguageMap.concat(trimmedKeywordArray);
-
-    var sortByArrayUnique = initialsortByArray.filter(function (item, pos, self) {
+  var uniqueLanguageMap = languageMap.filter(function (item, pos, self) {
+    if (item === '') {
+      return;
+    } else {
       return self.indexOf(item) == pos;
+    }
+  });
+
+  var keywordMap = undefined.props.defaultSnippetArray.map(function (snippet, index) {
+    if (_typeof(undefined.props.defaultSnippetArray[index].keywords) === undefined) {
+      return '';
+    } else {
+      return undefined.props.defaultSnippetArray[index].keywords;
+    };
+  });
+
+  var filteredkeyWordMap = keywordMap.filter(function (item, pos) {
+    return item !== '';
+  });
+
+  var newkeywordArray = [];
+  for (var i = 0; i < filteredkeyWordMap.length; i++) {
+    newkeywordArray[i] = filteredkeyWordMap[i].split(',');
+  };
+
+  var keywordArrayMerged = [].concat.apply([], newkeywordArray);
+
+  var trimmedKeywordArray = keywordArrayMerged.map(function (item, index) {
+    return item.trim();
+  });
+
+  var initialsortByArray = uniqueLanguageMap.concat(trimmedKeywordArray);
+
+  var sortByArrayUnique = initialsortByArray.filter(function (item, pos, self) {
+    return self.indexOf(item) == pos;
+  });
+
+  var sortByArray = sortByArrayUnique.sort();
+
+  sortByArray.unshift('All Titles');
+
+  var sortByArrayRender = sortByArray.map(function (item, index) {
+    return _react2.default.createElement(_Sortby2.default, {
+      key: index,
+      value: item,
+      item: item,
+      handleChange: undefined.handleChange,
+      sortValue: undefined.props.sortValue
     });
+  });
 
-    var sortByArray = sortByArrayUnique.sort();
-
-    sortByArray.unshift('All Titles');
-
-    var sortByArrayRender = sortByArray.map(function (item, index) {
-      return _react2.default.createElement(_Sortby2.default, {
-        key: index,
-        value: item,
-        item: item,
-        handleChange: _this.handleChange,
-        sortValue: _this.props.sortValue
-      });
-    });
-
-    return _react2.default.createElement(
-      'form',
-      { onSubmit: this.handleSubmit },
+  return _react2.default.createElement(
+    'form',
+    { onSubmit: undefined.handleSubmit },
+    _react2.default.createElement(
+      'label',
+      { className: 'titleWord' },
+      'Filter',
       _react2.default.createElement(
-        'label',
-        { className: 'titleWord' },
-        'Filter',
-        _react2.default.createElement(
-          'select',
-          { className: 'u-full-width ', value: this.props.sortValue, onChange: this.props.handleSort },
-          sortByArrayRender
-        )
+        'select',
+        { className: 'u-full-width ', value: undefined.props.sortValue, onChange: undefined.props.handleSort },
+        sortByArrayRender
       )
-    );
-  }
-});
+    )
+  );
+};
 
 exports.default = Sortbylist;
 
@@ -1352,57 +1336,59 @@ var _axios2 = _interopRequireDefault(_axios);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Header = _react2.default.createClass({
-  displayName: 'Header',
-  logOut: function logOut() {
-    this.props.logOut();
-  },
-  onClickSubmit: function onClickSubmit(event) {
-    this.props.onSubmit();
-  },
-  render: function render() {
-    return _react2.default.createElement(
-      'header',
-      null,
+var logOut = function logOut() {
+  undefined.props.logOut();
+};
+
+var onClickSubmit = function onClickSubmit(event) {
+  undefined.props.onSubmit();
+};
+
+var Header = function Header(props) {
+
+  return _react2.default.createElement(
+    'header',
+    null,
+    _react2.default.createElement(
+      'div',
+      { className: 'twelve columns' },
       _react2.default.createElement(
         'div',
-        { className: 'twelve columns' },
+        { className: 'six columns', id: 'logo' },
         _react2.default.createElement(
-          'div',
-          { className: 'six columns', id: 'logo' },
+          'h5',
+          { id: 'logoWord', className: 'userNav' },
           _react2.default.createElement(
-            'h5',
-            { id: 'logoWord', className: 'userNav' },
-            _react2.default.createElement(
-              _reactRouter.Link,
-              { to: '/', className: 'userNav' },
-              'Codex'
-            )
+            _reactRouter.Link,
+            { to: '/', className: 'userNav' },
+            'Codex'
           )
-        ),
+        )
+      ),
+      _react2.default.createElement(
+        'nav',
+        { className: 'six columns' },
         _react2.default.createElement(
-          'nav',
-          { className: 'six columns' },
+          'ul',
+          null,
+          _react2.default.createElement('img', { className: 'avatar', src: undefined.props.currentUser.avatar }),
           _react2.default.createElement(
-            'ul',
-            null,
-            _react2.default.createElement('img', { className: 'avatar', src: this.props.currentUser.avatar }),
+            _reactRouter.Link,
+            {
+              to: '/main' },
             _react2.default.createElement(
-              _reactRouter.Link,
-              { to: '/main' },
-              _react2.default.createElement(
-                'li',
-                { key: this.props.currentUser.id, className: 'userNav' },
-                this.props.currentUser.firstName,
-                '\'s Code Library'
-              )
+              'li',
+              { key: undefined.props.currentUser.id,
+                className: 'userNav' },
+              undefined.props.currentUser.firstName,
+              '\'s Code Library'
             )
           )
         )
       )
-    );
-  }
-});
+    )
+  );
+};
 
 exports.default = Header;
 

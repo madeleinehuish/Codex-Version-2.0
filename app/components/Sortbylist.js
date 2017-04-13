@@ -2,26 +2,20 @@ import Sortby from './Sortby';
 import React from 'react';
 import { render } from 'react-dom';
 
-const Sortbylist = React.createClass({
+const handleChange = (event) => {
+  console.log(event.target.value);
+  let e = event.target.value;
+  console.log(e);
+  let type = 'sort';
+  this.props.handleSearch(e, type);
+}
 
+const handleSubmit = (event) => {
+  console.log('test');
+  event.preventDefault();
+}
 
-  handleChange(event) {
-    console.log(event.target.value);
-    let e = event.target.value;
-    console.log(e);
-    let type = 'sort';
-    this.props.handleSearch(e, type);
-    // this.setState({value: event.target.value});
-  },
-
-  handleSubmit(event) {
-    console.log('test');
-    // alert('You picked :  ' + this.state.value);
-    event.preventDefault();
-  },
-
-  render() {
-
+const Sortbylist = (props) => {
 
     let languageMap = this.props.defaultSnippetArray.map((snippet, index) => {
       if (this.props.defaultSnippetArray[index].language === undefined) {return ''}
@@ -85,7 +79,6 @@ const Sortbylist = React.createClass({
           </label>
       </form>
     );
-  }
-});
+}
 
 export default Sortbylist;

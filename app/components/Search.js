@@ -3,20 +3,20 @@ import { render } from 'react-dom';
 import {InstantSearch, Hits, SearchBox, Highlight, RefinementList, Pagination, CurrentRefinements, ClearAll} from 'react-instantsearch/dom';
 import setimmediate from 'setimmediate';
 
+const searchproduct = ({ hit }) => {
 
-const Search = React.createClass({
-  searchproduct({hit}) {
-      return (
-        <div id="searchBox">
-          <span className="hit-name">
-          <Highlight attributeName="title" hit={hit} />
-          </span>
-        </div>
-      );
-      console.log(hit);
-  },
+    return (
+      <div id="searchBox">
+        <span className="hit-name">
+        <Highlight attributeName="title" hit={hit} />
+        </span>
+      </div>
+    );
+    console.log(hit);
+}
 
-  render() {
+const Search = (props) => {
+
     return (
       <div className="container">
         <CurrentRefinements/>
@@ -27,7 +27,6 @@ const Search = React.createClass({
         <Pagination />
       </div>
     )
-  }
-});
+};
 
 export default Search;

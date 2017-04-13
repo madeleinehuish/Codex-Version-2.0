@@ -247,86 +247,86 @@ reRenderButton() {
 
 render() {
   return (
-		<BrowserRouter>
-			<main>
-        <Match pattern="/" exactly render={
-          () =>
+		// <BrowserRouter>
+		// 	<main>
+    //     <Match pattern="/" exactly render={
+    //       () =>
           <Home
             { ...this.state }
             onSubmitGitHubLogIn={this.onSubmitGitHubLogIn}
           />
-        }/>
-        <Match pattern="/addsnippet" exactly render={
-          () =>
-          <div>
-            <Header
-              { ...this.state }
-              logIn={this.logIn}
-              logOut={this.logOut}
-              onSubmit={this.onSubmit}
-              onFormChange={this.onFormChange}
-            />
-            <Addsnippet
-              { ...this.state }
-              addNewSnippetToStateAndDB={this.addNewSnippetToStateAndDB}
-              changeEditor={this.changeEditor}
-              currentIndex={this.state.currentIndex}
-              snippets={this.state.snippets}
-              onFormChangeAddSnippet={this.onFormChangeAddSnippet}
-              onEditorChangeAddSnippet={this.onEditorChangeAddSnippet}
-              patchSnippets={this.patchSnippets}
-            />
-          </div>
-        }/>
-        <Match pattern="/editor" exactly render={
-          () =>
-          <div>
-            <Header
-              { ...this.state }
-              logIn={this.logIn}
-              logOut={this.logOut}
-              onSubmit={this.onSubmit}
-              onFormChange={this.onFormChange}
-            />
-            <Editor
-              { ...this.state }
-              changeEditor={this.changeEditor}
-              currentIndex={this.state.currentIndex}
-              snippets={this.state.snippets}
-              onFormChange={this.onFormChange}
-              onEditorChange={this.onEditorChange}
-              patchSnippets={this.patchSnippets}
-              deleteSnippet={this.deleteSnippet}
-            />
-          </div>
-        }/>
-        <Match pattern="/main" exactly render={
-          () =>
-          <div>
-            <Header
-              { ...this.state }
-              logIn={this.logIn}
-              logOut={this.logOut}
-              onSubmit={this.onSubmit}
-              onFormChange={this.onFormChange}
-            />
-            <Main
-              { ...this.state }
-              loggedIn={this.state.loggedIn}
-              currentUser={this.state.currentUser}
-              snippets={this.state.snippets}
-              currentIndex={this.state.currentIndex}
-              changeCurrentIndex={this.changeCurrentIndex}
-              addNewSnippetButton={this.addNewSnippetButton}
-              reRenderButton={this.reRenderButton}
-              onSortChange={this.onSortChange}
-              handleSort={this.handleSort}
-              handleSearch={this.handleSearch}
-            />
-          </div>
-        }/>
-			</main>
-		</BrowserRouter>
+    //     }/>
+    //     <Match pattern="/addsnippet" exactly render={
+    //       () =>
+    //       <div>
+    //         <Header
+    //           { ...this.state }
+    //           logIn={this.logIn}
+    //           logOut={this.logOut}
+    //           onSubmit={this.onSubmit}
+    //           onFormChange={this.onFormChange}
+    //         />
+    //         <Addsnippet
+    //           { ...this.state }
+    //           addNewSnippetToStateAndDB={this.addNewSnippetToStateAndDB}
+    //           changeEditor={this.changeEditor}
+    //           currentIndex={this.state.currentIndex}
+    //           snippets={this.state.snippets}
+    //           onFormChangeAddSnippet={this.onFormChangeAddSnippet}
+    //           onEditorChangeAddSnippet={this.onEditorChangeAddSnippet}
+    //           patchSnippets={this.patchSnippets}
+    //         />
+    //       </div>
+    //     }/>
+    //     <Match pattern="/editor" exactly render={
+    //       () =>
+    //       <div>
+    //         <Header
+    //           { ...this.state }
+    //           logIn={this.logIn}
+    //           logOut={this.logOut}
+    //           onSubmit={this.onSubmit}
+    //           onFormChange={this.onFormChange}
+    //         />
+    //         <Editor
+    //           { ...this.state }
+    //           changeEditor={this.changeEditor}
+    //           currentIndex={this.state.currentIndex}
+    //           snippets={this.state.snippets}
+    //           onFormChange={this.onFormChange}
+    //           onEditorChange={this.onEditorChange}
+    //           patchSnippets={this.patchSnippets}
+    //           deleteSnippet={this.deleteSnippet}
+    //         />
+    //       </div>
+    //     }/>
+    //     <Match pattern="/main" exactly render={
+    //       () =>
+    //       <div>
+    //         <Header
+    //           { ...this.state }
+    //           logIn={this.logIn}
+    //           logOut={this.logOut}
+    //           onSubmit={this.onSubmit}
+    //           onFormChange={this.onFormChange}
+    //         />
+    //         <Main
+    //           { ...this.state }
+    //           loggedIn={this.state.loggedIn}
+    //           currentUser={this.state.currentUser}
+    //           snippets={this.state.snippets}
+    //           currentIndex={this.state.currentIndex}
+    //           changeCurrentIndex={this.changeCurrentIndex}
+    //           addNewSnippetButton={this.addNewSnippetButton}
+    //           reRenderButton={this.reRenderButton}
+    //           onSortChange={this.onSortChange}
+    //           handleSort={this.handleSort}
+    //           handleSearch={this.handleSearch}
+    //         />
+    //       </div>
+    //     }/>
+		// 	</main>
+		// </BrowserRouter>
 	);
 }
 }

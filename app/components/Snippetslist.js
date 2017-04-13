@@ -1,18 +1,17 @@
-import Snippets from './Snippets';
 import React from 'react';
+import Snippets from './Snippets';
 
-const Snippetslist = React.createClass({
-  handleClick() {
-    this.props.displaySearch();
-  },
+const handleClick = () => {
+  this.props.displaySearch();
+}
 
-  handleSortType(event) {
-    const sortValue = event.target.name;
+const handleSortType = (event) => {
+  const sortValue = event.target.name;
 
-    this.props.handleSort(sortValue);
-  },
+  this.props.handleSort(sortValue);
+}
 
-  render() {
+const Snippetslist = (props) => {
 
     const snippetmap = this.props.snippets.map((snippetTitle, index) => {
       return <Snippets
@@ -32,7 +31,6 @@ const Snippetslist = React.createClass({
         </ul>
       </div>
     );
-  }
-});
+}
 
 export default Snippetslist;
