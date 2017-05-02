@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 // import { Link } from 'react-router';
+// import expect, { createSpy, spyOn, isSpy } from 'expect';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import axios from 'axios';
-import expect, { createSpy, spyOn, isSpy } from 'expect';
 import update from 'immutability-helper';
 import Header from './layouts/Header';
 import Editor from './Editor';
@@ -47,7 +47,7 @@ constructor(props) {
     loggedIn: false,
     currentUser: {},
     title: '',
-  }
+  };
 
   this.addNewSnippetButton = this.addNewSnippetButton.bind(this);
   this.addNewSnippetToStateAndDB = this.addNewSnippetToStateAndDB.bind(this);
@@ -64,6 +64,7 @@ constructor(props) {
   this.sortedValues = this.sortedValues.bind(this);
   this.patchSnippets = this.patchSnippets.bind(this);
   this.reRenderButton = this.reRenderButton.bind(this);
+  // this.render = this.render.bind(this);
 }
 
 addNewSnippetButton() {

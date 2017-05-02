@@ -300,19 +300,11 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = require('prop-types');
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
 var _reactRouterDom = require('react-router-dom');
 
 var _axios = require('axios');
 
 var _axios2 = _interopRequireDefault(_axios);
-
-var _expect = require('expect');
-
-var _expect2 = _interopRequireDefault(_expect);
 
 var _immutabilityHelper = require('immutability-helper');
 
@@ -347,7 +339,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+// import PropTypes from 'prop-types';
 // import { Link } from 'react-router';
+// import expect, { createSpy, spyOn, isSpy } from 'expect';
 
 
 var App = function (_Component) {
@@ -406,6 +400,7 @@ var App = function (_Component) {
     _this.sortedValues = _this.sortedValues.bind(_this);
     _this.patchSnippets = _this.patchSnippets.bind(_this);
     _this.reRenderButton = _this.reRenderButton.bind(_this);
+    // this.render = this.render.bind(this);
     return _this;
   }
 
@@ -960,7 +955,7 @@ var Main = function Main(props) {
           _react2.default.createElement(
             'h5',
             { className: 'titleWord' },
-            undefined.props.sortValue
+            props.sortValue
           ),
           _react2.default.createElement(
             'h1',
@@ -968,10 +963,10 @@ var Main = function Main(props) {
             'Hello world!'
           ),
           _react2.default.createElement(_Snippetslist2.default, {
-            snippets: undefined.props.snippets,
-            snippetTitles: undefined.props.snippetTitles,
-            currentIndex: undefined.props.currentIndex,
-            changeCurrentIndex: undefined.props.changeCurrentIndex
+            snippets: props.snippets,
+            snippetTitles: props.snippetTitles,
+            currentIndex: props.currentIndex,
+            changeCurrentIndex: props.changeCurrentIndex
           }),
           _react2.default.createElement('p', null)
         ),
@@ -983,22 +978,22 @@ var Main = function Main(props) {
             { to: '/addsnippet' },
             _react2.default.createElement(
               'button',
-              { className: 'titleWord', id: 'addSnippetButton', onClick: undefined.props.addNewSnippetButton },
+              { className: 'titleWord', id: 'addSnippetButton', onClick: props.addNewSnippetButton },
               'Add New Snippet'
             )
           ),
           _react2.default.createElement('br', null),
           _react2.default.createElement('br', null),
           _react2.default.createElement(_Sortbylist2.default, {
-            snippets: undefined.props.snippets,
-            sortValue: undefined.props.sortValue,
-            onSortChange: undefined.props.onSortChange,
-            handleSort: undefined.props.handleSort,
-            defaultSnippetArray: undefined.props.defaultSnippetArray
+            snippets: props.snippets,
+            sortValue: props.sortValue,
+            onSortChange: props.onSortChange,
+            handleSort: props.handleSort,
+            defaultSnippetArray: props.defaultSnippetArray
           }),
           _react2.default.createElement(_SearchBox2.default, {
-            handleSearch: undefined.props.handleSearch,
-            value: undefined.props.value
+            handleSearch: props.handleSearch,
+            value: props.value
           })
         )
       )
@@ -1095,9 +1090,9 @@ var SearchBox = function SearchBox(props) {
       { className: 'twelve columns titleWord', id: 'search-options' },
       'Search by Title',
       _react2.default.createElement('input', {
-        onChange: undefined.props.handleSearch,
+        onChange: props.handleSearch,
         type: 'text',
-        value: undefined.props.value
+        value: props.value
       }),
       _react2.default.createElement('img', { id: 'search-img', src: 'assets/images/search-icon.png' })
     )
@@ -1169,24 +1164,24 @@ var _Snippets2 = _interopRequireDefault(_Snippets);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var handleClick = function handleClick() {
-  undefined.props.displaySearch();
+  props.displaySearch();
 };
 
 var handleSortType = function handleSortType(event) {
   var sortValue = event.target.name;
 
-  undefined.props.handleSort(sortValue);
+  props.handleSort(sortValue);
 };
 
 var Snippetslist = function Snippetslist(props) {
 
-  var snippetmap = undefined.props.snippets.map(function (snippetTitle, index) {
+  var snippetmap = props.snippets.map(function (snippetTitle, index) {
     return _react2.default.createElement(_Snippets2.default, {
       key: index,
       value: index,
-      snippetTitle: undefined.props.snippets[index].title,
-      currentIndex: undefined.props.currentIndex,
-      changeCurrentIndex: undefined.props.changeCurrentIndex
+      snippetTitle: props.snippets[index].title,
+      currentIndex: props.currentIndex,
+      changeCurrentIndex: props.changeCurrentIndex
     });
   });
 
@@ -1225,8 +1220,8 @@ var Sortby = function Sortby(props) {
 
   return _react2.default.createElement(
     'option',
-    { value: undefined.props.item },
-    undefined.props.item
+    { value: props.item },
+    props.item
   );
 };
 
@@ -1260,7 +1255,7 @@ var handleChange = function handleChange(event) {
   var e = event.target.value;
   console.log(e);
   var type = 'sort';
-  undefined.props.handleSearch(e, type);
+  props.handleSearch(e, type);
 };
 
 var handleSubmit = function handleSubmit(event) {
@@ -1270,11 +1265,11 @@ var handleSubmit = function handleSubmit(event) {
 
 var Sortbylist = function Sortbylist(props) {
 
-  var languageMap = undefined.props.defaultSnippetArray.map(function (snippet, index) {
-    if (undefined.props.defaultSnippetArray[index].language === undefined) {
+  var languageMap = props.defaultSnippetArray.map(function (snippet, index) {
+    if (props.defaultSnippetArray[index].language === undefined) {
       return '';
     } else {
-      return undefined.props.defaultSnippetArray[index].language;
+      return props.defaultSnippetArray[index].language;
     };
   });
 
@@ -1286,11 +1281,11 @@ var Sortbylist = function Sortbylist(props) {
     }
   });
 
-  var keywordMap = undefined.props.defaultSnippetArray.map(function (snippet, index) {
-    if (_typeof(undefined.props.defaultSnippetArray[index].keywords) === undefined) {
+  var keywordMap = props.defaultSnippetArray.map(function (snippet, index) {
+    if (_typeof(props.defaultSnippetArray[index].keywords) === undefined) {
       return '';
     } else {
-      return undefined.props.defaultSnippetArray[index].keywords;
+      return props.defaultSnippetArray[index].keywords;
     };
   });
 
@@ -1324,21 +1319,21 @@ var Sortbylist = function Sortbylist(props) {
       key: index,
       value: item,
       item: item,
-      handleChange: undefined.handleChange,
-      sortValue: undefined.props.sortValue
+      handleChange: handleChange,
+      sortValue: props.sortValue
     });
   });
 
   return _react2.default.createElement(
     'form',
-    { onSubmit: undefined.handleSubmit },
+    { onSubmit: handleSubmit },
     _react2.default.createElement(
       'label',
       { className: 'titleWord' },
       'Filter',
       _react2.default.createElement(
         'select',
-        { className: 'u-full-width ', value: undefined.props.sortValue, onChange: undefined.props.handleSort },
+        { className: 'u-full-width ', value: props.sortValue, onChange: props.handleSort },
         sortByArrayRender
       )
     )

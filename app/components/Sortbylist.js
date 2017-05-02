@@ -7,7 +7,7 @@ const handleChange = (event) => {
   let e = event.target.value;
   console.log(e);
   let type = 'sort';
-  this.props.handleSearch(e, type);
+  props.handleSearch(e, type);
 }
 
 const handleSubmit = (event) => {
@@ -17,9 +17,9 @@ const handleSubmit = (event) => {
 
 const Sortbylist = (props) => {
 
-    let languageMap = this.props.defaultSnippetArray.map((snippet, index) => {
-      if (this.props.defaultSnippetArray[index].language === undefined) {return ''}
-         else{ return this.props.defaultSnippetArray[index].language };
+    let languageMap = props.defaultSnippetArray.map((snippet, index) => {
+      if (props.defaultSnippetArray[index].language === undefined) {return ''}
+         else{ return props.defaultSnippetArray[index].language };
     });
 
     let uniqueLanguageMap = languageMap.filter((item, pos, self) => {
@@ -28,11 +28,11 @@ const Sortbylist = (props) => {
       }
     });
 
-    const keywordMap = this.props.defaultSnippetArray.map((snippet, index) => {
-      if (typeof this.props.defaultSnippetArray[index].keywords === undefined) {
+    const keywordMap = props.defaultSnippetArray.map((snippet, index) => {
+      if (typeof props.defaultSnippetArray[index].keywords === undefined) {
         return '';
       }
-      else { return this.props.defaultSnippetArray[index].keywords };
+      else { return props.defaultSnippetArray[index].keywords };
     });
 
     const filteredkeyWordMap = keywordMap.filter((item, pos) => {
@@ -65,15 +65,15 @@ const Sortbylist = (props) => {
         key={index}
         value={item}
         item={item}
-        handleChange={this.handleChange}
-        sortValue={this.props.sortValue}
+        handleChange={handleChange}
+        sortValue={props.sortValue}
         />
     });
 
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form onSubmit={handleSubmit}>
           <label className="titleWord">Filter
-            <select className="u-full-width " value={this.props.sortValue} onChange={this.props.handleSort}>
+            <select className="u-full-width " value={props.sortValue} onChange={props.handleSort}>
               {sortByArrayRender}
             </select>
           </label>

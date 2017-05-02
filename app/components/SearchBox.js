@@ -13,9 +13,9 @@ const SearchBox = (props) => {
     <form id="search-box">
       <div className="twelve columns titleWord" id="search-options">Search by Title
         <input
-          onChange={this.props.handleSearch}
+          onChange={props.handleSearch}
           type='text'
-          value={this.props.value}
+          value={props.value}
         />
           <img id="search-img" src="assets/images/search-icon.png"/>
       </div>

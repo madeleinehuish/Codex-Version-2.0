@@ -2,24 +2,24 @@ import React from 'react';
 import Snippets from './Snippets';
 
 const handleClick = () => {
-  this.props.displaySearch();
+  props.displaySearch();
 }
 
 const handleSortType = (event) => {
   const sortValue = event.target.name;
 
-  this.props.handleSort(sortValue);
+  props.handleSort(sortValue);
 }
 
 const Snippetslist = (props) => {
 
-    const snippetmap = this.props.snippets.map((snippetTitle, index) => {
+    const snippetmap = props.snippets.map((snippetTitle, index) => {
       return <Snippets
         key={index}
         value={index}
-        snippetTitle={this.props.snippets[index].title}
-        currentIndex={this.props.currentIndex}
-        changeCurrentIndex={this.props.changeCurrentIndex}
+        snippetTitle={props.snippets[index].title}
+        currentIndex={props.currentIndex}
+        changeCurrentIndex={props.changeCurrentIndex}
       />
     });
 

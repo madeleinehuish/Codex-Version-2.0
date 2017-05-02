@@ -14,29 +14,29 @@ const Main = (props) => {
         <div className="container">
             <div className="row">
               <div className="offset-by-one seven columns">
-              <h5 className="titleWord">{this.props.sortValue}</h5>
+              <h5 className="titleWord">{props.sortValue}</h5>
               <h1>Hello world!</h1>
               <Snippetslist
-                snippets={this.props.snippets}
-                snippetTitles={this.props.snippetTitles}
-                currentIndex={this.props.currentIndex}
-                changeCurrentIndex={this.props.changeCurrentIndex}
+                snippets={props.snippets}
+                snippetTitles={props.snippetTitles}
+                currentIndex={props.currentIndex}
+                changeCurrentIndex={props.changeCurrentIndex}
               />
               <p></p>
               </div>
               <div className="four columns">
-                <Link to="/addsnippet"><button className="titleWord" id="addSnippetButton" onClick={this.props.addNewSnippetButton}>Add New Snippet</button></Link>
+                <Link to="/addsnippet"><button className="titleWord" id="addSnippetButton" onClick={props.addNewSnippetButton}>Add New Snippet</button></Link>
                 <br/><br/>
                 <Sortbylist
-                  snippets={this.props.snippets}
-                  sortValue={this.props.sortValue}
-                  onSortChange={this.props.onSortChange}
-                  handleSort={this.props.handleSort}
-                  defaultSnippetArray={this.props.defaultSnippetArray}
+                  snippets={props.snippets}
+                  sortValue={props.sortValue}
+                  onSortChange={props.onSortChange}
+                  handleSort={props.handleSort}
+                  defaultSnippetArray={props.defaultSnippetArray}
                 />
                 <SearchBox
-                  handleSearch={this.props.handleSearch}
-                  value={this.props.value}
+                  handleSearch={props.handleSearch}
+                  value={props.value}
                 />
               </div>
             </div>
