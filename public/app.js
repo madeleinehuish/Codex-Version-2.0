@@ -190,12 +190,12 @@ var onChange = function onChange(newValue) {
 
 var Addsnippet = function Addsnippet(props) {
 
-  if (undefined.props.snippets.length === 0) {
+  if (props.snippets.length === 0) {
     return _react2.default.createElement('section', null);
   }
 
-  var newIndex = undefined.props.currentIndex;
-  var current = undefined.props.snippets[newIndex];
+  var newIndex = props.currentIndex;
+  var current = props.snippets[newIndex];
 
   return _react2.default.createElement(
     'section',
@@ -225,7 +225,7 @@ var Addsnippet = function Addsnippet(props) {
                 theme: 'monokai',
                 onChange: undefined.onChange,
                 name: 'codeSnippet',
-                value: undefined.props.addSnippet.codeSnippet,
+                value: props.addSnippet.codeSnippet,
                 editorProps: { $blockScrolling: true }
               })
             )
@@ -238,7 +238,7 @@ var Addsnippet = function Addsnippet(props) {
               null,
               'Title:',
               _react2.default.createElement('br', null),
-              _react2.default.createElement('input', { id: 'title', name: 'title', type: 'text', onChange: undefined.props.onFormChangeAddSnippet, value: undefined.props.addSnippet.title, className: 'validate' })
+              _react2.default.createElement('input', { id: 'title', name: 'title', type: 'text', onChange: props.onFormChangeAddSnippet, value: props.addSnippet.title, className: 'validate' })
             ),
             _react2.default.createElement('br', null),
             _react2.default.createElement(
@@ -246,7 +246,7 @@ var Addsnippet = function Addsnippet(props) {
               null,
               'Language:',
               _react2.default.createElement('br', null),
-              _react2.default.createElement('input', { id: 'language', name: 'language', type: 'text', onChange: undefined.props.onFormChangeAddSnippet, value: undefined.props.addSnippet.language, className: 'validate' })
+              _react2.default.createElement('input', { id: 'language', name: 'language', type: 'text', onChange: props.onFormChangeAddSnippet, value: props.addSnippet.language, className: 'validate' })
             ),
             _react2.default.createElement('br', null),
             _react2.default.createElement(
@@ -254,7 +254,7 @@ var Addsnippet = function Addsnippet(props) {
               null,
               'Keywords:',
               _react2.default.createElement('br', null),
-              _react2.default.createElement('input', { id: 'keywords', name: 'keywords', type: 'text', onChange: undefined.props.onFormChangeAddSnippet, value: undefined.props.addSnippet.keywords, className: 'validate' })
+              _react2.default.createElement('input', { id: 'keywords', name: 'keywords', type: 'text', onChange: props.onFormChangeAddSnippet, value: props.addSnippet.keywords, className: 'validate' })
             ),
             _react2.default.createElement('br', null),
             _react2.default.createElement(
@@ -262,7 +262,7 @@ var Addsnippet = function Addsnippet(props) {
               null,
               'Notes:',
               _react2.default.createElement('br', null),
-              _react2.default.createElement('input', { id: 'notes', name: 'notes', type: 'text', onChange: undefined.props.onFormChangeAddSnippet, value: undefined.props.addSnippet.notes, className: 'validate' })
+              _react2.default.createElement('input', { id: 'notes', name: 'notes', type: 'text', onChange: props.onFormChangeAddSnippet, value: props.addSnippet.notes, className: 'validate' })
             ),
             _react2.default.createElement('br', null),
             _react2.default.createElement(
@@ -270,7 +270,7 @@ var Addsnippet = function Addsnippet(props) {
               { to: '/main' },
               _react2.default.createElement(
                 'button',
-                { onClick: undefined.props.addNewSnippetToStateAndDB },
+                { onClick: props.addNewSnippetToStateAndDB },
                 'Save Snippet'
               )
             )
@@ -721,7 +721,7 @@ var _axios = require('axios');
 
 var _axios2 = _interopRequireDefault(_axios);
 
-var _reactRouter = require('react-router');
+var _reactRouterDom = require('react-router-dom');
 
 var _react = require('react');
 
@@ -747,11 +747,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var Editor = function Editor(props) {
 
-  if (undefined.props.snippets.length === 0) {
+  if (props.snippets.length === 0) {
     return _react2.default.createElement('section', null);
   }
   var newIndex = 1;
-  var current = undefined.props.snippets[newIndex];
+  var current = props.snippets[newIndex];
 
   return _react2.default.createElement(
     'section',
@@ -771,7 +771,7 @@ var Editor = function Editor(props) {
             _react2.default.createElement(
               'h5',
               { className: 'titleWord' },
-              undefined.props.snippets[undefined.props.currentIndex].title
+              props.snippets[props.currentIndex].title
             ),
             _react2.default.createElement(
               'div',
@@ -781,9 +781,9 @@ var Editor = function Editor(props) {
                 theme: 'monokai'
                 // id="aceEditor"
                 // theme="github"
-                , onChange: undefined.props.onEditorChange,
+                , onChange: props.onEditorChange,
                 name: 'codeSnippet',
-                value: undefined.props.snippets[undefined.props.currentIndex].codeSnippet,
+                value: props.snippets[props.currentIndex].codeSnippet,
                 editorProps: { $blockScrolling: true }
               })
             )
@@ -796,7 +796,7 @@ var Editor = function Editor(props) {
               null,
               'Title:',
               _react2.default.createElement('br', null),
-              _react2.default.createElement('input', { id: 'title', name: 'title', type: 'text', onChange: undefined.props.onFormChange, value: undefined.props.snippets[undefined.props.currentIndex].title, className: 'validate' })
+              _react2.default.createElement('input', { id: 'title', name: 'title', type: 'text', onChange: props.onFormChange, value: props.snippets[props.currentIndex].title, className: 'validate' })
             ),
             _react2.default.createElement('br', null),
             _react2.default.createElement(
@@ -804,7 +804,7 @@ var Editor = function Editor(props) {
               null,
               'Language:',
               _react2.default.createElement('br', null),
-              _react2.default.createElement('input', { id: 'language', name: 'language', type: 'text', onChange: undefined.props.onFormChange, value: undefined.props.snippets[undefined.props.currentIndex].language, className: 'validate' })
+              _react2.default.createElement('input', { id: 'language', name: 'language', type: 'text', onChange: props.onFormChange, value: props.snippets[props.currentIndex].language, className: 'validate' })
             ),
             _react2.default.createElement('br', null),
             _react2.default.createElement(
@@ -812,7 +812,7 @@ var Editor = function Editor(props) {
               null,
               'Keywords:',
               _react2.default.createElement('br', null),
-              _react2.default.createElement('input', { id: 'keywords', name: 'keywords', type: 'text', onChange: undefined.props.onFormChange, value: undefined.props.snippets[undefined.props.currentIndex].keywords, className: 'validate' })
+              _react2.default.createElement('input', { id: 'keywords', name: 'keywords', type: 'text', onChange: props.onFormChange, value: props.snippets[props.currentIndex].keywords, className: 'validate' })
             ),
             _react2.default.createElement('br', null),
             _react2.default.createElement(
@@ -820,26 +820,26 @@ var Editor = function Editor(props) {
               null,
               'Notes:',
               _react2.default.createElement('br', null),
-              _react2.default.createElement('input', { id: 'notes', name: 'notes', type: 'text', onChange: undefined.props.onFormChange, value: undefined.props.snippets[undefined.props.currentIndex].notes, className: 'validate' })
+              _react2.default.createElement('input', { id: 'notes', name: 'notes', type: 'text', onChange: props.onFormChange, value: props.snippets[props.currentIndex].notes, className: 'validate' })
             ),
             _react2.default.createElement('br', null),
             _react2.default.createElement(
-              _reactRouter.Link,
+              _reactRouterDom.Link,
               { to: '/main' },
               _react2.default.createElement(
                 'button',
-                { onClick: undefined.props.patchSnippets },
+                { onClick: props.patchSnippets },
                 'Save To Codex'
               )
             ),
             _react2.default.createElement('br', null),
             _react2.default.createElement('br', null),
             _react2.default.createElement(
-              _reactRouter.Link,
+              _reactRouterDom.Link,
               { to: '/main' },
               _react2.default.createElement(
                 'button',
-                { onClick: undefined.props.deleteSnippet },
+                { onClick: props.deleteSnippet },
                 'Delete'
               )
             )
@@ -855,15 +855,13 @@ exports.default = Editor;
 });
 
 require.register("components/Home.js", function(exports, require, module) {
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactRouter = require('react-router');
-
-var _react = require('react');
+var _react = require("react");
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -871,25 +869,26 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var onClickSubmit = function onClickSubmit(event) {
   undefined.props.onSubmitGitHubLogIn();
-};
+}; // import { Link } from 'react-router';
+
 
 var Home = function Home(props) {
 
   return _react2.default.createElement(
-    'section',
-    { id: 'home' },
+    "section",
+    { id: "home" },
     _react2.default.createElement(
-      'div',
-      { id: 'hero' },
+      "div",
+      { id: "hero" },
       _react2.default.createElement(
-        'h1',
-        { className: 'mainTitleWord' },
-        'Codex'
+        "h1",
+        { className: "mainTitleWord" },
+        "Codex"
       ),
       _react2.default.createElement(
-        'a',
-        { className: 'mainTitle', href: '/api-oauth/github' },
-        'Sign in with GitHub'
+        "a",
+        { className: "mainTitle", href: "/api-oauth/github" },
+        "Sign in with GitHub"
       )
     )
   );
@@ -956,11 +955,6 @@ var Main = function Main(props) {
             'h5',
             { className: 'titleWord' },
             props.sortValue
-          ),
-          _react2.default.createElement(
-            'h1',
-            null,
-            'Hello world!'
           ),
           _react2.default.createElement(_Snippetslist2.default, {
             snippets: props.snippets,
@@ -1110,7 +1104,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactRouter = require('react-router');
+var _reactRouterDom = require('react-router-dom');
 
 var _react = require('react');
 
@@ -1121,7 +1115,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var changeCurrentKey = function changeCurrentKey(event) {
   var newIndex = event.target.name;
   console.log(newIndex);
-  undefined.props.changeCurrentIndex(newIndex);
+  props.changeCurrentIndex(newIndex);
 };
 
 var Snippets = function Snippets(props) {
@@ -1130,14 +1124,14 @@ var Snippets = function Snippets(props) {
     'li',
     null,
     _react2.default.createElement(
-      _reactRouter.Link,
+      _reactRouterDom.Link,
       {
         to: '/editor',
-        onClick: undefined.changeCurrentKey,
-        value: undefined.props.value,
-        name: undefined.props.value,
+        onClick: changeCurrentKey,
+        value: props.value,
+        name: props.value,
         className: 'snippetTitles' },
-      undefined.props.snippetTitle
+      props.snippetTitle
     )
   );
 };

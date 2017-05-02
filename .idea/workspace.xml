@@ -2,13 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="05faaeb0-de69-433b-9f9a-78aea6df9b37" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/components/App.js" afterPath="$PROJECT_DIR$/app/components/App.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/components/Addsnippet.js" afterPath="$PROJECT_DIR$/app/components/Addsnippet.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/components/Editor.js" afterPath="$PROJECT_DIR$/app/components/Editor.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/components/Main.js" afterPath="$PROJECT_DIR$/app/components/Main.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/components/Snippets.js" afterPath="$PROJECT_DIR$/app/components/Snippets.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/app.js" afterPath="$PROJECT_DIR$/public/app.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/app.js.map" afterPath="$PROJECT_DIR$/public/app.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/vendor.js" afterPath="$PROJECT_DIR$/public/vendor.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/vendor.js.map" afterPath="$PROJECT_DIR$/public/vendor.js.map" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -46,12 +45,32 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Main.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Main.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/components/Main.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="105">
               <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-              <folding />
+              <folding>
+                <marker date="1493735633000" expanded="true" signature="314:1628" ph="{...}" />
+                <marker date="1493735633000" expanded="true" signature="336:1619" ph="&lt;section/&gt;" />
+                <marker date="1493735633000" expanded="true" signature="355:1602" ph="&lt;div/&gt;" />
+                <marker date="1493735633000" expanded="true" signature="395:1587" ph="&lt;div/&gt;" />
+                <marker date="1493735633000" expanded="true" signature="431:518" ph="&lt;div/&gt;" />
+                <marker date="1493735633000" expanded="true" signature="1516:1547" ph="&lt;SearchBox/&gt;" />
+                <marker date="1493735633000" expanded="true" signature="1516:1568" ph="&lt;div/&gt;" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Home.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/components/Home.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#36#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -216,12 +235,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1493277523122</updated>
-      <workItem from="1493277524310" duration="3533000" />
+      <workItem from="1493277524310" duration="3689000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3533000" />
+    <option name="totallyTimeSpent" value="3689000" />
   </component>
   <component name="TodoView" selected-index="2">
     <todo-panel id="selected-file">
@@ -305,7 +324,25 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
           <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-          <folding />
+          <folding>
+            <marker date="1493735633000" expanded="true" signature="314:1628" ph="{...}" />
+            <marker date="1493735633000" expanded="true" signature="336:1619" ph="&lt;section/&gt;" />
+            <marker date="1493735633000" expanded="true" signature="355:1602" ph="&lt;div/&gt;" />
+            <marker date="1493735633000" expanded="true" signature="395:1587" ph="&lt;div/&gt;" />
+            <marker date="1493735633000" expanded="true" signature="431:518" ph="&lt;div/&gt;" />
+            <marker date="1493735633000" expanded="true" signature="1516:1547" ph="&lt;SearchBox/&gt;" />
+            <marker date="1493735633000" expanded="true" signature="1516:1568" ph="&lt;div/&gt;" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/components/Home.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#36#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

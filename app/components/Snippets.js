@@ -1,10 +1,10 @@
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import React from 'react';
 
 const changeCurrentKey = (event) => {
   const newIndex = event.target.name;
   console.log(newIndex);
-  this.props.changeCurrentIndex(newIndex);
+  props.changeCurrentIndex(newIndex);
 }
 
 const Snippets = (props) => {
@@ -13,11 +13,11 @@ const Snippets = (props) => {
     <li>
       <Link
         to="/editor"
-        onClick={this.changeCurrentKey}
-        value={this.props.value}
-        name={this.props.value}
+        onClick={changeCurrentKey}
+        value={props.value}
+        name={props.value}
         className="snippetTitles">
-          {this.props.snippetTitle}
+          {props.snippetTitle}
       </Link>
     </li>
   );

@@ -15,7 +15,7 @@ const Main = (props) => {
             <div className="row">
               <div className="offset-by-one seven columns">
               <h5 className="titleWord">{props.sortValue}</h5>
-              <h1>Hello world!</h1>
+              {/* <h1>Hello world!</h1> */}
               <Snippetslist
                 snippets={props.snippets}
                 snippetTitles={props.snippetTitles}

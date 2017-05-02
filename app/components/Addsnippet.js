@@ -16,12 +16,12 @@ let onChange = (newValue) => {
 
 const Addsnippet = (props) => {
 
-  if (this.props.snippets.length === 0) {
+  if (props.snippets.length === 0) {
     return <section></section>;
   }
 
-  const newIndex = this.props.currentIndex;
-  const current = this.props.snippets[newIndex];
+  const newIndex = props.currentIndex;
+  const current = props.snippets[newIndex];
 
   return (
     <section >
@@ -36,7 +36,7 @@ const Addsnippet = (props) => {
             theme="monokai"
             onChange={this.onChange}
             name="codeSnippet"
-            value={this.props.addSnippet.codeSnippet}
+            value={props.addSnippet.codeSnippet}
             editorProps={{$blockScrolling: true}}
           />
           </div>
@@ -44,25 +44,25 @@ const Addsnippet = (props) => {
           <div className="offset-by-four four columns titleWord2">
             <div>Title:
             <br/>
-              <input  id="title" name="title" type="text" onChange={this.props.onFormChangeAddSnippet} value={this.props.addSnippet.title} className="validate" />
+              <input  id="title" name="title" type="text" onChange={props.onFormChangeAddSnippet} value={props.addSnippet.title} className="validate" />
             </div>
             <br/>
             <div>Language:
             <br/>
-              <input id="language" name="language" type="text" onChange={this.props.onFormChangeAddSnippet} value={this.props.addSnippet.language} className="validate" />
+              <input id="language" name="language" type="text" onChange={props.onFormChangeAddSnippet} value={props.addSnippet.language} className="validate" />
             </div>
             <br/>
             <div>Keywords:
             <br/>
-              <input id="keywords" name="keywords" type="text" onChange={this.props.onFormChangeAddSnippet} value={this.props.addSnippet.keywords} className="validate" />
+              <input id="keywords" name="keywords" type="text" onChange={props.onFormChangeAddSnippet} value={props.addSnippet.keywords} className="validate" />
             </div>
             <br/>
             <div>Notes:
             <br/>
-              <input id="notes" name="notes" type="text" onChange={this.props.onFormChangeAddSnippet} value={this.props.addSnippet.notes} className="validate" />
+              <input id="notes" name="notes" type="text" onChange={props.onFormChangeAddSnippet} value={props.addSnippet.notes} className="validate" />
             </div>
             <br/>
-            <Link to="/main"><button onClick={this.props.addNewSnippetToStateAndDB}>Save Snippet</button></Link>
+            <Link to="/main"><button onClick={props.addNewSnippetToStateAndDB}>Save Snippet</button></Link>
           </div>
           </form>
         </div>
