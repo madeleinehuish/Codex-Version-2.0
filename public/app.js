@@ -296,15 +296,19 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _axios = require('axios');
-
-var _axios2 = _interopRequireDefault(_axios);
-
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouter = require('react-router');
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _reactRouterDom = require('react-router-dom');
+
+var _axios = require('axios');
+
+var _axios2 = _interopRequireDefault(_axios);
 
 var _expect = require('expect');
 
@@ -343,6 +347,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+// import { Link } from 'react-router';
+
 
 var App = function (_Component) {
   _inherits(App, _Component);
@@ -378,13 +384,28 @@ var App = function (_Component) {
       renderByLanguage: false,
       snippets: [],
       defaultSnippetArray: [],
-      // sortedSnippets: [],
       snippetTitles: [],
       currentIndex: 0,
       loggedIn: false,
       currentUser: {},
       title: ''
     };
+
+    _this.addNewSnippetButton = _this.addNewSnippetButton.bind(_this);
+    _this.addNewSnippetToStateAndDB = _this.addNewSnippetToStateAndDB.bind(_this);
+    _this.changeCurrentIndex = _this.changeCurrentIndex.bind(_this);
+    _this.changeEditor = _this.changeEditor.bind(_this);
+    _this.deleteSnippet = _this.deleteSnippet.bind(_this);
+    _this.logOut = _this.logOut.bind(_this);
+    _this.onEditorChange = _this.onEditorChange.bind(_this);
+    _this.onEditorChangeAddSnippet = _this.onEditorChangeAddSnippet.bind(_this);
+    _this.onFormChange = _this.onFormChange.bind(_this);
+    _this.onFormChangeAddSnippet = _this.onFormChangeAddSnippet.bind(_this);
+    _this.handleSearch = _this.handleSearch.bind(_this);
+    _this.handleSort = _this.handleSort.bind(_this);
+    _this.sortedValues = _this.sortedValues.bind(_this);
+    _this.patchSnippets = _this.patchSnippets.bind(_this);
+    _this.reRenderButton = _this.reRenderButton.bind(_this);
     return _this;
   }
 
@@ -600,87 +621,89 @@ var App = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      return (
-        // <BrowserRouter>
-        // 	<main>
-        //     <Match pattern="/" exactly render={
-        //       () =>
-        _react2.default.createElement(_Home2.default, _extends({}, this.state, {
-          onSubmitGitHubLogIn: this.onSubmitGitHubLogIn
-        }))
-        //     }/>
-        //     <Match pattern="/addsnippet" exactly render={
-        //       () =>
-        //       <div>
-        //         <Header
-        //           { ...this.state }
-        //           logIn={this.logIn}
-        //           logOut={this.logOut}
-        //           onSubmit={this.onSubmit}
-        //           onFormChange={this.onFormChange}
-        //         />
-        //         <Addsnippet
-        //           { ...this.state }
-        //           addNewSnippetToStateAndDB={this.addNewSnippetToStateAndDB}
-        //           changeEditor={this.changeEditor}
-        //           currentIndex={this.state.currentIndex}
-        //           snippets={this.state.snippets}
-        //           onFormChangeAddSnippet={this.onFormChangeAddSnippet}
-        //           onEditorChangeAddSnippet={this.onEditorChangeAddSnippet}
-        //           patchSnippets={this.patchSnippets}
-        //         />
-        //       </div>
-        //     }/>
-        //     <Match pattern="/editor" exactly render={
-        //       () =>
-        //       <div>
-        //         <Header
-        //           { ...this.state }
-        //           logIn={this.logIn}
-        //           logOut={this.logOut}
-        //           onSubmit={this.onSubmit}
-        //           onFormChange={this.onFormChange}
-        //         />
-        //         <Editor
-        //           { ...this.state }
-        //           changeEditor={this.changeEditor}
-        //           currentIndex={this.state.currentIndex}
-        //           snippets={this.state.snippets}
-        //           onFormChange={this.onFormChange}
-        //           onEditorChange={this.onEditorChange}
-        //           patchSnippets={this.patchSnippets}
-        //           deleteSnippet={this.deleteSnippet}
-        //         />
-        //       </div>
-        //     }/>
-        //     <Match pattern="/main" exactly render={
-        //       () =>
-        //       <div>
-        //         <Header
-        //           { ...this.state }
-        //           logIn={this.logIn}
-        //           logOut={this.logOut}
-        //           onSubmit={this.onSubmit}
-        //           onFormChange={this.onFormChange}
-        //         />
-        //         <Main
-        //           { ...this.state }
-        //           loggedIn={this.state.loggedIn}
-        //           currentUser={this.state.currentUser}
-        //           snippets={this.state.snippets}
-        //           currentIndex={this.state.currentIndex}
-        //           changeCurrentIndex={this.changeCurrentIndex}
-        //           addNewSnippetButton={this.addNewSnippetButton}
-        //           reRenderButton={this.reRenderButton}
-        //           onSortChange={this.onSortChange}
-        //           handleSort={this.handleSort}
-        //           handleSearch={this.handleSearch}
-        //         />
-        //       </div>
-        //     }/>
-        // 	</main>
-        // </BrowserRouter>
+      var _this9 = this;
 
+      return (
+        // <div>Hello world</div>
+        _react2.default.createElement(
+          _reactRouterDom.BrowserRouter,
+          null,
+          _react2.default.createElement(
+            'main',
+            null,
+            _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/', exactly: true, render: function render() {
+                return _react2.default.createElement(_Home2.default, _extends({}, _this9.state, {
+                  onSubmitGitHubLogIn: _this9.onSubmitGitHubLogIn
+                }));
+              } }),
+            _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/addsnippet', exactly: true, render: function render() {
+                return _react2.default.createElement(
+                  'div',
+                  null,
+                  _react2.default.createElement(_Header2.default, _extends({}, _this9.state, {
+                    logIn: _this9.logIn,
+                    logOut: _this9.logOut,
+                    onSubmit: _this9.onSubmit,
+                    onFormChange: _this9.onFormChange
+                  })),
+                  _react2.default.createElement(_Addsnippet2.default, _extends({}, _this9.state, {
+                    addNewSnippetToStateAndDB: _this9.addNewSnippetToStateAndDB,
+                    changeEditor: _this9.changeEditor,
+                    currentIndex: _this9.state.currentIndex,
+                    snippets: _this9.state.snippets,
+                    onFormChangeAddSnippet: _this9.onFormChangeAddSnippet,
+                    onEditorChangeAddSnippet: _this9.onEditorChangeAddSnippet,
+                    patchSnippets: _this9.patchSnippets
+                  }))
+                );
+              } }),
+            _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/editor', exactly: true, render: function render() {
+                return _react2.default.createElement(
+                  'div',
+                  null,
+                  _react2.default.createElement(_Header2.default, _extends({}, _this9.state, {
+                    logIn: _this9.logIn,
+                    logOut: _this9.logOut,
+                    onSubmit: _this9.onSubmit,
+                    onFormChange: _this9.onFormChange
+                  })),
+                  _react2.default.createElement(_Editor2.default, _extends({}, _this9.state, {
+                    changeEditor: _this9.changeEditor,
+                    currentIndex: _this9.state.currentIndex,
+                    snippets: _this9.state.snippets,
+                    onFormChange: _this9.onFormChange,
+                    onEditorChange: _this9.onEditorChange,
+                    patchSnippets: _this9.patchSnippets,
+                    deleteSnippet: _this9.deleteSnippet
+                  }))
+                );
+              } }),
+            _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/main', exactly: true, render: function render() {
+                return _react2.default.createElement(
+                  'div',
+                  null,
+                  _react2.default.createElement(_Header2.default, _extends({}, _this9.state, {
+                    logIn: _this9.logIn,
+                    logOut: _this9.logOut,
+                    onSubmit: _this9.onSubmit,
+                    onFormChange: _this9.onFormChange
+                  })),
+                  _react2.default.createElement(_Main2.default, _extends({}, _this9.state, {
+                    loggedIn: _this9.state.loggedIn,
+                    currentUser: _this9.state.currentUser,
+                    snippets: _this9.state.snippets,
+                    currentIndex: _this9.state.currentIndex,
+                    changeCurrentIndex: _this9.changeCurrentIndex,
+                    addNewSnippetButton: _this9.addNewSnippetButton,
+                    reRenderButton: _this9.reRenderButton,
+                    onSortChange: _this9.onSortChange,
+                    handleSort: _this9.handleSort,
+                    handleSearch: _this9.handleSearch
+                  }))
+                );
+              } })
+          )
+        )
       );
     }
   }]);
@@ -892,11 +915,15 @@ var _axios = require('axios');
 
 var _axios2 = _interopRequireDefault(_axios);
 
-var _reactRouter = require('react-router');
-
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
+
+var _reactRouterDom = require('react-router-dom');
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _Snippetslist = require('./Snippetslist');
 
@@ -935,6 +962,11 @@ var Main = function Main(props) {
             { className: 'titleWord' },
             undefined.props.sortValue
           ),
+          _react2.default.createElement(
+            'h1',
+            null,
+            'Hello world!'
+          ),
           _react2.default.createElement(_Snippetslist2.default, {
             snippets: undefined.props.snippets,
             snippetTitles: undefined.props.snippetTitles,
@@ -947,7 +979,7 @@ var Main = function Main(props) {
           'div',
           { className: 'four columns' },
           _react2.default.createElement(
-            _reactRouter.Link,
+            _reactRouterDom.Link,
             { to: '/addsnippet' },
             _react2.default.createElement(
               'button',
@@ -1324,11 +1356,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _reactRouter = require('react-router');
-
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
+
+var _reactRouterDom = require('react-router-dom');
 
 var _axios = require('axios');
 
@@ -1337,11 +1369,11 @@ var _axios2 = _interopRequireDefault(_axios);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var logOut = function logOut() {
-  undefined.props.logOut();
+  props.logOut();
 };
 
 var onClickSubmit = function onClickSubmit(event) {
-  undefined.props.onSubmit();
+  props.onSubmit();
 };
 
 var Header = function Header(props) {
@@ -1359,7 +1391,7 @@ var Header = function Header(props) {
           'h5',
           { id: 'logoWord', className: 'userNav' },
           _react2.default.createElement(
-            _reactRouter.Link,
+            _reactRouterDom.Link,
             { to: '/', className: 'userNav' },
             'Codex'
           )
@@ -1371,16 +1403,16 @@ var Header = function Header(props) {
         _react2.default.createElement(
           'ul',
           null,
-          _react2.default.createElement('img', { className: 'avatar', src: undefined.props.currentUser.avatar }),
+          _react2.default.createElement('img', { className: 'avatar', src: props.currentUser.avatar }),
           _react2.default.createElement(
-            _reactRouter.Link,
+            _reactRouterDom.Link,
             {
               to: '/main' },
             _react2.default.createElement(
               'li',
-              { key: undefined.props.currentUser.id,
+              { key: props.currentUser.id,
                 className: 'userNav' },
-              undefined.props.currentUser.firstName,
+              props.currentUser.firstName,
               '\'s Code Library'
             )
           )
@@ -1391,6 +1423,128 @@ var Header = function Header(props) {
 };
 
 exports.default = Header;
+
+});
+
+require.register("components/layouts/temp.js", function(exports, require, module) {
+"use strict";
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require("react");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = require("react-dom");
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var carBrands = ["Alfa Romeo", "Audi", "BMW", "Chevrolet", "Chrysler", "Dodge", "Ferrari", "Fiat", "Ford", "Honda", "Hyundai", "Jaguar", "Jeep", "Kia", "Mazda", "Mercedez-Benz", "Mitsubishi", "Nissan", "Peugeot", "Porsche", "SAAB", "Subaru", "Suzuki", "Toyota", "Volkswagen", "Volvo"];
+
+/**
+ * EXERCISE
+ *
+ * Create a Typeahead Input
+ * ------------------------
+ *
+ * General guidelines: Use default browser styles. Focus on functionality.
+ *
+ * Requirements:
+ *   1. As the user types in the input, a list of options should appear below
+ *      it. The list should contain items from the `list` prop that *start* with
+ *      the user entered value (case insensitive).
+ *   2. Every new character typed should filter the list.
+ *   3. List should only appear when input is not empty. Whitespace only is
+ *      considered empty.
+ *   4. Clicking on a list item should populate the input with the selected
+ *      value and hide the list.
+ */
+
+var Typeahead = function (_React$Component) {
+  _inherits(Typeahead, _React$Component);
+
+  function Typeahead(props) {
+    _classCallCheck(this, Typeahead);
+
+    var _this = _possibleConstructorReturn(this, (Typeahead.__proto__ || Object.getPrototypeOf(Typeahead)).call(this, props));
+
+    _this.state = {
+      value: '',
+      defaultArray: props.list,
+      filteredArray: []
+    };
+
+    _this.filter = _this.filter.bind(_this);
+    _this.onHandleClick = _this.onHandleClick.bind(_this);
+
+    return _this;
+  }
+
+  _createClass(Typeahead, [{
+    key: "filter",
+    value: function filter(event) {
+      var evt = event.target.value;
+      var filtered = this.state.defaultArray.filter(function (item) {
+        if (item.toUpperCase().includes(evt.toUpperCase()) && item.toUpperCase().indexOf(evt.toUpperCase()) === 0) {
+          return true;
+        }
+      });
+
+      this.setState({ value: event.target.value });
+
+      if (event.target.value !== '') {
+        this.setState({ filteredArray: filtered });
+      } else {
+        this.setState({ filteredArray: [] });
+      }
+    }
+  }, {
+    key: "onHandleClick",
+    value: function onHandleClick(event) {
+      var newValue = event.target.innerHTML;
+
+      this.setState({ value: event.target.innerHTML });
+      this.setState({ filteredArray: [] });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      var currentList = this.state.filteredArray;
+      var mappedList = currentList.map(function (item) {
+        return _react2.default.createElement(
+          "li",
+          { onClick: _this2.onHandleClick },
+          item
+        );
+      });
+
+      return _react2.default.createElement(
+        "div",
+        null,
+        _react2.default.createElement("input", { value: this.state.value, onChange: this.filter }),
+        _react2.default.createElement(
+          "ul",
+          null,
+          mappedList
+        )
+      );
+    }
+  }]);
+
+  return Typeahead;
+}(_react2.default.Component);
+
+_reactDom2.default.render(_react2.default.createElement(Typeahead, { list: carBrands }), document.getElementById("root"));
 
 });
 

@@ -1,11 +1,11 @@
 import axios from 'axios';
-import { Link } from 'react-router';
 import React from 'react';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import Snippetslist from './Snippetslist';
 import Addsnippet from './Addsnippet';
 import Sortbylist from './Sortbylist';
 import SearchBox from './SearchBox';
-
 
 const Main = (props) => {
 
@@ -15,6 +15,7 @@ const Main = (props) => {
             <div className="row">
               <div className="offset-by-one seven columns">
               <h5 className="titleWord">{this.props.sortValue}</h5>
+              <h1>Hello world!</h1>
               <Snippetslist
                 snippets={this.props.snippets}
                 snippetTitles={this.props.snippetTitles}
