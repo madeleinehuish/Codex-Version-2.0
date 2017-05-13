@@ -61,7 +61,6 @@ class App extends Component {
     this.sortedValues = this.sortedValues.bind(this);
     this.patchSnippets = this.patchSnippets.bind(this);
     this.reRenderButton = this.reRenderButton.bind(this);
-    // this.render = this.render.bind(this);
   }
 
   addNewSnippetButton() {
@@ -186,66 +185,69 @@ class App extends Component {
     let sortValue = this.state.sortValue;
     let searchValue = this.state.value;
     let render;
-    console.log('sortValue =' + sortValue);
-    console.log('searchValue =' + searchValue);
 
     //if searchValue empty and sortValue empty
     if (searchValue === '' && sortValue === 'All Titles') {
       render = this.state.defaultSnippetArray;
+
       return this.setState({ snippets: render });
     } else
+
     //if searchValue empty and sortValue filled
     if (searchValue === '' && sortValue !== 'All Titles') {
       render = this.state.defaultSnippetArray.filter((element, index) => {
         if (element.language.includes(sortValue)) {
+
           return element.language.includes(sortValue);
         } else if (element.keywords.includes(sortValue)) {
+
           return element.keywords.includes(sortValue);
         }
       });
+
       return this.setState({ snippets: render });
     } else
+
     //if searchValue filled and sortValue empty
     if (searchValue !== '' && sortValue === 'All Titles') {
       render = this.state.defaultSnippetArray.filter((element, index) => {
         if(element.title.toUpperCase().includes(searchValue.toUpperCase())) {
 
-            return true;
+          return true;
         }
       });
       return this.setState({ snippets: render });
     } else
+
     //if searchValue filled and sortValue filled
     if (searchValue !== '' && sortValue !== 'All Titles') {
       render = this.state.defaultSnippetArray.filter((element, index) => {
         if(element.title.toUpperCase().includes(searchValue.toUpperCase())){
           if (element.language.includes(sortValue)) {
-              return true;
-            }
+
+            return true;
+          }
           if (element.keywords.includes(sortValue)) {
+
             return true
           }
         }
 
         return false;
       });
+
       return this.setState({ snippets: render });
     }
   }
 
   patchSnippets() {
-
     const current = this.state.snippets[this.state.currentIndex];
     let id = current.id;
 
-
     axios.patch(`/api-snippets/${id}`, this.state.snippets[this.state.currentIndex])
       .then((res)=> {
-        console.log(res);
-        // this.setState({ snippets: update(this.state.snippets, {name: {$set: current}} ) });
         this.setState({ snippets: update(this.state.snippets, { [this.state.currentIndex]: { $set: current } }) });
         this.setState({ defaultSnippetArray: update(this.state.defaultSnippetArray, { [this.state.currentIndex]: { $set: current } }) });
-        console.log(res.data);
       })
       .catch((error) => {
         console.log(error);
@@ -253,13 +255,12 @@ class App extends Component {
   }
 
   reRenderButton() {
-    console.log('rerender');
     this.setState({ renderByLanguage: true });
   }
 
   render() {
+
     return (
-      // <div>Hello world</div>
   		<Router>
   			<main>
           <Route exact path="/" exactly render={
