@@ -339,10 +339,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-// import PropTypes from 'prop-types';
-// import { Link } from 'react-router';
-// import expect, { createSpy, spyOn, isSpy } from 'expect';
-
 
 var App = function (_Component) {
   _inherits(App, _Component);
@@ -869,8 +865,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var onClickSubmit = function onClickSubmit(event) {
   undefined.props.onSubmitGitHubLogIn();
-}; // import { Link } from 'react-router';
-
+};
 
 var Home = function Home(props) {
 

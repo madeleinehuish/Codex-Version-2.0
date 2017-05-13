@@ -1,12 +1,12 @@
 {
   "name": "Codex",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": "Madeleine Huish <madeleinehuish@gmail.com>",
-  "description": "",
+  "description": "Second working version bringing Codex up to date with ES6.",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/madeleinehuish/q4project"
+    "url": "https://github.com/madeleinehuish/Codex-Version-2.0"
   },
   "scripts": {
     "heroku-postbuild": "knex migrate:latest",
@@ -19,7 +19,6 @@
     "nodemon": "nodemon server.js"
   },
   "dependencies": {
-    "algoliasearch": "^3.20.2",
     "auto-reload-brunch": "^2.7.1",
     "axios": "^0.15.2",
     "babel-brunch": "^6.0.6",
@@ -43,7 +42,6 @@
     "knex": "^0.12.6",
     "lodash": "^4.17.2",
     "morgan": "^1.7.0",
-    "mysql": "^2.12.0",
     "nodemon": "^1.11.0",
     "normalize.css": "^4.2.0",
     "object.values": "^1.0.4",
@@ -61,16 +59,11 @@
     "request": "^2.79.0",
     "request-promise": "^4.1.1",
     "setimmediate": "^1.0.5",
-    "sqlite3": "^3.1.8",
     "stripe": "^4.14.0",
     "uglify-js-brunch": "^2.0.1"
   },
   "devDependencies": {
-    "eslint": "^3.11.1",
-    "eslint-config-ryansobol": "^9.1.1",
-    "eslint-plugin-react": "^6.8.0",
-    "foreman": "^2.0.0",
-    "surge": "^0.18.0"
+    "foreman": "^2.0.0"
   },
   "engines": {
     "node": "7.7.3"

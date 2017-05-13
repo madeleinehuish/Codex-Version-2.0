@@ -6,14 +6,14 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const knex = require('../knex');
 const { camelizeKeys, decamelizeKeys } = require('humps');
-var _ = require('lodash');
-var async = require('async');
-var mysql = require('mysql');
-var algoliasearch = require('algoliasearch');
-var client = algoliasearch("N1SG3F753R", "••••••••••••••••••••••••••••••••");
-var index = client.initIndex('snippets');
-var axios = require('axios');
+const _ = require('lodash');
+const async = require('async');
+const axios = require('axios');
 const request = require('request-promise');
+// var mysql = require('mysql');
+// var algoliasearch = require('algoliasearch');
+// var client = algoliasearch("N1SG3F753R", "••••••••••••••••••••••••••••••••");
+// var index = client.initIndex('snippets');
 
 // eslint-disable-next-line new-cap
 const router = express.Router();
@@ -39,10 +39,10 @@ router.get(`/api-snippets/:id`, authorize, (req, res, next) => {
     return next(boom.create(400, 'Order Id must be an integer'));
   }
   let snippets;
-  var gistLanguages = [];
-  var gistSnippetMap = [];
-  var gistsTitles = [];
-  var gistData = {};
+  let gistLanguages = [];
+  let gistSnippetMap = [];
+  let gistsTitles = [];
+  let gistData = {};
 
   axios.get(`${req.query.gistUrl}?access_token=${req.query.githubToken}`)
     .then((res) => {
@@ -78,34 +78,38 @@ router.get(`/api-snippets/:id`, authorize, (req, res, next) => {
 
       return gistData;
     })
-    .then((res)=> {
-      const promises = res.gistsTitles.map((gist, i) => {
-        const insertSnippet = { userId, title: res.gistsTitles[i], codeSnippet: res.gistSnippetMap[i], language: res.gistLanguages[i], keywords: 'gist', notes: '' };
-        let snippet;
+    // I took this part out on May 12 because it was giving a 500 on server
+    // .then((res)=> {
+    //   const promises = res.gistsTitles.map((gist, i) => {
+    //     const insertSnippet = { userId, title: res.gistsTitles[i], codeSnippet: res.gistSnippetMap[i], language: res.gistLanguages[i], keywords: 'gist', notes: '' };
+    //     let snippet;
+    //
+    //     return knex('snippets')
+    //       //make it so git keyword includes git??????????????
+    //       .where('title', res.gistsTitles[i])
+    //       .where('keywords', 'gist')
+    //       .first()
+    //       .then((snippet) => {
+    //         if (!snippet) {
+    //           knex('snippets')
+    //             .insert(decamelizeKeys(insertSnippet), '*')
+    //             .then((rows) => {
+    //               snippet = camelizeKeys(rows[0]);
+    //               console.log(snippet);
+    //               // res.send(snippet);
+    //             })
+    //             .catch((err) => {
+    //               next(err);
+    //             });
+    //         }
+    //       })
+    //   })
+    //   return Promise.all(promises);
+    //
+    // })
 
-        return knex('snippets')
-          //make it so git keyword includes git??????????????
-          .where('title', res.gistsTitles[i])
-          .where('keywords', 'gist')
-          .first()
-          .then((snippet) => {
-            if (!snippet) {
-              knex('snippets')
-                .insert(decamelizeKeys(insertSnippet), '*')
-                .then((rows) => {
-                  snippet = camelizeKeys(rows[0]);
-                  console.log(snippet);
-                  // res.send(snippet);
-                })
-                .catch((err) => {
-                  next(err);
-                });
-            }
-          })
-      })
-      return Promise.all(promises);
-//
-    })
+
+
     //attempting to update snippets with null userId
     // .then(()=> {
     //   knex('snippets')

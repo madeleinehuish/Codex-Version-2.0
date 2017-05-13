@@ -25,7 +25,7 @@ module.exports = {
 
   plugins: {
     babel: {
-      presets: ['es2015', 'react']
+      presets: ['latest', 'es2015', 'react']
     }
   },
 
