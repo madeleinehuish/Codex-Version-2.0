@@ -396,7 +396,6 @@ var App = function (_Component) {
     _this.sortedValues = _this.sortedValues.bind(_this);
     _this.patchSnippets = _this.patchSnippets.bind(_this);
     _this.reRenderButton = _this.reRenderButton.bind(_this);
-    // this.render = this.render.bind(this);
     return _this;
   }
 
@@ -539,25 +538,29 @@ var App = function (_Component) {
       var sortValue = this.state.sortValue;
       var searchValue = this.state.value;
       var render = void 0;
-      console.log('sortValue =' + sortValue);
-      console.log('searchValue =' + searchValue);
 
       //if searchValue empty and sortValue empty
       if (searchValue === '' && sortValue === 'All Titles') {
         render = this.state.defaultSnippetArray;
+
         return this.setState({ snippets: render });
       } else
+
         //if searchValue empty and sortValue filled
         if (searchValue === '' && sortValue !== 'All Titles') {
           render = this.state.defaultSnippetArray.filter(function (element, index) {
             if (element.language.includes(sortValue)) {
+
               return element.language.includes(sortValue);
             } else if (element.keywords.includes(sortValue)) {
+
               return element.keywords.includes(sortValue);
             }
           });
+
           return this.setState({ snippets: render });
         } else
+
           //if searchValue filled and sortValue empty
           if (searchValue !== '' && sortValue === 'All Titles') {
             render = this.state.defaultSnippetArray.filter(function (element, index) {
@@ -568,20 +571,24 @@ var App = function (_Component) {
             });
             return this.setState({ snippets: render });
           } else
+
             //if searchValue filled and sortValue filled
             if (searchValue !== '' && sortValue !== 'All Titles') {
               render = this.state.defaultSnippetArray.filter(function (element, index) {
                 if (element.title.toUpperCase().includes(searchValue.toUpperCase())) {
                   if (element.language.includes(sortValue)) {
+
                     return true;
                   }
                   if (element.keywords.includes(sortValue)) {
+
                     return true;
                   }
                 }
 
                 return false;
               });
+
               return this.setState({ snippets: render });
             }
     }
@@ -594,11 +601,8 @@ var App = function (_Component) {
       var id = current.id;
 
       _axios2.default.patch('/api-snippets/' + id, this.state.snippets[this.state.currentIndex]).then(function (res) {
-        console.log(res);
-        // this.setState({ snippets: update(this.state.snippets, {name: {$set: current}} ) });
         _this8.setState({ snippets: (0, _immutabilityHelper2.default)(_this8.state.snippets, _defineProperty({}, _this8.state.currentIndex, { $set: current })) });
         _this8.setState({ defaultSnippetArray: (0, _immutabilityHelper2.default)(_this8.state.defaultSnippetArray, _defineProperty({}, _this8.state.currentIndex, { $set: current })) });
-        console.log(res.data);
       }).catch(function (error) {
         console.log(error);
       });
@@ -606,7 +610,6 @@ var App = function (_Component) {
   }, {
     key: 'reRenderButton',
     value: function reRenderButton() {
-      console.log('rerender');
       this.setState({ renderByLanguage: true });
     }
   }, {
@@ -614,86 +617,83 @@ var App = function (_Component) {
     value: function render() {
       var _this9 = this;
 
-      return (
-        // <div>Hello world</div>
+      return _react2.default.createElement(
+        _reactRouterDom.BrowserRouter,
+        null,
         _react2.default.createElement(
-          _reactRouterDom.BrowserRouter,
+          'main',
           null,
-          _react2.default.createElement(
-            'main',
-            null,
-            _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/', exactly: true, render: function render() {
-                return _react2.default.createElement(_Home2.default, _extends({}, _this9.state, {
-                  onSubmitGitHubLogIn: _this9.onSubmitGitHubLogIn
-                }));
-              } }),
-            _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/addsnippet', exactly: true, render: function render() {
-                return _react2.default.createElement(
-                  'div',
-                  null,
-                  _react2.default.createElement(_Header2.default, _extends({}, _this9.state, {
-                    logIn: _this9.logIn,
-                    logOut: _this9.logOut,
-                    onSubmit: _this9.onSubmit,
-                    onFormChange: _this9.onFormChange
-                  })),
-                  _react2.default.createElement(_Addsnippet2.default, _extends({}, _this9.state, {
-                    addNewSnippetToStateAndDB: _this9.addNewSnippetToStateAndDB,
-                    changeEditor: _this9.changeEditor,
-                    currentIndex: _this9.state.currentIndex,
-                    snippets: _this9.state.snippets,
-                    onFormChangeAddSnippet: _this9.onFormChangeAddSnippet,
-                    onEditorChangeAddSnippet: _this9.onEditorChangeAddSnippet,
-                    patchSnippets: _this9.patchSnippets
-                  }))
-                );
-              } }),
-            _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/editor', exactly: true, render: function render() {
-                return _react2.default.createElement(
-                  'div',
-                  null,
-                  _react2.default.createElement(_Header2.default, _extends({}, _this9.state, {
-                    logIn: _this9.logIn,
-                    logOut: _this9.logOut,
-                    onSubmit: _this9.onSubmit,
-                    onFormChange: _this9.onFormChange
-                  })),
-                  _react2.default.createElement(_Editor2.default, _extends({}, _this9.state, {
-                    changeEditor: _this9.changeEditor,
-                    currentIndex: _this9.state.currentIndex,
-                    snippets: _this9.state.snippets,
-                    onFormChange: _this9.onFormChange,
-                    onEditorChange: _this9.onEditorChange,
-                    patchSnippets: _this9.patchSnippets,
-                    deleteSnippet: _this9.deleteSnippet
-                  }))
-                );
-              } }),
-            _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/main', exactly: true, render: function render() {
-                return _react2.default.createElement(
-                  'div',
-                  null,
-                  _react2.default.createElement(_Header2.default, _extends({}, _this9.state, {
-                    logIn: _this9.logIn,
-                    logOut: _this9.logOut,
-                    onSubmit: _this9.onSubmit,
-                    onFormChange: _this9.onFormChange
-                  })),
-                  _react2.default.createElement(_Main2.default, _extends({}, _this9.state, {
-                    loggedIn: _this9.state.loggedIn,
-                    currentUser: _this9.state.currentUser,
-                    snippets: _this9.state.snippets,
-                    currentIndex: _this9.state.currentIndex,
-                    changeCurrentIndex: _this9.changeCurrentIndex,
-                    addNewSnippetButton: _this9.addNewSnippetButton,
-                    reRenderButton: _this9.reRenderButton,
-                    onSortChange: _this9.onSortChange,
-                    handleSort: _this9.handleSort,
-                    handleSearch: _this9.handleSearch
-                  }))
-                );
-              } })
-          )
+          _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/', exactly: true, render: function render() {
+              return _react2.default.createElement(_Home2.default, _extends({}, _this9.state, {
+                onSubmitGitHubLogIn: _this9.onSubmitGitHubLogIn
+              }));
+            } }),
+          _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/addsnippet', exactly: true, render: function render() {
+              return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(_Header2.default, _extends({}, _this9.state, {
+                  logIn: _this9.logIn,
+                  logOut: _this9.logOut,
+                  onSubmit: _this9.onSubmit,
+                  onFormChange: _this9.onFormChange
+                })),
+                _react2.default.createElement(_Addsnippet2.default, _extends({}, _this9.state, {
+                  addNewSnippetToStateAndDB: _this9.addNewSnippetToStateAndDB,
+                  changeEditor: _this9.changeEditor,
+                  currentIndex: _this9.state.currentIndex,
+                  snippets: _this9.state.snippets,
+                  onFormChangeAddSnippet: _this9.onFormChangeAddSnippet,
+                  onEditorChangeAddSnippet: _this9.onEditorChangeAddSnippet,
+                  patchSnippets: _this9.patchSnippets
+                }))
+              );
+            } }),
+          _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/editor', exactly: true, render: function render() {
+              return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(_Header2.default, _extends({}, _this9.state, {
+                  logIn: _this9.logIn,
+                  logOut: _this9.logOut,
+                  onSubmit: _this9.onSubmit,
+                  onFormChange: _this9.onFormChange
+                })),
+                _react2.default.createElement(_Editor2.default, _extends({}, _this9.state, {
+                  changeEditor: _this9.changeEditor,
+                  currentIndex: _this9.state.currentIndex,
+                  snippets: _this9.state.snippets,
+                  onFormChange: _this9.onFormChange,
+                  onEditorChange: _this9.onEditorChange,
+                  patchSnippets: _this9.patchSnippets,
+                  deleteSnippet: _this9.deleteSnippet
+                }))
+              );
+            } }),
+          _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/main', exactly: true, render: function render() {
+              return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(_Header2.default, _extends({}, _this9.state, {
+                  logIn: _this9.logIn,
+                  logOut: _this9.logOut,
+                  onSubmit: _this9.onSubmit,
+                  onFormChange: _this9.onFormChange
+                })),
+                _react2.default.createElement(_Main2.default, _extends({}, _this9.state, {
+                  loggedIn: _this9.state.loggedIn,
+                  currentUser: _this9.state.currentUser,
+                  snippets: _this9.state.snippets,
+                  currentIndex: _this9.state.currentIndex,
+                  changeCurrentIndex: _this9.changeCurrentIndex,
+                  addNewSnippetButton: _this9.addNewSnippetButton,
+                  reRenderButton: _this9.reRenderButton,
+                  onSortChange: _this9.onSortChange,
+                  handleSort: _this9.handleSort,
+                  handleSearch: _this9.handleSearch
+                }))
+              );
+            } })
         )
       );
     }
