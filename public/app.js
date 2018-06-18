@@ -282,7 +282,6 @@ var Addsnippet = function Addsnippet(props) {
 };
 
 exports.default = Addsnippet;
-
 });
 
 require.register("components/App.js", function(exports, require, module) {
@@ -703,7 +702,6 @@ var App = function (_Component) {
 }(_react.Component);
 
 exports.default = App;
-
 });
 
 require.register("components/Editor.js", function(exports, require, module) {
@@ -847,7 +845,6 @@ var Editor = function Editor(props) {
 };
 
 exports.default = Editor;
-
 });
 
 require.register("components/Home.js", function(exports, require, module) {
@@ -890,7 +887,6 @@ var Home = function Home(props) {
 };
 
 exports.default = Home;
-
 });
 
 require.register("components/Main.js", function(exports, require, module) {
@@ -991,7 +987,6 @@ var Main = function Main(props) {
 };
 
 exports.default = Main;
-
 });
 
 require.register("components/Search.js", function(exports, require, module) {
@@ -1046,7 +1041,6 @@ var Search = function Search(props) {
 };
 
 exports.default = Search;
-
 });
 
 require.register("components/SearchBox.js", function(exports, require, module) {
@@ -1089,7 +1083,6 @@ var SearchBox = function SearchBox(props) {
 };
 
 exports.default = SearchBox;
-
 });
 
 require.register("components/Snippets.js", function(exports, require, module) {
@@ -1132,7 +1125,6 @@ var Snippets = function Snippets(props) {
 };
 
 exports.default = Snippets;
-
 });
 
 require.register("components/Snippetslist.js", function(exports, require, module) {
@@ -1187,7 +1179,6 @@ var Snippetslist = function Snippetslist(props) {
 };
 
 exports.default = Snippetslist;
-
 });
 
 require.register("components/Sortby.js", function(exports, require, module) {
@@ -1215,7 +1206,6 @@ var Sortby = function Sortby(props) {
 };
 
 exports.default = Sortby;
-
 });
 
 require.register("components/Sortbylist.js", function(exports, require, module) {
@@ -1330,7 +1320,6 @@ var Sortbylist = function Sortbylist(props) {
 };
 
 exports.default = Sortbylist;
-
 });
 
 require.register("components/layouts/Header.js", function(exports, require, module) {
@@ -1346,19 +1335,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouterDom = require('react-router-dom');
 
-var _axios = require('axios');
-
-var _axios2 = _interopRequireDefault(_axios);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var logOut = function logOut() {
-  props.logOut();
-};
-
-var onClickSubmit = function onClickSubmit(event) {
-  props.onSubmit();
-};
 
 var Header = function Header(props) {
 
@@ -1407,7 +1384,6 @@ var Header = function Header(props) {
 };
 
 exports.default = Header;
-
 });
 
 require.register("components/layouts/temp.js", function(exports, require, module) {
@@ -1529,7 +1505,6 @@ var Typeahead = function (_React$Component) {
 }(_react2.default.Component);
 
 _reactDom2.default.render(_react2.default.createElement(Typeahead, { list: carBrands }), document.getElementById("root"));
-
 });
 
 require.register("index.js", function(exports, require, module) {
@@ -1550,12 +1525,11 @@ var _reactDom2 = _interopRequireDefault(_reactDom);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 _reactDom2.default.render(_react2.default.createElement(_App2.default, null), document.getElementById('app'));
-
 });
 
 require.alias("buffer/index.js", "buffer");
 require.alias("events/events.js", "events");
-require.alias("node-browser-modules/node_modules/process/browser.js", "process");
+require.alias("process/browser.js", "process");
 require.alias("util/util.js", "sys");process = require('process');require.register("___globals___", function(exports, require, module) {
   
 });})();require('___globals___');
