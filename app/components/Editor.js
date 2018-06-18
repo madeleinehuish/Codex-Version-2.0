@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import React from 'react';
-import { render } from 'react-dom';
+// import { render } from 'react-dom';
 import brace from 'brace';
 import AceEditor from 'react-ace';
 import 'brace/mode/javascript';

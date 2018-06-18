@@ -721,8 +721,6 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = require('react-dom');
-
 var _brace = require('brace');
 
 var _brace2 = _interopRequireDefault(_brace);
@@ -843,7 +841,7 @@ var Editor = function Editor(props) {
     )
   );
 };
-
+// import { render } from 'react-dom';
 exports.default = Editor;
 });
 
@@ -1100,13 +1098,13 @@ var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var changeCurrentKey = function changeCurrentKey(event) {
-  var newIndex = event.target.name;
-  console.log(newIndex);
-  props.changeCurrentIndex(newIndex);
-};
-
 var Snippets = function Snippets(props) {
+
+  var changeCurrentKey = function changeCurrentKey(event) {
+    var newIndex = event.target.name;
+    console.log(newIndex);
+    props.changeCurrentIndex(newIndex);
+  };
 
   return _react2.default.createElement(
     'li',

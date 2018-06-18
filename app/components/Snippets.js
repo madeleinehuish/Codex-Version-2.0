@@ -1,13 +1,15 @@
 import { Link } from 'react-router-dom';
 import React from 'react';
 
-const changeCurrentKey = (event) => {
-  const newIndex = event.target.name;
-  console.log(newIndex);
-  props.changeCurrentIndex(newIndex);
-}
+
 
 const Snippets = (props) => {
+
+  const changeCurrentKey = (event) => {
+    const newIndex = event.target.name;
+    console.log(newIndex);
+    props.changeCurrentIndex(newIndex);
+  }
 
   return (
     <li>
