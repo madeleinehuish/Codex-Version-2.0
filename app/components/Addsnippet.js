@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import React from 'react';
 import { render } from 'react-dom';
 import brace from 'brace';
@@ -29,17 +29,17 @@ const Addsnippet = (props) => {
         <div className="row">
         <form>
           <div className="four columns">
-          <h4 className="titleWord">Add New Snippet</h4>
-          <div id="codeSnippet">
-          <AceEditor
-            mode="javascript"
-            theme="monokai"
-            onChange={this.onChange}
-            name="codeSnippet"
-            value={props.addSnippet.codeSnippet}
-            editorProps={{$blockScrolling: true}}
-          />
-          </div>
+            <h4 className="titleWord">Add New Snippet</h4>
+              <div id="codeSnippet">
+              <AceEditor
+                mode="javascript"
+                theme="monokai"
+                onChange={onChange}
+                name="codeSnippet"
+                value={props.addSnippet.codeSnippet}
+                editorProps={{$blockScrolling: true}}
+              />
+              </div>
           </div>
           <div className="offset-by-four four columns titleWord2">
             <div>Title:

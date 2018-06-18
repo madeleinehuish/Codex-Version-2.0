@@ -159,7 +159,7 @@ var _axios = require('axios');
 
 var _axios2 = _interopRequireDefault(_axios);
 
-var _reactRouter = require('react-router');
+var _reactRouterDom = require('react-router-dom');
 
 var _react = require('react');
 
@@ -223,7 +223,7 @@ var Addsnippet = function Addsnippet(props) {
               _react2.default.createElement(_reactAce2.default, {
                 mode: 'javascript',
                 theme: 'monokai',
-                onChange: undefined.onChange,
+                onChange: onChange,
                 name: 'codeSnippet',
                 value: props.addSnippet.codeSnippet,
                 editorProps: { $blockScrolling: true }
@@ -266,7 +266,7 @@ var Addsnippet = function Addsnippet(props) {
             ),
             _react2.default.createElement('br', null),
             _react2.default.createElement(
-              _reactRouter.Link,
+              _reactRouterDom.Link,
               { to: '/main' },
               _react2.default.createElement(
                 'button',
